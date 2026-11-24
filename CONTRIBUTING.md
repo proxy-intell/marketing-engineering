@@ -60,5 +60,5 @@ Add `maker_x` (the maker's X handle, no @). Every Friday new entries ship as a G
 ## Listed? Add the badge
 
 ```md
-[![Featured on Marketing Engineering](https://votes.useproxy.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering)
+[![Featured on Marketing Engineering](https://marketingengineering.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering)
 ```

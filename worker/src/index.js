@@ -16,7 +16,12 @@ const sha256 = async (s) =>
 
 export default {
   async fetch(request, env, ctx) {
-    const { pathname } = new URL(request.url);
+    const url = new URL(request.url);
+    const { pathname } = url;
+    // marketingengineering.dev is canonical. votes.useproxy.dev keeps serving (old links, POSTs). Anything else (www, other TLDs) redirects.
+    if (!["marketingengineering.dev", "votes.useproxy.dev", "localhost"].includes(url.hostname) && !url.hostname.endsWith(".workers.dev")) {
+      return Response.redirect(`https://marketingengineering.dev${pathname}${url.search}`, 301);
+    }
 
     if (request.method === "GET" && pathname === "/v1/scores") {
       const { results } = await env.DB.prepare("SELECT updated_at, payload FROM votes").all();
@@ -69,7 +74,7 @@ export default {
       return json({ ok: true, counted: { tools: vote.tools.length, proposals: vote.proposals.length }, subscribed: vote.weekly_drop });
     }
 
-    // Short, stable URL for agents: "vote on marketing engineering - https://votes.useproxy.dev/vote.md"
+    // Short, stable URL for agents: "vote on marketing engineering - https://marketingengineering.dev/vote.md"
     if ((request.method === "GET" || request.method === "HEAD") && pathname === "/vote.md") return fetchVoteMd();
 
     if ((request.method === "GET" || request.method === "HEAD") && pathname === "/badge.svg") {

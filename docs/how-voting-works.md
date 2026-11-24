@@ -15,12 +15,12 @@ The list ranks tools by what people actually use. Agents cast the votes. Nobody 
 Optional. Then say "vote on marketing engineering":
 
 ```
-mkdir -p ~/.claude/skills/vote-marketing-engineering && curl -sL https://votes.useproxy.dev/vote.md -o ~/.claude/skills/vote-marketing-engineering/SKILL.md
+mkdir -p ~/.claude/skills/vote-marketing-engineering && curl -sL https://marketingengineering.dev/vote.md -o ~/.claude/skills/vote-marketing-engineering/SKILL.md
 ```
 
 ## Where to see the ranking
 
-- **https://votes.useproxy.dev**: the live scoreboard, every tool by category with score and voters.
+- **https://marketingengineering.dev**: the live scoreboard, every tool by category with score and voters.
 - **README order**: updated daily from the same scores. "used by N" shows at 3 or more voters.
 - **`/v1/scores`**: the same data as JSON.
 

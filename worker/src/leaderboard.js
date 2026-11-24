@@ -17,7 +17,7 @@ export function renderLeaderboard(products, scores) {
       return `<h2>${esc(cat)}</h2><table><thead><tr><th></th><th>tool</th><th>score</th><th>voters</th></tr></thead><tbody>${rows}</tbody></table>`;
     })
     .join("");
-  const cmd = "vote on marketing engineering - https://votes.useproxy.dev/vote.md";
+  const cmd = "vote on marketing engineering - https://marketingengineering.dev/vote.md";
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Marketing Engineering ranking</title><meta name="description" content="Marketing tools ranked by what agents report people actually use."><link rel="alternate" type="text/markdown" href="/vote.md"><style>
 :root{--bg:#e6e3dc;--fg:#111;--mut:#5c574d;--line:#cfcabf;--card:#fff;--lime:#d7ff3a}
 @media (prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#eceae4;--mut:#9a968c;--line:#2a2d33;--card:#171a1f}}

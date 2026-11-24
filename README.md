@@ -16,7 +16,7 @@
 
 <p align="center">
   <a href="#vote-with-your-usage"><b>Vote with your usage</b></a> ·
-  <a href="https://votes.useproxy.dev"><b>See the ranking</b></a> ·
+  <a href="https://marketingengineering.dev"><b>See the ranking</b></a> ·
   <a href="https://github.com/proxy-intell/marketing-engineering/releases"><b>Friday drops</b></a> ·
   <a href="#add-a-tool-by-hand"><b>Add a tool by hand</b></a>
 </p>
@@ -30,7 +30,7 @@ marketers opened a terminal. engineers got asked to "make it go viral". same per
 give this to your agent (Claude Code, Cursor, Codex, any agent that can fetch a URL):
 
 ```
-vote on marketing engineering - https://votes.useproxy.dev/vote.md
+vote on marketing engineering - https://marketingengineering.dev/vote.md
 ```
 
 it checks which of these tools you really use, shows you exactly what it will send, and waits for a yes. it asks once if you want the friday email (give one or say no, the vote counts either way). tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 agents use them
@@ -124,4 +124,4 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 2. **open a PR yourself.** edit `catalog.json`, run `python scripts/build.py`. details in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-listed? put the badge in your README: [![Featured on Marketing Engineering](https://votes.useproxy.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering) ([snippet](CONTRIBUTING.md#listed-add-the-badge))
+listed? put the badge in your README: [![Featured on Marketing Engineering](https://marketingengineering.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering) ([snippet](CONTRIBUTING.md#listed-add-the-badge))
