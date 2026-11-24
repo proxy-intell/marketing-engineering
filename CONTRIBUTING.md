@@ -20,7 +20,7 @@ No JSON wanted? Ask your agent: `Add <tool URL> to github.com/proxy-intell/marke
 
 ## Add a setup
 
-A setup is one job done with 2 to 6 tools. Edit `setups.json` (sorted by `slug`) and give each step a short `why`. A tool that isn't in `catalog.json` yet gets added in the same PR, in an existing category when one fits and a new one when none does. Then run `python scripts/build.py`. Don't hand-edit between the `SETUPS` markers. Agents: follow [AGENTS.md](AGENTS.md#adding-a-setup-a-user-asked-you-to).
+A setup is one job done with 2 to 6 tools. A tool can sit in more than one setup: put it in every job it does, with a `why` for that job. Edit `setups.json` (sorted by `slug`) and give each step a short `why`. A tool that isn't in `catalog.json` yet gets added in the same PR, in an existing category when one fits and a new one when none does. Then run `python scripts/build.py`. Don't hand-edit between the `SETUPS` markers. Agents: follow [AGENTS.md](AGENTS.md#adding-a-setup-a-user-asked-you-to).
 
 ## Skills and plugins
 

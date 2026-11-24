@@ -21,7 +21,7 @@ A setup is one job done end to end with 2 to 6 tools, in order. The user names t
 
 1. Fork or branch, depending on your access.
 2. Check each tool against `catalog.json`.
-   - Listed: use its `slug`.
+   - Listed: use its `slug`. A tool can be in more than one setup: add it to every job it does, with a `why` written for that job.
    - Not listed: add it in this same PR. Follow steps 2 to 4 of "Adding a product by hand" above for each one. Reuse a category from `categories.json` when one fits the job the tool does. Add a new category only when none fits.
 3. Add one object to `setups.json` `setups`, sorted by `slug`: `slug`, `job` (40 chars max, lowercase start, the job in the user's words), and `steps`, each with `tool` (a catalog slug) and `why` (60 chars max, no period, what that tool does in this job).
 4. Run `python scripts/build.py` then `python scripts/build.py --check`.
