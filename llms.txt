@@ -61,6 +61,7 @@ paste into your agent: `set up "research competitors' ads" - https://marketingen
 ### AI search visibility (AEO)
 
 - [Perplexity Sonar API](https://docs.perplexity.ai): API for answers grounded in live web search, returned with source citations. Interfaces: api. Pricing: paid. Kind: data.
+- [Semrush](https://www.semrush.com): Tracks how a brand shows up in AI search answers, alongside keyword research, rank tracking and backlink data. Interfaces: web, api. Pricing: paid. Kind: data.
 
 ### Attribution & product analytics
 
@@ -89,18 +90,17 @@ paste into your agent: `set up "research competitors' ads" - https://marketingen
 - [Gemini API](https://ai.google.dev): Google's model API. Accepts text, image, audio and video input, so it can transcribe and describe video ads. Interfaces: api, sdk. Pricing: freemium.
 - [Proxy](https://useproxy.dev): MCP server for the Meta, Google, LinkedIn and TikTok (EU) ad libraries, with video and image analysis of ads. Interfaces: mcp, cli, plugin. Pricing: freemium. MCP: https://mcp.useproxy.dev/mcp?ref=marketing-engineering. Kind: data.
 
-### Email sending
-
-- [Resend](https://resend.com): Email API for transactional and marketing email. React templates, contacts, broadcasts and webhooks. Interfaces: api, sdk, cli, mcp. Pricing: freemium.
-
 ### Google SEO
 
 - [Google Search Console](https://search.google.com/search-console): Reports on your site's clicks, impressions, queries and indexing status in Google Search, with URL inspection and indexing requests. Interfaces: web, api. Pricing: free. Kind: data.
-- [Semrush](https://www.semrush.com): Keyword research, rank tracking, backlink data and competitor traffic estimates. Interfaces: web, api. Pricing: paid. Kind: data.
 
 ### Launching
 
 - [Product Hunt](https://www.producthunt.com): Site where new tech products launch daily and rank by upvotes. Also a searchable directory of past launches. Interfaces: web, api. Pricing: free.
+
+### Lifecycle comms
+
+- [Resend](https://resend.com): Email API for transactional and marketing email. React templates, contacts, broadcasts and webhooks. Interfaces: api, sdk, cli, mcp. Pricing: freemium.
 
 ### Screenshots & browser automation
 
