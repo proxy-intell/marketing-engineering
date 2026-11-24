@@ -9,17 +9,15 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/ranked%20by-real%20usage-111111?style=flat-square" alt="Ranked by real usage">
-  <img src="https://img.shields.io/badge/meetings-0-111111?style=flat-square" alt="Meetings: 0">
-  <img src="https://img.shields.io/badge/for-humans%20%2B%20agents-111111?style=flat-square" alt="For humans and agents">
-  <a href="llms.txt"><img src="https://img.shields.io/badge/llms.txt-ready-111111?style=flat-square" alt="llms.txt"></a>
-  <a href="catalog.json"><img src="https://img.shields.io/badge/catalog-JSON-111111?style=flat-square" alt="JSON catalog"></a>
+  <img src="https://img.shields.io/badge/ranked%20by-real%20usage-d7ff3a?style=flat&labelColor=111111" alt="Ranked by real usage">
+  <img src="https://img.shields.io/badge/meetings-0-ff4d8d?style=flat&labelColor=111111" alt="Meetings: 0">
+  <a href="llms.txt"><img src="https://img.shields.io/badge/llms.txt-ready-d7ff3a?style=flat&labelColor=111111" alt="llms.txt ready"></a>
 </p>
 
 <p align="center">
-  <a href="#vote-with-your-usage"><b>🗳️ Vote with your usage</b></a> ·
-  <a href="https://github.com/proxy-intell/marketing-engineering/releases"><b>📦 Friday drops</b></a> ·
-  <a href="#no-agent-handy"><b>➕ Suggest by hand</b></a>
+  <a href="#vote-with-your-usage"><b>Vote with your usage</b></a> ·
+  <a href="https://github.com/proxy-intell/marketing-engineering/releases"><b>Friday drops</b></a> ·
+  <a href="#add-a-tool-by-hand"><b>Add a tool by hand</b></a>
 </p>
 
 > tools for running marketing like software: ads, SEO and AEO, organic social, analytics, email, billing and the AI agents that drive them
@@ -28,23 +26,13 @@ marketers opened a terminal. engineers got asked to "make it go viral". same per
 
 ## vote with your usage
 
-this list ranks tools by what people actually run, not what they say they like. your agent does the voting, no form
-
-1. **paste this into Claude Code, Cursor, Codex or any agent**
-
-   ```
-   Read https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/vote.md and follow it.
-   ```
-
-2. **it checks what you really use.** MCP servers, dependencies, CLIs, what it called this week. it shows you exactly what it will send and waits for a yes
-3. **it asks once if you want the friday drop.** give an email or say no. the vote counts either way
-4. **the list moves.** tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 agents use them
-
-claude code user? install it as a skill, then say "vote on marketing engineering":
+give this to your agent (Claude Code, Cursor, Codex, any agent that can fetch a URL):
 
 ```
-mkdir -p ~/.claude/skills/vote-marketing-engineering && curl -sL https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/vote.md -o ~/.claude/skills/vote-marketing-engineering/SKILL.md
+vote on marketing engineering - https://votes.useproxy.dev/vote.md
 ```
+
+it checks which of these tools you really use, shows you exactly what it will send, and waits for a yes. it asks once if you want the friday email (give one or say no, the vote counts either way). tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 agents use them
 
 only tool names and usage ratings leave your machine. never code, paths, keys or prompts. [how voting works](docs/how-voting-works.md)
 
@@ -123,7 +111,7 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 <!-- END CATALOG -->
 
-## no agent handy?
+## add a tool by hand
 
 1. **ask your agent to add one.** paste this into any agent with GitHub access
 
@@ -133,4 +121,4 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 2. **open a PR yourself.** edit `catalog.json`, run `python scripts/build.py`. details in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-listed? grab the [badge](CONTRIBUTING.md#listed-add-the-badge): [![Featured on Marketing Engineering](https://img.shields.io/badge/featured%20on-Marketing%20Engineering-111111?style=flat-square)](https://github.com/proxy-intell/marketing-engineering)
+listed? put the badge in your README: [![Featured on Marketing Engineering](https://votes.useproxy.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering) ([snippet](CONTRIBUTING.md#listed-add-the-badge))
