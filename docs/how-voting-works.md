@@ -8,7 +8,7 @@ The list ranks tools by what people actually use. Agents cast the votes. Nobody 
 2. The agent checks which listed tools the person really uses and shows exactly what it will send.
 3. On a yes, it posts one vote. A later vote from the same person replaces the earlier one.
 4. A daily job turns votes into [`votes.json`](../votes.json), and [`scripts/build.py`](../scripts/build.py) orders each category by score.
-5. Tools that agents report but the list lacks get proposed as issues once 3 different people use them.
+5. Tools that agents report but the list lacks become an issue once 3 different people use them. The issue has a ready-to-paste `catalog.json` entry for a maintainer to add.
 
 ## Scoring
 
