@@ -34,3 +34,15 @@ Then:
 3. Set the repo variable `VOTES_URL` (Settings → Secrets and variables → Actions → Variables) so `sync-votes.yml` runs.
 
 Emails live in D1 `subscribers` (source of truth) and are pushed to Resend best effort. Export: `npx wrangler d1 execute marketing-engineering-votes --remote --command "SELECT email FROM subscribers"`.
+
+## Friday email draft
+
+`weekly-drop.yml` also creates a Resend broadcast **draft** (never sends) when these are set in the repo (Settings → Secrets and variables → Actions):
+
+| | name | value |
+|---|---|---|
+| secret | `RESEND_API_KEY` | key with access to contacts and broadcasts |
+| variable | `RESEND_SEGMENT_ID` | segment the Worker adds signups to (same id as the Worker's `RESEND_SEGMENT_ID`) |
+| variable | `RESEND_FROM` | `Marketing Engineering <drop@updates.useproxy.dev>` (a verified sending domain) |
+
+Review the draft in Resend on Friday and press send.

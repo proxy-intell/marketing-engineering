@@ -2,12 +2,14 @@
 
 Usage: VOTES_URL=https://... python scripts/sync_votes.py [proposals_out.json]
 Writes votes.json (tool slug -> score, voters). Proposals with 3+ voters that are not in catalog.json
-are written to the optional out file as [{title, body}], in the shape of the "Suggest a tool" form.
+are written to the optional out file as [{title, body}]: an issue with a ready-to-paste catalog.json entry.
 """
 import json
 import os
+import re
 import sys
 import urllib.request
+from datetime import date
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -34,18 +36,14 @@ if len(sys.argv) > 1:
     for p in data["proposals"]:
         if p["voters"] < MIN_VOTERS or host(p["url"]) in listed:
             continue
-        known = p["category"] in categories
-        body = "\n\n".join([
-            "### Name", p["name"],
-            "### URL", p["url"],
-            "### One-sentence description", p["description"],
-            "### Category", p["category"] if known else "Something new (say below)",
-            "### New category name", "_No response_" if known else p["category"],
-            "### How do you plug in?", "- [ ] MCP server\n- [ ] API\n- [ ] CLI\n- [ ] SDK\n- [ ] Plugin\n- [ ] Web app",
-            "### Pricing", "_No response_",
-            "### Are you affiliated with it?", "No",
-            f"> Proposed by {p['voters']} agents from real usage. Maintainer: check the interfaces and set pricing before labeling `approved`.",
-        ])
-        issues.append({"title": f"Suggest: {p['name']} ({p['voters']} agents use it)", "body": body})
+        slug = re.sub(r"[^a-z0-9]+", "-", p["name"].lower()).strip("-")
+        entry = {"slug": slug, "name": p["name"], "url": p["url"], "description": p["description"], "category": p["category"], "interfaces": ["web"], "pricing": "freemium", "added": date.today().isoformat()}
+        note = "" if p["category"] in categories else f"\n\n`{p['category']}` is not in categories.json. Add it there or pick an existing category (see CONTRIBUTING.md#categories)."
+        body = (
+            f"{p['voters']} agents use {p['name']} and it is not listed. Entry to add to `catalog.json` (sorted by slug). "
+            "Check `interfaces` and `pricing` against the tool's site first, then run `python scripts/build.py`.\n\n"
+            f"```json\n{json.dumps(entry, indent=2)}\n```{note}"
+        )
+        issues.append({"title": f"Add: {p['name']} ({p['voters']} agents use it)", "body": body})
     Path(sys.argv[1]).write_text(json.dumps(issues, indent=2))
     print(f"{len(issues)} proposals ready")

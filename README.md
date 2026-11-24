@@ -50,7 +50,7 @@ only tool names and usage ratings leave your machine. never code, paths, keys or
 
 every entry says what it does and how you plug in: MCP server, API, CLI, SDK, plugin or web app. agents can skip the prose and read [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json), remote MCP URLs included
 
-new tools ship every friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases). watch → custom → releases
+new tools ship every friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases) and an email. watch → custom → releases, or give your agent an email when it asks
 
 <!-- BEGIN CATALOG -->
 
@@ -125,13 +125,12 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 ## no agent handy?
 
-1. **[fill the form](https://github.com/proxy-intell/marketing-engineering/issues/new?template=suggest-product.yml).** once a maintainer labels it `approved`, a bot opens the PR
-2. **ask your agent to add one.** paste this into any agent with GitHub access
+1. **ask your agent to add one.** paste this into any agent with GitHub access
 
    ```
    Add <tool URL> to github.com/proxy-intell/marketing-engineering. Follow AGENTS.md and open a PR.
    ```
 
-3. **open a PR yourself.** edit `catalog.json`, run `python scripts/build.py`. details in [CONTRIBUTING.md](CONTRIBUTING.md)
+2. **open a PR yourself.** edit `catalog.json`, run `python scripts/build.py`. details in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 listed? grab the [badge](CONTRIBUTING.md#listed-add-the-badge): [![Featured on Marketing Engineering](https://img.shields.io/badge/featured%20on-Marketing%20Engineering-111111?style=flat-square)](https://github.com/proxy-intell/marketing-engineering)

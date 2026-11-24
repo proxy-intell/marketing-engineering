@@ -1,4 +1,4 @@
-"""Generate README.md, llms.txt and the issue-form category dropdown from catalog.json + categories.json + votes.json.
+"""Generate README.md and llms.txt from catalog.json + categories.json + votes.json.
 Within a category, tools rank by vote score (votes.json), then A-Z. "used by N" shows at 3+ voters.
 
 Usage: python scripts/build.py          # write
@@ -11,7 +11,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BEGIN, END = "<!-- BEGIN CATALOG -->", "<!-- END CATALOG -->"
-FORM = ROOT / ".github/ISSUE_TEMPLATE/suggest-product.yml"
 # Category names the job someone does or the platform they do it on. These words mark a vague label.
 # Description filler. A description says what the tool is and does, in plain terms.
 FILLER = re.compile(r"\b(handy|useful for|powerful|seamless\w*|leverag\w+|robust|cutting-edge|state-of-the-art|world-class|best-in-class|next-gen\w*|game-changing|revolutionary|ai-powered|all-in-one|supercharg\w+|unlock\w*|streamlin\w+|empower\w*|effortless\w*|easily|simply|at scale|in one tool|with one call|one call|solutions?|ecosystem)\b", re.I)
@@ -95,14 +94,6 @@ def main():
 
     votes = json.loads((ROOT / "votes.json").read_text())["tools"] if (ROOT / "votes.json").exists() else {}
     groups = by_category(products, votes)
-    form = FORM.read_text()
-    options = "      options:\n" + "".join(f"        - {c}\n" for c in categories) + "        - Something new (say below)\n"
-    new_form = re.sub(r"      options:\n(?:        - .*\n)*?        - Something new \(say below\)\n", lambda _: options, form)
-    if new_form != form:
-        if check:
-            errors.append("Issue form categories are stale: run python scripts/build.py")
-        else:
-            FORM.write_text(new_form)
     for name, block in (("README.md", readme_block(groups, votes)), ("llms.txt", llms_block(groups, votes))):
         path = ROOT / name
         new = splice(path, block)
