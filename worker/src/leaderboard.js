@@ -239,16 +239,23 @@ table.rt td.nm .msub { display: none }
   .dd, .dd button { width: 100%; min-width: 0 }
   .tools .count { margin-left: 0 }
   .tools input, .getit .field input, .field input { font-size: 16px }
-  table.rt td { padding: 12px 8px; height: auto }
+  table.rt { table-layout: fixed }
+  table.rt th, table.rt td { padding: 12px 6px; height: auto }
+  table.rt th.num, table.rt td.num { width: 58px }
+  table.rt th[data-k="name"], table.rt td.nm { width: auto; overflow: hidden }
   table.rt .n, table.rt td.rk { width: 30px }
   table.rt td.nm a { white-space: normal }
-  table.rt td.nm .msub { display: block; margin-top: 3px; font: 500 .66rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--mute) }
+  table.rt td.nm .msub { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 3px; font: 500 .66rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--mute) }
   .getit .code { flex-direction: column }
   .getit .code code { font-size: .78rem; padding: 14px 14px 10px }
-  .getit .code button { border-left: 0; border-top: 2px solid var(--orange); padding: 12px 0 }
+  .getit .code button { align-self: flex-end; border: 0; margin: 0 12px 12px; padding: 8px 16px }
   .getit .field { max-width: none }
   .getit .field button { padding: 0 18px }
   footer.site { flex-direction: column; gap: 10px }
+  .hero { padding-bottom: 40px }
+  .hero > .comp { margin-top: 20px }
+  .sec-h { margin-bottom: 18px }
+  .nums strong { font-size: 3.6rem }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
 .kd { margin-left: 8px; font: 700 .62rem var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--cobalt); vertical-align: middle }
