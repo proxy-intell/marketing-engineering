@@ -1,0 +1,41 @@
+name: Suggest a product
+description: Suggest a product without opening a PR.
+title: "Suggest: <Name>"
+labels: [suggestion]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Name
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What it does and why it belongs here
+    validations:
+      required: true
+  - type: checkboxes
+    id: interfaces
+    attributes:
+      label: Interfaces
+      options:
+        - label: MCP server
+        - label: API
+        - label: CLI
+        - label: SDK
+        - label: Plugin
+        - label: Web app
+  - type: dropdown
+    id: affiliated
+    attributes:
+      label: Are you affiliated with it?
+      options: ["No", "Yes"]
+    validations:
+      required: true
