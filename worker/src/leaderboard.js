@@ -69,6 +69,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 h1 { font: 850 clamp(3.6rem, 9.2vw, 8.6rem)/.9 var(--display); font-variation-settings: "wdth" 76; letter-spacing: -.012em; font-kerning: normal; margin: 0 }
 .lede { font: 500 clamp(1.05rem, 1.6vw, 1.3rem)/1.45 var(--body); max-width: 40ch; margin: 0 }
 .getit { max-width: 680px }
+.agentbox { background: var(--ink); color: var(--paper); padding: 12px }
+.agentbox .lbl { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; padding: 4px 4px 12px; font: 700 .8rem var(--mono); text-transform: uppercase; letter-spacing: .05em }
+.agentbox .chips { display: flex; flex-wrap: wrap; gap: 5px }
+.agentbox .ag { font: 600 .66rem var(--mono); letter-spacing: .04em; padding: 3px 7px; border: 1px solid #555 }
+.agentbox .bar { display: flex; gap: 10px; align-items: stretch; background: #2c2c2c; padding: 8px 8px 8px 14px }
+.agentbox code { flex: 1; min-width: 0; align-self: center; font: 500 .84rem/1.5 var(--mono); color: var(--paper); overflow-wrap: break-word }
+.agentbox code::before { content: "$ "; color: #8a867c }
+.agentbox button { border: 0; background: var(--orange); color: var(--ink); font: 700 .78rem var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 0 18px; min-height: 40px; cursor: pointer }
+.agentnote { display: block; margin: 8px 0 18px }
+
 .getit .code { margin: 0 0 18px; background: var(--ink); border-color: var(--ink) }
 .getit .code code { background: var(--ink); color: var(--paper); font-size: .8rem; padding: 16px 14px; white-space: normal; overflow-wrap: anywhere }
 .getit .code button { background: var(--orange); color: var(--ink); border-left: 2px solid var(--ink); font-size: .8rem; padding: 0 20px }
@@ -234,6 +244,9 @@ footer.site a { color: var(--paper) }
 }
 table.rt td.nm .msub { display: none }
 @media (max-width: 600px) {
+  .agentbox .bar { flex-direction: column; padding: 12px }
+  .agentbox code { font-size: .7rem }
+  .agentbox button { align-self: flex-end; padding: 8px 16px; min-height: 0 }
   .tools { display: grid; grid-template-columns: 1fr; gap: 8px }
   .tools input { max-width: none; min-width: 0 }
   .dd, .dd button { width: 100%; min-width: 0 }
@@ -272,7 +285,11 @@ table.rt td.nm .msub { display: none }
       <h1>marketing engineering</h1>
       <p class="lede">find the best tools based on what people actually use</p>
       <div class="getit">
-        <div class="code"><code id="cmd">vote on marketing engineering - https://marketingengineering.dev/vote.md</code><button type="button" id="cp">Copy</button></div>
+        <div class="agentbox">
+          <div class="lbl">give this to your agent <span class="chips"><span class="ag">Claude Code</span><span class="ag">Cursor</span><span class="ag">Codex</span><span class="ag">ChatGPT</span><span class="ag">any agent</span></span></div>
+          <div class="bar"><code id="cmd">vote on marketing engineering - https://marketingengineering.dev/vote.md</code><button type="button" id="cp">Copy</button></div>
+        </div>
+        <span class="fine agentnote">it reads your setup, shows you the vote, and waits for a yes</span>
         <form class="field" id="drop" onsubmit="return false"><input type="email" id="em" placeholder="you@company.com" aria-label="Email"><button type="submit" id="join">join</button></form>
         <span class="fine" id="dropNote">new tools every friday, nothing else.</span>
       </div>
