@@ -34,15 +34,18 @@ body:
     attributes:
       label: Category
       options:
-        - Ad intelligence
-        - AI models & agents
-        - Analytics
-        - Browser automation
-        - Data & scraping
-        - Email
-        - Launch & distribution
-        - Pricing & billing
-        - SEO & AEO
+        - AI search visibility (AEO)
+        - Attribution & product analytics
+        - Billing, credits & paywalls
+        - Bing & AI-search indexing
+        - Coding agents
+        - Competitor & market research
+        - Creative strategy
+        - Email sending
+        - Google SEO
+        - Launching
+        - Screenshots & browser automation
+        - TikTok, Instagram & YouTube data
         - Something new (say below)
     validations:
       required: true
@@ -50,7 +53,7 @@ body:
     id: new_category
     attributes:
       label: New category name
-      description: Only if you picked "Something new".
+      description: Only if you picked "Something new". Name the job people do or the platform they do it on, like "Creative strategy" or "Google SEO". Not a vague label like "Ad intelligence" or "Tools".
   - type: checkboxes
     id: interfaces
     attributes:

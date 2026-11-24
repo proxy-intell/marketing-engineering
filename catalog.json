@@ -7,7 +7,7 @@
       "name": "Autumn",
       "url": "https://useautumn.com",
       "description": "Open-source pricing and billing layer over Stripe: define plans, credits and usage limits in config, then check and track them with one call.",
-      "category": "Pricing & billing",
+      "category": "Billing, credits & paywalls",
       "interfaces": [
         "api",
         "sdk",
@@ -27,7 +27,7 @@
       "name": "Bing Webmaster Tools",
       "url": "https://www.bing.com/webmasters",
       "description": "Index coverage, keywords and backlinks for Bing, the index behind several AI search products.",
-      "category": "SEO & AEO",
+      "category": "Bing & AI-search indexing",
       "interfaces": [
         "web",
         "api"
@@ -44,7 +44,7 @@
       "name": "Claude Code",
       "url": "https://claude.com/claude-code",
       "description": "Coding agent in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops.",
-      "category": "AI models & agents",
+      "category": "Coding agents",
       "interfaces": [
         "cli",
         "plugin"
@@ -62,7 +62,7 @@
       "name": "Exa",
       "url": "https://exa.ai",
       "description": "Web search API built for LLMs; finds companies, competitors and pages by meaning rather than keywords.",
-      "category": "Data & scraping",
+      "category": "Competitor & market research",
       "interfaces": [
         "api",
         "sdk",
@@ -82,7 +82,7 @@
       "name": "Gemini API",
       "url": "https://ai.google.dev",
       "description": "Multimodal model API that watches video and reads images, handy for transcribing and breaking down ad creatives at scale.",
-      "category": "AI models & agents",
+      "category": "Creative strategy",
       "interfaces": [
         "api",
         "sdk"
@@ -100,7 +100,7 @@
       "name": "Google Search Console",
       "url": "https://search.google.com/search-console",
       "description": "Clicks, impressions, queries and indexing status for your site in Google Search, plus manual indexing requests.",
-      "category": "SEO & AEO",
+      "category": "Google SEO",
       "interfaces": [
         "web",
         "api"
@@ -117,7 +117,7 @@
       "name": "IndexNow",
       "url": "https://www.indexnow.org",
       "description": "Open protocol to ping Bing, Yandex and other engines the moment a URL is published or updated.",
-      "category": "SEO & AEO",
+      "category": "Bing & AI-search indexing",
       "interfaces": [
         "api"
       ],
@@ -132,7 +132,7 @@
       "name": "Perplexity Sonar API",
       "url": "https://docs.perplexity.ai",
       "description": "Search-grounded answers with citations; useful for checking whether AI answers mention and cite your brand.",
-      "category": "SEO & AEO",
+      "category": "AI search visibility (AEO)",
       "interfaces": [
         "api"
       ],
@@ -148,7 +148,7 @@
       "name": "Playwright",
       "url": "https://playwright.dev",
       "description": "Scripts a real browser to screenshot landing pages, render OG images and click through funnels.",
-      "category": "Browser automation",
+      "category": "Screenshots & browser automation",
       "interfaces": [
         "sdk",
         "cli"
@@ -165,7 +165,7 @@
       "name": "PostHog",
       "url": "https://posthog.com",
       "description": "Product analytics, web analytics, session replay, feature flags and experiments in one tool; queryable from an agent.",
-      "category": "Analytics",
+      "category": "Attribution & product analytics",
       "interfaces": [
         "web",
         "api",
@@ -187,7 +187,7 @@
       "name": "Product Hunt",
       "url": "https://www.producthunt.com",
       "description": "Launch platform and directory for new tech products; also a feed of what competitors just shipped.",
-      "category": "Launch & distribution",
+      "category": "Launching",
       "interfaces": [
         "web",
         "api"
@@ -203,7 +203,7 @@
       "name": "Proxy",
       "url": "https://useproxy.dev",
       "description": "Live ad libraries for Meta, Google, LinkedIn and TikTok inside your AI assistant, with ad video and image analysis.",
-      "category": "Ad intelligence",
+      "category": "Creative strategy",
       "interfaces": [
         "mcp",
         "cli",
@@ -223,7 +223,7 @@
       "name": "Resend",
       "url": "https://resend.com",
       "description": "Email API for developers: transactional mail, broadcasts, contacts and templates written in React.",
-      "category": "Email",
+      "category": "Email sending",
       "interfaces": [
         "api",
         "sdk",
@@ -243,7 +243,7 @@
       "name": "ScrapeCreators",
       "url": "https://scrapecreators.com",
       "description": "One API for public posts, profiles and ad libraries across TikTok, Instagram, YouTube, LinkedIn, X and more.",
-      "category": "Data & scraping",
+      "category": "TikTok, Instagram & YouTube data",
       "interfaces": [
         "api"
       ],
@@ -259,7 +259,7 @@
       "name": "Semrush",
       "url": "https://www.semrush.com",
       "description": "Keyword research, rank tracking, backlink data and competitor traffic estimates.",
-      "category": "SEO & AEO",
+      "category": "Google SEO",
       "interfaces": [
         "web",
         "api"
@@ -276,7 +276,7 @@
       "name": "Stripe",
       "url": "https://stripe.com",
       "description": "Payments, checkout, subscriptions and billing portal APIs; the money end of every funnel.",
-      "category": "Pricing & billing",
+      "category": "Billing, credits & paywalls",
       "interfaces": [
         "api",
         "sdk",
