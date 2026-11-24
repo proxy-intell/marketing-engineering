@@ -178,6 +178,12 @@ paste into your agent: `set up "research competitors' ads" - https://marketingen
    Add <tool URL> to github.com/proxy-intell/marketing-engineering. Follow AGENTS.md and open a PR.
    ```
 
+   or add a whole setup. tools we don't list yet get added along the way
+
+   ```
+   Add a "<job>" setup to github.com/proxy-intell/marketing-engineering using <tools>. Follow AGENTS.md and open a PR.
+   ```
+
 2. **open a PR yourself.** edit `catalog.json`, run `python scripts/build.py`. details in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 listed? put the badge in your README: [![Listed on Marketing Engineering](https://marketingengineering.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering) ([snippet](CONTRIBUTING.md#listed-add-the-badge))
