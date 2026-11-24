@@ -30,58 +30,70 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 ## Contents
 
-- [Ad intelligence](#ad-intelligence)
-- [AI models & agents](#ai-models--agents)
-- [Analytics](#analytics)
-- [Browser automation](#browser-automation)
-- [Data & scraping](#data--scraping)
-- [Email](#email)
-- [Launch & distribution](#launch--distribution)
-- [Pricing & billing](#pricing--billing)
-- [SEO & AEO](#seo--aeo)
+- [AI search visibility (AEO)](#ai-search-visibility-aeo)
+- [Attribution & product analytics](#attribution--product-analytics)
+- [Billing, credits & paywalls](#billing-credits--paywalls)
+- [Bing & AI-search indexing](#bing--ai-search-indexing)
+- [Coding agents](#coding-agents)
+- [Competitor & market research](#competitor--market-research)
+- [Creative strategy](#creative-strategy)
+- [Email sending](#email-sending)
+- [Google SEO](#google-seo)
+- [Launching](#launching)
+- [Screenshots & browser automation](#screenshots--browser-automation)
+- [TikTok, Instagram & YouTube data](#tiktok-instagram--youtube-data)
 
-## Ad intelligence
+## AI search visibility (AEO)
 
-- [Proxy](https://useproxy.dev) - Live ad libraries for Meta, Google, LinkedIn and TikTok inside your AI assistant, with ad video and image analysis.
+- [Perplexity Sonar API](https://docs.perplexity.ai) - Search-grounded answers with citations; useful for checking whether AI answers mention and cite your brand.
 
-## AI models & agents
-
-- [Claude Code](https://claude.com/claude-code) - Coding agent in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops.
-- [Gemini API](https://ai.google.dev) - Multimodal model API that watches video and reads images, handy for transcribing and breaking down ad creatives at scale.
-
-## Analytics
+## Attribution & product analytics
 
 - [PostHog](https://posthog.com) - Product analytics, web analytics, session replay, feature flags and experiments in one tool; queryable from an agent.
 
-## Browser automation
-
-- [Playwright](https://playwright.dev) - Scripts a real browser to screenshot landing pages, render OG images and click through funnels.
-
-## Data & scraping
-
-- [Exa](https://exa.ai) - Web search API built for LLMs; finds companies, competitors and pages by meaning rather than keywords.
-- [ScrapeCreators](https://scrapecreators.com) - One API for public posts, profiles and ad libraries across TikTok, Instagram, YouTube, LinkedIn, X and more.
-
-## Email
-
-- [Resend](https://resend.com) - Email API for developers: transactional mail, broadcasts, contacts and templates written in React.
-
-## Launch & distribution
-
-- [Product Hunt](https://www.producthunt.com) - Launch platform and directory for new tech products; also a feed of what competitors just shipped.
-
-## Pricing & billing
+## Billing, credits & paywalls
 
 - [Autumn](https://useautumn.com) - Open-source pricing and billing layer over Stripe: define plans, credits and usage limits in config, then check and track them with one call.
 - [Stripe](https://stripe.com) - Payments, checkout, subscriptions and billing portal APIs; the money end of every funnel.
 
-## SEO & AEO
+## Bing & AI-search indexing
 
 - [Bing Webmaster Tools](https://www.bing.com/webmasters) - Index coverage, keywords and backlinks for Bing, the index behind several AI search products.
-- [Google Search Console](https://search.google.com/search-console) - Clicks, impressions, queries and indexing status for your site in Google Search, plus manual indexing requests.
 - [IndexNow](https://www.indexnow.org) - Open protocol to ping Bing, Yandex and other engines the moment a URL is published or updated.
-- [Perplexity Sonar API](https://docs.perplexity.ai) - Search-grounded answers with citations; useful for checking whether AI answers mention and cite your brand.
+
+## Coding agents
+
+- [Claude Code](https://claude.com/claude-code) - Coding agent in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops.
+
+## Competitor & market research
+
+- [Exa](https://exa.ai) - Web search API built for LLMs; finds companies, competitors and pages by meaning rather than keywords.
+
+## Creative strategy
+
+- [Gemini API](https://ai.google.dev) - Multimodal model API that watches video and reads images, handy for transcribing and breaking down ad creatives at scale.
+- [Proxy](https://useproxy.dev) - Live ad libraries for Meta, Google, LinkedIn and TikTok inside your AI assistant, with ad video and image analysis.
+
+## Email sending
+
+- [Resend](https://resend.com) - Email API for developers: transactional mail, broadcasts, contacts and templates written in React.
+
+## Google SEO
+
+- [Google Search Console](https://search.google.com/search-console) - Clicks, impressions, queries and indexing status for your site in Google Search, plus manual indexing requests.
 - [Semrush](https://www.semrush.com) - Keyword research, rank tracking, backlink data and competitor traffic estimates.
+
+## Launching
+
+- [Product Hunt](https://www.producthunt.com) - Launch platform and directory for new tech products; also a feed of what competitors just shipped.
+
+## Screenshots & browser automation
+
+- [Playwright](https://playwright.dev) - Scripts a real browser to screenshot landing pages, render OG images and click through funnels.
+
+## TikTok, Instagram & YouTube data
+
+- [ScrapeCreators](https://scrapecreators.com) - One API for public posts, profiles and ad libraries across TikTok, Instagram, YouTube, LinkedIn, X and more.
 
 <!-- END CATALOG -->
 
