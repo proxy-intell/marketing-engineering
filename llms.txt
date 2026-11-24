@@ -23,8 +23,8 @@ Machine-readable source of truth: catalog.json (JSON, schema in catalog.schema.j
 
 ### Bing & AI-search indexing
 
-- [Bing Webmaster Tools](https://www.bing.com/webmasters): Search queries, index coverage and backlink reports for your site in Bing, plus URL submission. Interfaces: web, api. Pricing: free.
 - [IndexNow](https://www.indexnow.org): Open protocol that pings participating search engines (Bing, Yandex, Naver, Seznam) when a URL is published or changes. Interfaces: api. Pricing: free.
+- [Bing Webmaster Tools](https://www.bing.com/webmasters): Search queries, index coverage and backlink reports for your site in Bing, plus URL submission. Interfaces: web, api. Pricing: free.
 
 ### Coding agents
 

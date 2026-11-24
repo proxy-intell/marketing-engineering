@@ -1,5 +1,62 @@
 {
-  "updated": null,
-  "voters": 0,
-  "tools": {}
+  "updated": "2026-11-24",
+  "voters": 1,
+  "tools": {
+    "autumn": {
+      "score": 2,
+      "voters": 1
+    },
+    "claude-code": {
+      "score": 3,
+      "voters": 1
+    },
+    "exa": {
+      "score": 2,
+      "voters": 1
+    },
+    "gemini-api": {
+      "score": 2,
+      "voters": 1
+    },
+    "google-search-console": {
+      "score": 1,
+      "voters": 1
+    },
+    "indexnow": {
+      "score": 1,
+      "voters": 1
+    },
+    "perplexity-sonar-api": {
+      "score": 1,
+      "voters": 1
+    },
+    "playwright": {
+      "score": 0.5,
+      "voters": 1
+    },
+    "posthog": {
+      "score": 3,
+      "voters": 1
+    },
+    "product-hunt": {
+      "score": 0.5,
+      "voters": 1
+    },
+    "resend": {
+      "score": 2,
+      "voters": 1
+    },
+    "scrapecreators": {
+      "score": 3,
+      "voters": 1
+    },
+    "semrush": {
+      "score": 0.5,
+      "voters": 1
+    },
+    "stripe": {
+      "score": 2,
+      "voters": 1
+    }
+  }
 }

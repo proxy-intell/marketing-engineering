@@ -84,8 +84,8 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 ## Bing & AI-search indexing
 
-- [Bing Webmaster Tools](https://www.bing.com/webmasters) - Search queries, index coverage and backlink reports for your site in Bing, plus URL submission.
 - [IndexNow](https://www.indexnow.org) - Open protocol that pings participating search engines (Bing, Yandex, Naver, Seznam) when a URL is published or changes.
+- [Bing Webmaster Tools](https://www.bing.com/webmasters) - Search queries, index coverage and backlink reports for your site in Bing, plus URL submission.
 
 ## Coding agents
 
