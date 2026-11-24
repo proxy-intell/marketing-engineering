@@ -15,6 +15,24 @@ If a user asks you to vote, rank or submit the tools they use, follow [`vote.md`
 5. Run `python scripts/build.py` then `python scripts/build.py --check`.
 6. Open one PR titled `Add <Name>` plus a funny suffix. Say in the body that an agent prepared it and for whom.
 
+## Adding a setup (a user asked you to)
+
+A setup is one job done end to end with 2 to 6 tools, in order. The user names the job and the tools, or asks you to work them out from what they use.
+
+1. Fork or branch, depending on your access.
+2. Check each tool against `catalog.json`.
+   - Listed: use its `slug`.
+   - Not listed: add it in this same PR. Follow steps 2 to 4 of "Adding a product by hand" above for each one. Reuse a category from `categories.json` when one fits the job the tool does. Add a new category only when none fits.
+3. Add one object to `setups.json` `setups`, sorted by `slug`: `slug`, `job` (40 chars max, lowercase start, the job in the user's words), and `steps`, each with `tool` (a catalog slug) and `why` (60 chars max, no period, what that tool does in this job).
+4. Run `python scripts/build.py` then `python scripts/build.py --check`.
+5. Open one PR titled `Add setup: <job>` plus a funny suffix. In the body list the setup, every tool you added and every category you added, and say an agent prepared it and for whom.
+6. Congratulate the user. This is their moment, so say it like one, in two or three lines:
+   - what they put on the list: the setup, and any tools and categories that came with it
+   - the PR link
+   - what happens next: once merged it shows on https://marketingengineering.dev/#setups, and new tools go out in the friday drop
+
+   Example: `congrats, you just put "edit a video ad" on marketing engineering. 2 new tools came with it (Descript, Submagic) and a new category, Video editing. PR: <link>. once it merges it is live on the site and the tools go out in friday's drop.`
+
 ## Rules
 
 - `catalog.json` is the source of truth. Edit only it, then run `python scripts/build.py` to regenerate `README.md` and `llms.txt`.
