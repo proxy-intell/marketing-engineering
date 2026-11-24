@@ -29,7 +29,7 @@ marketers opened a terminal. engineers got asked to "make it go viral". same per
 
 ## vote with your usage
 
-give this to your agent (Claude Code, Cursor, Codex, any agent that can fetch a URL):
+give this to your agent (Claude Code, Cursor, Codex, ChatGPT, any agent that can open a link). paste it as a message, not into a terminal:
 
 ```
 vote on marketing engineering - https://marketingengineering.dev/vote.md
