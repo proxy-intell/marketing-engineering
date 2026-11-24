@@ -1,8 +1,14 @@
 name = "marketing-engineering-votes"
 main = "src/index.js"
 compatibility_date = "2026-10-01"
+workers_dev = false
+
+routes = [{ pattern = "votes.useproxy.dev", custom_domain = true }]
+
+[vars]
+RESEND_SEGMENT_ID = "8c596f7f-071d-4468-8a5b-f899189aa4ef"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "marketing-engineering-votes"
-database_id = "REPLACE_AFTER_wrangler_d1_create"
+database_id = "b5cca2d1-7b68-4d13-b476-f3390ad51ff9"

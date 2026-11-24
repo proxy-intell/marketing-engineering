@@ -29,8 +29,8 @@ npx wrangler deploy
 
 Then:
 
-1. Add a custom domain or use the `*.workers.dev` URL.
-2. Replace `{{VOTE_URL}}` in [`../vote.md`](../vote.md) with it.
+1. Live at `https://votes.useproxy.dev` (custom domain in `wrangler.toml`, `workers_dev` off). Change the domain there.
+2. The URL is written into [`../vote.md`](../vote.md).
 3. Set the repo variable `VOTES_URL` (Settings → Secrets and variables → Actions → Variables) so `sync-votes.yml` runs.
 
 Emails live in D1 `subscribers` (source of truth) and are pushed to Resend best effort. Export: `npx wrangler d1 execute marketing-engineering-votes --remote --command "SELECT email FROM subscribers"`.

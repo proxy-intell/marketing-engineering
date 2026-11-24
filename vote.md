@@ -75,9 +75,7 @@ Read `~/.config/marketing-engineering/install_id`. If missing, create the direct
 
 ### 8. Send
 
-If the URL below still contains `{{`, voting is not live yet. Tell the user it opens soon, send nothing, and stop.
-
-`POST {{VOTE_URL}}/v1/vote` with `Content-Type: application/json`:
+`POST https://votes.useproxy.dev/v1/vote` with `Content-Type: application/json`:
 
 ```json
 {
