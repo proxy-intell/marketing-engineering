@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 CATALOG = Path(__file__).resolve().parent.parent / "catalog.json"
+CATEGORIES = CATALOG.with_name("categories.json")
 INTERFACES = {"MCP server": "mcp", "API": "api", "CLI": "cli", "SDK": "sdk", "Plugin": "plugin", "Web app": "web"}
 
 sections = dict(re.findall(r"^### (.+?)\s*\n+(.*?)(?=\n### |\Z)", os.environ["ISSUE_BODY"], re.S | re.M))
@@ -42,5 +43,8 @@ catalog = json.loads(CATALOG.read_text())
 if any(p["slug"] == entry["slug"] for p in catalog["products"]):
     sys.exit(f"{entry['slug']} is already listed.")
 catalog["products"] = sorted(catalog["products"] + [entry], key=lambda p: p["slug"])
+categories = json.loads(CATEGORIES.read_text())
+if category not in categories:  # new category: build.py --check then enforces the naming rule, a maintainer reviews the PR
+    CATEGORIES.write_text(json.dumps(sorted(categories + [category], key=str.lower), indent=2, ensure_ascii=False) + "\n")
 CATALOG.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")
 print(entry["slug"])

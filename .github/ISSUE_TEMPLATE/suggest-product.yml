@@ -53,7 +53,7 @@ body:
     id: new_category
     attributes:
       label: New category name
-      description: Only if you picked "Something new".
+      description: Only if you picked "Something new". Name the job people do or the platform they do it on, like "Creative strategy" or "Google SEO". Not a vague label like "Ad intelligence" or "Tools".
   - type: checkboxes
     id: interfaces
     attributes:

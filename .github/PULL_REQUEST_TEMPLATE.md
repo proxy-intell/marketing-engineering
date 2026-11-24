@@ -12,7 +12,8 @@
 - [ ] One product in this PR.
 - [ ] PR title is `Add <Name>`.
 - [ ] Entry added to `catalog.json`, sorted by `slug`.
-- [ ] Ran `python scripts/build.py` (README.md + llms.txt regenerated).
+- [ ] Category is one from `categories.json`. New category? Added to `categories.json`, and it names the job or platform (see CONTRIBUTING.md#categories).
+- [ ] Ran `python scripts/build.py` (README.md, llms.txt and the issue form regenerated).
 - [ ] Description: one sentence, ≤160 chars, ends with a period, no hype words.
 - [ ] URL is canonical, no tracking params.
 - [ ] Searched existing entries and open PRs for duplicates.

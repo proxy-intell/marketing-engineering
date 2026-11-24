@@ -1,4 +1,4 @@
-"""Generate README.md and llms.txt product sections from catalog.json.
+"""Generate README.md, llms.txt and the issue-form category dropdown from catalog.json + categories.json.
 
 Usage: python scripts/build.py          # write
        python scripts/build.py --check  # exit 1 if files are stale or catalog is unsorted
@@ -10,6 +10,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BEGIN, END = "<!-- BEGIN CATALOG -->", "<!-- END CATALOG -->"
+FORM = ROOT / ".github/ISSUE_TEMPLATE/suggest-product.yml"
+# Category names the job someone does or the platform they do it on. These words mark a vague label.
+VAGUE = {"intelligence", "tools", "tooling", "platform", "platforms", "solutions", "misc", "miscellaneous", "other", "general", "stuff", "management", "utilities"}
 
 
 def anchor(text):
@@ -63,7 +66,25 @@ def main():
     if len(slugs) != len(set(slugs)):
         errors.append("catalog.json has duplicate slugs")
 
+    categories = json.loads((ROOT / "categories.json").read_text())
+    if categories != sorted(categories, key=str.lower):
+        errors.append("categories.json must be sorted A-Z")
+    for c in categories:
+        if VAGUE & set(re.findall(r"[a-z]+", c.lower())) or len(c) > 40:
+            errors.append(f"Category '{c}': name the job people do or the platform they do it on (e.g. 'Creative strategy', 'Google SEO'), not a vague label. See CONTRIBUTING.md#categories")
+    for p in products:
+        if p["category"] not in categories:
+            errors.append(f"{p['slug']}: category '{p['category']}' is not in categories.json. Reuse one, or add yours there following CONTRIBUTING.md#categories")
+
     groups = by_category(products)
+    form = FORM.read_text()
+    options = "      options:\n" + "".join(f"        - {c}\n" for c in categories) + "        - Something new (say below)\n"
+    new_form = re.sub(r"      options:\n(?:        - .*\n)*?        - Something new \(say below\)\n", lambda _: options, form)
+    if new_form != form:
+        if check:
+            errors.append("Issue form categories are stale: run python scripts/build.py")
+        else:
+            FORM.write_text(new_form)
     for name, block in (("README.md", readme_block(groups)), ("llms.txt", llms_block(groups))):
         path = ROOT / name
         new = splice(path, block)

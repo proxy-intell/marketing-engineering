@@ -40,7 +40,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add catalog.json README.md llms.txt
+          git add catalog.json categories.json README.md llms.txt .github/ISSUE_TEMPLATE/suggest-product.yml
           git commit -m "Add $name"
           git push -u origin "$branch"
           url=$(gh pr create --title "Add $name (fresh off the feed)" --body "Closes #$ISSUE. Generated from the suggestion form." --head "$branch")

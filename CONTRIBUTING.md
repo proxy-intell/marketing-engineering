@@ -13,12 +13,21 @@ No JSON wanted? [Suggest it with the form](https://github.com/proxy-intell/marke
 
 1. One product per PR. Title starts with `Add <Name>`; a funny suffix is welcome.
 2. Add an object to `catalog.json` `products` (fields in `catalog.schema.json`). Keep the array sorted by `slug`.
-3. Run `python scripts/build.py` — regenerates `README.md` and `llms.txt`. Don't hand-edit between the `CATALOG` markers.
+3. Run `python scripts/build.py` — regenerates `README.md`, `llms.txt` and the issue form. Don't hand-edit between the `CATALOG` markers.
 4. CI validates the schema, checks the generated files are current, and checks links.
 
 ## Categories
 
-Reuse an existing `category` where possible. A new one appears automatically once an entry uses it.
+Pick one from [`categories.json`](categories.json). CI fails on anything else.
+
+**Name the job people do, or the platform they do it on.**
+
+- Good: `Creative strategy`, `Google SEO`, `TikTok, Instagram & YouTube data`, `Email sending`, `Billing, credits & paywalls`.
+- Bad: `Ad intelligence`, `Tools`, `AI platforms`, `Marketing solutions`, `Other`.
+- Platform-specific beats generic: `Meta ads` over `Social ads`. One platform per name where you can; list several only when the tool really spans them.
+- Sentence case, ≤40 characters, and none of: intelligence, tools, platform(s), solutions, misc, other, general, management, utilities.
+
+Need a new one? Add it to `categories.json` (A-Z) in the same PR and say why no existing one fits. CI checks the rule and a maintainer approves the name.
 
 ## Description style
 
