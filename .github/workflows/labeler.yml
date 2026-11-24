@@ -1,0 +1,15 @@
+name: Label PRs
+
+# Labels by the files a PR touches (.github/labeler.yml). Reads the file list only, never the PR's code.
+
+on: [pull_request_target]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v5

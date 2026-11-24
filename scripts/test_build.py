@@ -35,5 +35,24 @@ class Setups(unittest.TestCase):
     def test_kind_tag_data_needs_no_install(self):
         self.assertEqual(build.kind_tag({"kind": "data"}), " · data")
 
+
+
+class Generated(unittest.TestCase):
+    def test_setup_skill_points_at_the_site_and_names_the_tools(self):
+        text = build.setup_skill(OK[0], P)
+        self.assertTrue(text.startswith("---\nname: setup-s\ndescription: Set up the tools to do a thing (A, B)"))
+        self.assertIn("https://marketingengineering.dev/setups/s.md", text)
+
+    def test_changelog_is_newest_first_and_a_z_within_a_day(self):
+        products = [
+            {"name": "Zed", "url": "https://z.dev", "category": "C", "added": "2026-01-01"},
+            {"name": "beta", "url": "https://b.dev", "category": "C", "added": "2026-02-01"},
+            {"name": "Alpha", "url": "https://a.dev", "category": "D", "added": "2026-02-01"},
+        ]
+        body = build.changelog(products)
+        self.assertLess(body.index("## 2026-02-01"), body.index("## 2026-01-01"))
+        self.assertLess(body.index("[Alpha]"), body.index("[beta]"))
+        self.assertIn("- Added [Zed](https://z.dev) to C.", body)
+
 if __name__ == "__main__":
     unittest.main()

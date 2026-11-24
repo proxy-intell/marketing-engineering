@@ -41,7 +41,7 @@ it checks which of these tools you actually use, shows you exactly what it will 
 
 only tool names and usage ratings leave your machine. never code, paths, keys or prompts. [how voting works](docs/how-voting-works.md)
 
-want it permanent? `npx skills add proxy-intell/marketing-engineering` installs it as a skill for Claude Code, Cursor, Codex, Copilot and other agents. [more ways](docs/install.md)
+want it permanent? `npx skills add proxy-intell/marketing-engineering` installs the skills for Claude Code, Cursor, Codex, Copilot and other agents: vote, find a tool for a job ("what should i use for X?"), and one per setup. [more ways](docs/install.md)
 
 every entry says what it does and how you plug in: MCP server, API, CLI, SDK, plugin, skill or web app. skills and plugins for coding agents are listed too, with an install line. agents can skip the prose and read [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json), remote MCP URLs included
 

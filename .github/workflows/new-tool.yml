@@ -1,0 +1,33 @@
+name: New tool
+
+# One small release per tool added to catalog.json, so watchers hear about it the day it lands.
+# The Friday drop (weekly-drop.yml) still rounds the week up and sends the email.
+
+on:
+  push:
+    branches: [main]
+    paths: [catalog.json]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Release each tool this push added
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          git cat-file -e "$BEFORE:catalog.json" 2>/dev/null || exit 0
+          git show "$BEFORE:catalog.json" | jq -r '.products[].slug' > "$RUNNER_TEMP/old"
+          jq -c '.products[]' catalog.json | while read -r p; do
+            slug=$(jq -r .slug <<<"$p")
+            if grep -qxF "$slug" "$RUNNER_TEMP/old" || gh release view "new-$slug" >/dev/null 2>&1; then continue; fi
+            notes=$(jq -r '"**[\(.name)](\(.url))** · \(.category) · \(.description)\n\nUse it? Tell your agent: `vote on marketing engineering - https://marketingengineering.dev/vote.md`"' <<<"$p")
+            gh release create "new-$slug" --title "New: $(jq -r .name <<<"$p")" --notes "$notes"
+          done

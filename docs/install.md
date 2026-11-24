@@ -1,6 +1,12 @@
-# Install the vote skill
+# Install the skills
 
-The command in the README works with no install. These make it permanent, so you can say "vote on marketing engineering" any time.
+The command in the README works with no install. These make it permanent.
+
+| Skill | Say |
+|---|---|
+| `vote-marketing-engineering` | "vote on marketing engineering" |
+| `find-marketing-tool` | "what should I use for backlinks?" |
+| `setup-<job>`, one per [setup](../setups.json) | "set me up to get cited in AI search" |
 
 | Agent | How | Tested |
 |---|---|---|
@@ -16,9 +22,10 @@ The Cursor, Codex and Copilot manifests follow the layout [treg](https://github.
 
 ## How it's built
 
-One source, [`vote.md`](../vote.md). `python scripts/build.py` copies it into every package and CI fails if a copy is stale:
+`python scripts/build.py` writes every skill into every package, and CI fails if a copy is stale:
 
-- `skills/vote-marketing-engineering/` for `npx skills add`
-- `plugins/marketing-engineering/` for Claude Code and Cursor
-- `plugins/codex/` for Codex
-- `plugins/copilot/` for Copilot
+- [`vote.md`](../vote.md) is the vote skill.
+- [`skills/find-marketing-tool/SKILL.md`](../skills/find-marketing-tool/SKILL.md) is written by hand.
+- `setup-<slug>` skills are generated from [`setups.json`](../setups.json). Each one points at its page on the site, so the steps never go stale.
+
+Packages: `skills/` for `npx skills add` (grouped on skills.sh by [`skills.sh.json`](../skills.sh.json)), `plugins/marketing-engineering/` for Claude Code and Cursor, `plugins/codex/` for Codex, `plugins/copilot/` for Copilot.
