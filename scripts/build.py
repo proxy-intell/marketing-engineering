@@ -1,4 +1,5 @@
-"""Generate README.md, llms.txt and the issue-form category dropdown from catalog.json + categories.json.
+"""Generate README.md, llms.txt and the issue-form category dropdown from catalog.json + categories.json + votes.json.
+Within a category, tools rank by vote score (votes.json), then A-Z. "used by N" shows at 3+ voters.
 
 Usage: python scripts/build.py          # write
        python scripts/build.py --check  # exit 1 if files are stale or catalog is unsorted
@@ -19,31 +20,40 @@ def anchor(text):
     return re.sub(r"[^a-z0-9 -]", "", text.lower()).replace(" ", "-")
 
 
-def by_category(products):
+MIN_VOTERS = 3
+
+
+def by_category(products, votes):
     groups = {}
-    for p in sorted(products, key=lambda p: p["name"].lower()):
+    for p in sorted(products, key=lambda p: (-votes.get(p["slug"], {}).get("score", 0), p["name"].lower())):
         groups.setdefault(p["category"], []).append(p)
     return dict(sorted(groups.items(), key=lambda kv: kv[0].lower()))
 
 
-def readme_block(groups):
+def used_by(p, votes):
+    n = votes.get(p["slug"], {}).get("voters", 0)
+    return n if n >= MIN_VOTERS else 0
+
+
+def readme_block(groups, votes):
     if not groups:
         return "_No entries yet._"
     toc = "\n".join(f"- [{c}](#{anchor(c)})" for c in groups)
     sections = "\n\n".join(
-        f"## {c}\n\n" + "\n".join(f"- [{p['name']}]({p['url']}) - {p['description']}" for p in ps)
+        f"## {c}\n\n" + "\n".join(f"- [{p['name']}]({p['url']}) - {p['description']}" + (f" · used by {used_by(p, votes)}" if used_by(p, votes) else "") for p in ps)
         for c, ps in groups.items()
     )
     return f"## Contents\n\n{toc}\n\n{sections}"
 
 
-def llms_block(groups):
+def llms_block(groups, votes):
     if not groups:
         return "_No entries yet._"
     return "\n\n".join(
         f"### {c}\n\n" + "\n".join(
             f"- [{p['name']}]({p['url']}): {p['description']} Interfaces: {', '.join(p['interfaces'])}. Pricing: {p['pricing']}."
             + (f" MCP: {p['mcp_url']}." if p.get("mcp_url") else "")
+            + (f" Used by {used_by(p, votes)} agents." if used_by(p, votes) else "")
             for p in ps
         )
         for c, ps in groups.items()
@@ -76,7 +86,8 @@ def main():
         if p["category"] not in categories:
             errors.append(f"{p['slug']}: category '{p['category']}' is not in categories.json. Reuse one, or add yours there following CONTRIBUTING.md#categories")
 
-    groups = by_category(products)
+    votes = json.loads((ROOT / "votes.json").read_text())["tools"] if (ROOT / "votes.json").exists() else {}
+    groups = by_category(products, votes)
     form = FORM.read_text()
     options = "      options:\n" + "".join(f"        - {c}\n" for c in categories) + "        - Something new (say below)\n"
     new_form = re.sub(r"      options:\n(?:        - .*\n)*?        - Something new \(say below\)\n", lambda _: options, form)
@@ -85,7 +96,7 @@ def main():
             errors.append("Issue form categories are stale: run python scripts/build.py")
         else:
             FORM.write_text(new_form)
-    for name, block in (("README.md", readme_block(groups)), ("llms.txt", llms_block(groups))):
+    for name, block in (("README.md", readme_block(groups, votes)), ("llms.txt", llms_block(groups, votes))):
         path = ROOT / name
         new = splice(path, block)
         if new == path.read_text():

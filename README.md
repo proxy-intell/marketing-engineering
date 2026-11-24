@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/header.png" alt="Your agent votes, you just scroll. Claude scans your setup, votes for the marketing tools you really use, and asks if you want the Friday drop." width="100%">
+</p>
+
 <h1 align="center">Marketing Engineering</h1>
 
 <p align="center">
@@ -5,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/screen%20time-research-111111?style=flat-square" alt="Screen time: research">
+  <img src="https://img.shields.io/badge/ranked%20by-real%20usage-111111?style=flat-square" alt="Ranked by real usage">
   <img src="https://img.shields.io/badge/meetings-0-111111?style=flat-square" alt="Meetings: 0">
   <img src="https://img.shields.io/badge/for-humans%20%2B%20agents-111111?style=flat-square" alt="For humans and agents">
   <a href="llms.txt"><img src="https://img.shields.io/badge/llms.txt-ready-111111?style=flat-square" alt="llms.txt"></a>
@@ -13,14 +17,36 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/proxy-intell/marketing-engineering/issues/new?template=suggest-product.yml"><b>➕ Suggest a tool</b></a> ·
-  <a href="#ask-your-agent"><b>🤖 Ask your agent to add one</b></a> ·
-  <a href="https://github.com/proxy-intell/marketing-engineering/releases"><b>📦 Friday drops</b></a>
+  <a href="#vote-with-your-usage"><b>🗳️ Vote with your usage</b></a> ·
+  <a href="https://github.com/proxy-intell/marketing-engineering/releases"><b>📦 Friday drops</b></a> ·
+  <a href="#no-agent-handy"><b>➕ Suggest by hand</b></a>
 </p>
 
 > tools for running marketing like software: ads, SEO and AEO, organic social, analytics, email, billing and the AI agents that drive them
 
 marketers opened a terminal. engineers got asked to "make it go viral". same person now. this is their toolbox
+
+## vote with your usage
+
+this list ranks tools by what people actually run, not what they say they like. your agent does the voting, no form
+
+1. **paste this into Claude Code, Cursor, Codex or any agent**
+
+   ```
+   Read https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/vote.md and follow it.
+   ```
+
+2. **it checks what you really use.** MCP servers, dependencies, CLIs, what it called this week. it shows you exactly what it will send and waits for a yes
+3. **it asks once if you want the friday drop.** give an email or say no. the vote counts either way
+4. **the list moves.** tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 agents use them
+
+claude code user? install it as a skill, then say "vote on marketing engineering":
+
+```
+mkdir -p ~/.claude/skills/vote-marketing-engineering && curl -sL https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/vote.md -o ~/.claude/skills/vote-marketing-engineering/SKILL.md
+```
+
+only tool names and usage ratings leave your machine. never code, paths, keys or prompts. [how voting works](docs/how-voting-works.md)
 
 every entry says what it does and how you plug in: MCP server, API, CLI, SDK, plugin or web app. agents can skip the prose and read [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json), remote MCP URLs included
 
@@ -97,12 +123,10 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 <!-- END CATALOG -->
 
-## Contributing
-
-three ways in, laziest first
+## no agent handy?
 
 1. **[fill the form](https://github.com/proxy-intell/marketing-engineering/issues/new?template=suggest-product.yml).** once a maintainer labels it `approved`, a bot opens the PR
-2. <a id="ask-your-agent"></a>**ask your agent.** paste this into Claude Code, Cursor or any agent with GitHub access
+2. **ask your agent to add one.** paste this into any agent with GitHub access
 
    ```
    Add <tool URL> to github.com/proxy-intell/marketing-engineering. Follow AGENTS.md and open a PR.
@@ -110,4 +134,4 @@ three ways in, laziest first
 
 3. **open a PR yourself.** edit `catalog.json`, run `python scripts/build.py`. details in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-listed? grab the [badge](CONTRIBUTING.md#listed-add-the-badge) [![Featured on Marketing Engineering](https://img.shields.io/badge/featured%20on-Marketing%20Engineering-111111?style=flat-square)](https://github.com/proxy-intell/marketing-engineering)
+listed? grab the [badge](CONTRIBUTING.md#listed-add-the-badge): [![Featured on Marketing Engineering](https://img.shields.io/badge/featured%20on-Marketing%20Engineering-111111?style=flat-square)](https://github.com/proxy-intell/marketing-engineering)

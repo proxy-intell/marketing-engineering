@@ -2,7 +2,11 @@
 
 Instructions for AI agents maintaining or reading this repo.
 
-## Adding a product (a user asked you to)
+## Voting (the primary path)
+
+If a user asks you to vote, rank or submit the tools they use, follow [`vote.md`](vote.md). Do not edit `catalog.json` for that. `votes.json` is generated daily by `.github/workflows/sync-votes.yml`: never hand-edit it. Scoring: [`docs/how-voting-works.md`](docs/how-voting-works.md).
+
+## Adding a product by hand (a user asked you to)
 
 1. Fork or branch, depending on your access.
 2. Open the product's site and docs. Confirm it is live, has docs, and isn't already in `catalog.json`.

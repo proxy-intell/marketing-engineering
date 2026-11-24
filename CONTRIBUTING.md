@@ -1,5 +1,7 @@
 # Contributing
 
+**Best way in: vote with your usage.** Paste [`vote.md`](vote.md) into your agent. It reports which listed tools you really use, proposes ones we lack, and ranks the list. See [how voting works](docs/how-voting-works.md). The routes below are for adding a tool by hand.
+
 No JSON wanted? [Suggest it with the form](https://github.com/proxy-intell/marketing-engineering/issues/new?template=suggest-product.yml) and a bot opens the PR once it's approved. Or ask your agent: `Add <tool URL> to github.com/proxy-intell/marketing-engineering. Follow AGENTS.md and open a PR.`
 
 ## Bar for inclusion

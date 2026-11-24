@@ -21,6 +21,8 @@ url = field("URL")
 category = field("Category")
 if category.startswith("Something new"):
     category = field("New category name")
+if field("Pricing") not in ("free", "freemium", "paid", "open-source"):
+    sys.exit("Set Pricing (free, freemium, paid or open-source) in the issue, then re-label approved.")
 if not (name and url.startswith("https://") and category):
     sys.exit("Need a name, an https:// URL and a category.")
 
