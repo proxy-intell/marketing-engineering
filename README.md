@@ -1,8 +1,8 @@
+<h1 align="center">Marketing Engineering</h1>
+
 <p align="center">
   <img src="assets/header.png" alt="Your agent votes, you just scroll. Claude scans your setup, votes for the marketing tools you really use, and asks if you want the Friday drop." width="100%">
 </p>
-
-<h1 align="center">Marketing Engineering</h1>
 
 <p align="center">
   <em>one thumb doomscrolling. one hand clauding. campaign shipped somehow</em>
