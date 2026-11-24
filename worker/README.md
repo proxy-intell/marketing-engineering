@@ -29,7 +29,7 @@ npx wrangler deploy
 
 Then:
 
-1. Live at `https://marketingengineering.dev` (custom domain in `wrangler.toml`, `workers_dev` off). `votes.useproxy.dev` still serves, for old links and installed copies. Any other host (www, other TLDs) redirects to the canonical domain.
+1. Live at `https://marketingengineering.dev` (custom domain in `wrangler.toml`, `workers_dev` off). Any other host (www, other TLDs) redirects to it.
 2. The URL is written into [`../vote.md`](../vote.md).
 3. Set the repo variable `VOTES_URL` (Settings → Secrets and variables → Actions → Variables) so `sync-votes.yml` runs.
 
@@ -43,6 +43,6 @@ Emails live in D1 `subscribers` (source of truth) and are pushed to Resend best 
 |---|---|---|
 | secret | `RESEND_API_KEY` | key with access to contacts and broadcasts |
 | variable | `RESEND_SEGMENT_ID` | segment the Worker adds signups to (same id as the Worker's `RESEND_SEGMENT_ID`) |
-| variable | `RESEND_FROM` | `Marketing Engineering <drop@updates.useproxy.dev>` (a verified sending domain) |
+| variable | `RESEND_FROM` | `Marketing Engineering <drop@marketingengineering.dev>` (verified in Resend) |
 
 Review the draft in Resend on Friday and press send.
