@@ -1,0 +1,33 @@
+{
+  "name": "marketing-engineering",
+  "version": "0.1.0",
+  "description": "Vote on the Marketing Engineering tool list with what you actually use.",
+  "author": {
+    "name": "Marketing Engineering",
+    "url": "https://github.com/proxy-intell/marketing-engineering"
+  },
+  "homepage": "https://github.com/proxy-intell/marketing-engineering",
+  "repository": "https://github.com/proxy-intell/marketing-engineering",
+  "license": "CC0-1.0",
+  "keywords": [
+    "marketing",
+    "vote",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Marketing Engineering",
+    "shortDescription": "Vote on marketing tools by real usage",
+    "longDescription": "Reads which marketing tools, skills and plugins you really use (names only), shows exactly what it will send, and votes only after you say yes.",
+    "developerName": "Marketing Engineering",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/proxy-intell/marketing-engineering",
+    "defaultPrompt": [
+      "vote on marketing engineering"
+    ]
+  }
+}

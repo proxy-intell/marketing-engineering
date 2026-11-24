@@ -1,6 +1,6 @@
 ---
 name: vote-marketing-engineering
-description: Vote on the Marketing Engineering tool list using what the user actually uses. Use when the user asks to vote, rank, submit or add marketing tools to proxy-intell/marketing-engineering, or pastes the vote.md link.
+description: Vote on the Marketing Engineering tool list using what the user actually uses. Use when the user asks to vote, rank, submit or add marketing tools, skills or plugins to proxy-intell/marketing-engineering, or pastes the vote.md link.
 ---
 
 # Vote on Marketing Engineering with real usage

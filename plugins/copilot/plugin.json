@@ -1,0 +1,18 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "marketing-engineering",
+  "version": "0.1.0",
+  "description": "Vote on the Marketing Engineering tool list with what you actually use.",
+  "author": {
+    "name": "Marketing Engineering",
+    "url": "https://github.com/proxy-intell/marketing-engineering"
+  },
+  "homepage": "https://github.com/proxy-intell/marketing-engineering",
+  "repository": "https://github.com/proxy-intell/marketing-engineering/tree/main/plugins/copilot",
+  "license": "CC0-1.0",
+  "keywords": [
+    "marketing",
+    "vote",
+    "skills"
+  ]
+}
