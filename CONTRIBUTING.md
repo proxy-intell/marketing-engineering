@@ -20,7 +20,7 @@ No JSON wanted? Ask your agent: `Add <tool URL> to github.com/proxy-intell/marke
 
 ## Add a setup
 
-A setup is one job done with 2 to 6 listed tools. Edit `setups.json` (sorted by `slug`), use only slugs already in `catalog.json`, give each step a short `why`, then run `python scripts/build.py`. Don't hand-edit between the `SETUPS` markers.
+A setup is one job done with 2 to 6 tools. Edit `setups.json` (sorted by `slug`) and give each step a short `why`. A tool that isn't in `catalog.json` yet gets added in the same PR, in an existing category when one fits and a new one when none does. Then run `python scripts/build.py`. Don't hand-edit between the `SETUPS` markers. Agents: follow [AGENTS.md](AGENTS.md#adding-a-setup-a-user-asked-you-to).
 
 ## Skills and plugins
 
@@ -41,7 +41,7 @@ Pick one from [`categories.json`](categories.json). CI fails on anything else.
 
 **Name the job people do, or the platform they do it on.**
 
-- Good: `Creative strategy`, `Google SEO`, `TikTok, Instagram & YouTube data`, `Email sending`, `Billing, credits & paywalls`.
+- Good: `Creative strategy`, `Google SEO`, `TikTok, Instagram & YouTube data`, `Lifecycle comms`, `Billing, credits & paywalls`.
 - Bad: `Ad intelligence`, `Tools`, `AI platforms`, `Marketing solutions`, `Other`.
 - Platform-specific beats generic: `Meta ads` over `Social ads`. One platform per name where you can; list several only when the tool really spans them.
 - Sentence case, ≤40 characters, and none of: intelligence, tools, platform(s), solutions, misc, other, general, management, utilities.

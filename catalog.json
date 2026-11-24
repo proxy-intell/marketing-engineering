@@ -229,7 +229,7 @@
       "name": "Resend",
       "url": "https://resend.com",
       "description": "Email API for transactional and marketing email. React templates, contacts, broadcasts and webhooks.",
-      "category": "Email sending",
+      "category": "Lifecycle comms",
       "interfaces": [
         "api",
         "sdk",
@@ -265,8 +265,8 @@
       "slug": "semrush",
       "name": "Semrush",
       "url": "https://www.semrush.com",
-      "description": "Keyword research, rank tracking, backlink data and competitor traffic estimates.",
-      "category": "Google SEO",
+      "description": "Tracks how a brand shows up in AI search answers, alongside keyword research, rank tracking and backlink data.",
+      "category": "AI search visibility (AEO)",
       "interfaces": [
         "web",
         "api"
