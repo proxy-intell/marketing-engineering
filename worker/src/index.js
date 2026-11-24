@@ -1,4 +1,5 @@
-import { validateVote, score, EMAIL } from "./votes.js";
+import { validateVote, score, matchSetups, EMAIL } from "./votes.js";
+import { validSetups, renderSetupMd } from "./setups.js";
 import { BADGE_SVG } from "./badge.js";
 import { renderLeaderboard } from "./leaderboard.js";
 
@@ -26,7 +27,7 @@ export default {
     if (request.method === "GET" && pathname === "/v1/scores") {
       const { results } = await env.DB.prepare("SELECT updated_at, payload FROM votes").all();
       const rows = results.map((r) => ({ updated_at: r.updated_at, payload: JSON.parse(r.payload) }));
-      return json(score(rows), 200, { "cache-control": "public, max-age=300" });
+      return json(score(rows, Date.now(), await loadSetups()), 200, { "cache-control": "public, max-age=300" });
     }
 
     if (request.method === "POST" && pathname === "/v1/vote") {
@@ -71,7 +72,16 @@ export default {
         ctx.waitUntil(addToResend(env, vote.email));
       }
 
-      return json({ ok: true, counted: { tools: vote.tools.length, proposals: vote.proposals.length }, subscribed: vote.weekly_drop });
+      // The vote is stored by now. A setups lookup failure only empties the list.
+      let setups = [];
+      try {
+        const matches = matchSetups(vote.tools, await loadSetups()).slice(0, 3);
+        const res = matches.length ? await fetch(`${RAW}/catalog.json`, { cf: { cacheTtl: 300, cacheEverything: true } }) : null;
+        const names = res?.ok ? Object.fromEntries((await res.json()).products.map((p) => [p.slug, p.name])) : {};
+        setups = matches.map((m) => ({ ...m, missing: m.missing.map((s) => names[s] ?? s) }));
+      } catch {}
+
+      return json({ ok: true, counted: { tools: vote.tools.length, proposals: vote.proposals.length }, subscribed: vote.weekly_drop, setups });
     }
 
     // Friday drop sign-up from the site's email box. Shares the per-IP daily limit with votes.
@@ -113,6 +123,16 @@ export default {
       return fetchVoteMd();
     }
 
+    // One setup as agent-readable markdown
+    const setupMatch = (request.method === "GET" || request.method === "HEAD") && pathname.match(/^\/setups\/([a-z0-9-]{1,40})\.md$/);
+    if (setupMatch) {
+      const catalogRes = await fetch(`${RAW}/catalog.json`, { cf: { cacheTtl: 300, cacheEverything: true } });
+      if (!catalogRes.ok) return json({ error: "catalog unavailable" }, 502);
+      const { products } = await catalogRes.json();
+      const setup = (await loadSetups(new Set(products.map((p) => p.slug)))).find((s) => s.slug === setupMatch[1]);
+      if (setup) return new Response(renderSetupMd(setup, products), { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" } });
+    }
+
     // Public scoreboard
     if (request.method === "GET" && (pathname === "/" || pathname === "/leaderboard")) {
       const [catalogRes, { results }] = await Promise.all([
@@ -121,13 +141,24 @@ export default {
       ]);
       if (!catalogRes.ok) return json({ error: "catalog unavailable" }, 502);
       const { products } = await catalogRes.json();
-      const scores = score(results.map((r) => ({ updated_at: r.updated_at, payload: JSON.parse(r.payload) })));
-      return new Response(renderLeaderboard(products, scores), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
+      const setups = await loadSetups(new Set(products.map((p) => p.slug)));
+      const scores = score(results.map((r) => ({ updated_at: r.updated_at, payload: JSON.parse(r.payload) })), Date.now(), setups);
+      return new Response(renderLeaderboard(products, scores, setups), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
     }
 
     return json({ error: "not found" }, 404);
   },
 };
+
+// Never throws: a missing or broken setups.json means no setups, not a broken Worker.
+async function loadSetups(slugs = null) {
+  try {
+    const res = await fetch(`${RAW}/setups.json`, { cf: { cacheTtl: 300, cacheEverything: true } });
+    return res.ok ? validSetups(await res.json(), slugs) : [];
+  } catch {
+    return [];
+  }
+}
 
 // Best effort. The subscribers table is the source of truth if Resend is down.
 async function addToResend(env, email) {
