@@ -122,7 +122,7 @@ Responses: `200 {"ok":true,"counted":{"tools":N,"proposals":M},"subscribed":true
 
 Tell the user in two lines what was counted and where they stand. If `new`, say "You're voter #V". Otherwise say "Vote updated, V voters so far". Name the tools in `ranks` by their catalog name, for example "PostHog is #2 overall". Link the live ranking: https://marketingengineering.dev. Suggest voting again in a month, since usage changes and old votes expire after 90 days.
 
-Then ask once, as a yes or no: "Want to star the repo? Stars are how the list gets found, and people who follow you on GitHub can see it." Only on a yes, and only if `gh` is signed in, run `gh api -X PUT user/starred/proxy-intell/marketing-engineering`. Otherwise share https://github.com/proxy-intell/marketing-engineering.
+Then ask once, as a yes or no: "Stars are how other marketers find this list. Star it? ⭐" Only on a yes, and only if `gh` is signed in, run `gh api -X PUT user/starred/proxy-intell/marketing-engineering`. Otherwise share https://github.com/proxy-intell/marketing-engineering.
 
 ### 10. Put the stack on GitHub (optional)
 
