@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # tags, for votes.json at the last drop
       - name: Release notes, plus an email draft in Resend
         env:
           GH_TOKEN: ${{ github.token }}
@@ -24,7 +26,8 @@ jobs:
           since=${since:-1970-01-01}
           flags=""
           if [ -n "$RESEND_API_KEY" ] && [ -n "$RESEND_SEGMENT_ID" ] && [ -n "$RESEND_FROM" ]; then flags="--resend"; fi
-          notes=$(python scripts/drop.py "$since" $flags)
+          git show "drop-$since:votes.json" > "$RUNNER_TEMP/prev-votes.json" 2>/dev/null || rm -f "$RUNNER_TEMP/prev-votes.json"
+          notes=$(python scripts/drop.py "$since" --prev-votes "$RUNNER_TEMP/prev-votes.json" $flags)
           if [ -z "$notes" ]; then echo "Nothing new since $since"; exit 0; fi
           today=$(date -u +%F)
           gh release create "drop-$today" --title "Weekly drop · $today" --notes "$notes"

@@ -62,14 +62,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .nav a:hover { color: var(--cobalt) }
 .nav .live { color: var(--cobalt); font-weight: 700 }
 .hero { position: relative; overflow: hidden; padding: clamp(28px, 6vw, 72px) 0 clamp(36px, 6vw, 72px); display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px }
-.hero > .comp { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); z-index: 0; line-height: 0 }
+.hero > .comp { grid-column: 8 / -1; grid-row: 1; align-self: center; z-index: 0; line-height: 0 }
+.hero > .comp svg { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2 }
 .hero .shape2 { position: absolute; width: 180px; height: 180px; background: var(--orange); left: -90px; bottom: 32px; border-radius: 0 100% 0 0; z-index: 0 }
 .hero > * { position: relative; z-index: 1 }
-.h-left { grid-column: 1 / span 8; display: flex; flex-direction: column; gap: 22px; min-width: 0 }
+.h-left { grid-column: 1 / span 8; grid-row: 1; display: flex; flex-direction: column; gap: clamp(20px, 2.2vw, 28px); min-width: 0 }
 .h-right { grid-column: 8 / span 5; min-width: 0 }
 h1 { font: 850 clamp(3.6rem, 9.2vw, 8.6rem)/.9 var(--display); font-variation-settings: "wdth" 76; letter-spacing: -.012em; font-kerning: normal; margin: 0 }
-.lede { font: 500 clamp(1.05rem, 1.6vw, 1.3rem)/1.45 var(--body); max-width: 40ch; margin: 0 }
-.getit { max-width: 680px }
+.lede { font: 500 clamp(1.05rem, 1.6vw, 1.3rem)/1.45 var(--body); max-width: 40ch; margin: 0; text-wrap: pretty }
+.getit { grid-column: 1 / -1; justify-self: center; width: min(740px, 100%); min-width: 0; margin-top: clamp(4px, 2.6vw, 40px) }
+.join { display: flex; flex-direction: column; gap: 8px; max-width: 480px }
 .agentbox { background: var(--ink); color: var(--paper); padding: 12px }
 .agentbox .lbl { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 2px 2px 12px; font: 700 .8rem/1 var(--mono); text-transform: uppercase; letter-spacing: .05em }
 .agentbox .agchips { display: flex; flex-wrap: wrap; gap: 5px; align-items: center }
@@ -78,16 +80,17 @@ h1 { font: 850 clamp(3.6rem, 9.2vw, 8.6rem)/.9 var(--display); font-variation-se
 .agentbox code { flex: 1; min-width: 0; align-self: center; font: 500 .84rem/1.5 var(--mono); color: var(--paper); overflow-wrap: break-word; padding-left: 1.25em; text-indent: -1.25em }
 .agentbox code::before { content: "$ "; color: #8a867c }
 .agentbox button { border: 0; background: var(--orange); color: var(--ink); font: 700 .78rem var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 0 18px; min-height: 40px; cursor: pointer }
-.agentnote { display: block; margin: 8px 0 18px }
-.seerank { display: inline-block; margin: 10px 18px 0 0; color: var(--ink) }
+.agentnote { display: block; margin: 10px 0 0; text-align: center }
+.seelinks { white-space: nowrap }
+.seerank { margin-left: .7em; color: var(--ink) }
 .seerank[hidden] { display: none }
 
 .getit .code { margin: 0 0 18px; background: var(--ink); border-color: var(--ink) }
 .getit .code code { background: var(--ink); color: var(--paper); font-size: .8rem; padding: 16px 14px; white-space: normal; overflow-wrap: anywhere }
 .getit .code button { background: var(--orange); color: var(--ink); border-left: 2px solid var(--ink); font-size: .8rem; padding: 0 20px }
-.getit .field { margin: 0 0 6px; border-width: 1.5px; max-width: 480px }
-.getit .field input { padding: 9px 12px; font-size: .88rem; background: transparent }
-.getit .field button { background: transparent; border-left-width: 1.5px; font-size: .85rem; padding: 0 16px }
+.join .field { margin: 0; border-width: 1.5px }
+.join .field input { padding: 9px 12px; font-size: .88rem; background: transparent }
+.join .field button { background: transparent; border-left-width: 1.5px; font-size: .85rem; padding: 0 16px }
 .ctas { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center }
 .btn { background: var(--orange); color: var(--ink); border: 2px solid var(--ink); padding: 13px 22px; font: 800 1rem var(--display); font-variation-settings: "wdth" 85; letter-spacing: .01em; box-shadow: 5px 5px 0 var(--ink); transition: transform .12s, box-shadow .12s }
 .btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink) }
@@ -234,8 +237,11 @@ footer.site a { color: var(--paper) }
 
 @media (max-width: 1080px) {
   .h-left { grid-column: 1 / -1 } .h-right { grid-column: 1 / -1 }
-  .hero > .comp { order: 2; position: static; transform: none; grid-column: 1 / -1; width: 100%; max-width: 560px; margin-top: 8px }
-  .hero > .comp svg { width: 100%; height: auto; display: block }
+  .h-left, .hero > .comp, .getit { grid-column: 1 / -1; grid-row: auto }
+  .hero > .comp { order: 2 }
+  .hero > .comp svg { aspect-ratio: 600 / 198 }
+  .getit { order: 3; width: 100%; margin-top: 0 }
+  .agentnote { text-align: left }
 }
 @media (max-width: 760px) {
   .tr, .th { grid-template-columns: 28px minmax(0, 1fr) 54px 44px }
@@ -254,7 +260,7 @@ table.rt td.nm .msub { display: none }
   .tools input { max-width: none; min-width: 0 }
   .dd, .dd button { width: 100%; min-width: 0 }
   .tools .count { margin-left: 0 }
-  .tools input, .getit .field input, .field input { font-size: 16px }
+  .tools input, .field input { font-size: 16px }
   table.rt { table-layout: fixed }
   table.rt th, table.rt td { padding: 12px 6px; height: auto }
   table.rt th.num, table.rt td.num { width: 58px }
@@ -265,11 +271,12 @@ table.rt td.nm .msub { display: none }
   .getit .code { flex-direction: column }
   .getit .code code { font-size: .78rem; padding: 14px 14px 10px }
   .getit .code button { align-self: flex-end; border: 0; margin: 0 12px 12px; padding: 8px 16px }
-  .getit .field { max-width: none }
-  .getit .field button { padding: 0 18px }
+  .join { max-width: none }
+  .join .field button { padding: 0 18px }
+  .seelinks { display: block; margin-top: 10px }
+  .seerank { margin: 0 18px 0 0 }
   footer.site { flex-direction: column; gap: 10px }
   .hero { padding-bottom: 40px }
-  .hero > .comp { margin-top: 20px }
   .sec-h { margin-bottom: 18px }
   .nums strong { font-size: 3.6rem }
 }
@@ -294,20 +301,21 @@ table.rt td.nm .msub { display: none }
   </div>
 
   <div class="hero">
-    <div class="comp" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="510" height="340" viewBox="0 0 600 400" aria-hidden="true"><g transform="translate(0 0)"><rect width="100" height="100" fill="#F5B5E1"/><rect x="100" width="100" height="100" fill="#2448FF"/><rect y="100" width="100" height="100" fill="#1FA35B"/><rect x="100" y="100" width="100" height="100" fill="#FFC53D"/><path d="M100 0 L0 0 A100 100 0 0 0 100 100 Z" fill="#FF5A1F"/><path d="M200 100 L100 100 A100 100 0 0 1 200 0 Z" fill="#FFC53D"/><path d="M100 200 L200 200 A100 100 0 0 0 100 100 Z" fill="#F5B5E1"/><path d="M0 100 L100 100 A100 100 0 0 1 0 200 Z" fill="#2448FF"/></g><g transform="translate(200 0)"><rect width="200" height="200" fill="#BFDAF5"/><path d="M14 100 A86 86 0 0 1 186 100 Z" fill="#2448FF"/><path d="M14 100 A86 86 0 0 0 186 100 Z" fill="#FF5A1F"/><circle cx="100" cy="100" r="30" fill="#FFC53D"/></g><g transform="translate(400 0)"><rect width="200" height="200" fill="#1FA35B"/><rect x="28" y="28" width="144" height="144" fill="#FFC53D"/><rect x="58" y="58" width="84" height="84" fill="#FF5A1F"/><rect x="82" y="82" width="36" height="36" fill="#F5B5E1"/></g><g transform="translate(0 200)"><rect x="0" y="0" width="100" height="100" fill="#F5B5E1"/><path d="M0 0 L100 0 A100 100 0 0 1 0 100 Z" fill="#FF5A1F"/><rect x="100" y="0" width="100" height="100" fill="#2448FF"/><path d="M200 0 L100 0 A100 100 0 0 0 200 100 Z" fill="#FFC53D"/><rect x="200" y="0" width="100" height="100" fill="#1FA35B"/><path d="M300 100 L200 100 A100 100 0 0 1 300 0 Z" fill="#BFDAF5"/><rect x="300" y="0" width="100" height="100" fill="#FFC53D"/><path d="M300 100 L400 100 A100 100 0 0 0 300 0 Z" fill="#2448FF"/><rect x="0" y="100" width="100" height="100" fill="#BFDAF5"/><path d="M0 100 L100 100 A100 100 0 0 1 0 200 Z" fill="#1FA35B"/><rect x="100" y="100" width="100" height="100" fill="#FF5A1F"/><path d="M200 100 L100 100 A100 100 0 0 0 200 200 Z" fill="#F5B5E1"/><rect x="200" y="100" width="100" height="100" fill="#FFC53D"/><path d="M300 200 L200 200 A100 100 0 0 1 300 100 Z" fill="#3B38A3"/><rect x="300" y="100" width="100" height="100" fill="#F5B5E1"/><path d="M300 200 L400 200 A100 100 0 0 0 300 100 Z" fill="#2448FF"/></g><g transform="translate(400 200)"><rect width="200" height="200" fill="#F5B5E1"/><polygon points="200,0 200,200 0,200" fill="#3B38A3"/><circle cx="100" cy="100" r="44" fill="#FFC53D"/></g></svg></div>
+    <div class="comp" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="510" height="340" viewBox="0 0 600 400" preserveAspectRatio="xMidYMin slice" aria-hidden="true"><g transform="translate(0 0)"><rect width="100" height="100" fill="#F5B5E1"/><rect x="100" width="100" height="100" fill="#2448FF"/><rect y="100" width="100" height="100" fill="#1FA35B"/><rect x="100" y="100" width="100" height="100" fill="#FFC53D"/><path d="M100 0 L0 0 A100 100 0 0 0 100 100 Z" fill="#FF5A1F"/><path d="M200 100 L100 100 A100 100 0 0 1 200 0 Z" fill="#FFC53D"/><path d="M100 200 L200 200 A100 100 0 0 0 100 100 Z" fill="#F5B5E1"/><path d="M0 100 L100 100 A100 100 0 0 1 0 200 Z" fill="#2448FF"/></g><g transform="translate(200 0)"><rect width="200" height="200" fill="#BFDAF5"/><path d="M14 100 A86 86 0 0 1 186 100 Z" fill="#2448FF"/><path d="M14 100 A86 86 0 0 0 186 100 Z" fill="#FF5A1F"/><circle cx="100" cy="100" r="30" fill="#FFC53D"/></g><g transform="translate(400 0)"><rect width="200" height="200" fill="#1FA35B"/><rect x="28" y="28" width="144" height="144" fill="#FFC53D"/><rect x="58" y="58" width="84" height="84" fill="#FF5A1F"/><rect x="82" y="82" width="36" height="36" fill="#F5B5E1"/></g><g transform="translate(0 200)"><rect x="0" y="0" width="100" height="100" fill="#F5B5E1"/><path d="M0 0 L100 0 A100 100 0 0 1 0 100 Z" fill="#FF5A1F"/><rect x="100" y="0" width="100" height="100" fill="#2448FF"/><path d="M200 0 L100 0 A100 100 0 0 0 200 100 Z" fill="#FFC53D"/><rect x="200" y="0" width="100" height="100" fill="#1FA35B"/><path d="M300 100 L200 100 A100 100 0 0 1 300 0 Z" fill="#BFDAF5"/><rect x="300" y="0" width="100" height="100" fill="#FFC53D"/><path d="M300 100 L400 100 A100 100 0 0 0 300 0 Z" fill="#2448FF"/><rect x="0" y="100" width="100" height="100" fill="#BFDAF5"/><path d="M0 100 L100 100 A100 100 0 0 1 0 200 Z" fill="#1FA35B"/><rect x="100" y="100" width="100" height="100" fill="#FF5A1F"/><path d="M200 100 L100 100 A100 100 0 0 0 200 200 Z" fill="#F5B5E1"/><rect x="200" y="100" width="100" height="100" fill="#FFC53D"/><path d="M300 200 L200 200 A100 100 0 0 1 300 100 Z" fill="#3B38A3"/><rect x="300" y="100" width="100" height="100" fill="#F5B5E1"/><path d="M300 200 L400 200 A100 100 0 0 0 300 100 Z" fill="#2448FF"/></g><g transform="translate(400 200)"><rect width="200" height="200" fill="#F5B5E1"/><polygon points="200,0 200,200 0,200" fill="#3B38A3"/><circle cx="100" cy="100" r="44" fill="#FFC53D"/></g></svg></div>
     <div class="h-left">
       <h1>marketing engineering</h1>
-      <p class="lede">what other marketers are actually using. turns out it's not what twitter says…</p>
-      <a class="fine seerank" id="seeset" href="#setups" hidden>see the setups ↓</a><a class="fine seerank" href="#rank">see the ranking ↓</a>
-      <div class="getit">
-        <div class="agentbox">
-          <div class="lbl">give this to your agent <span class="agchips"><span class="ag">Claude</span><span class="ag">Cursor</span><span class="ag">Codex</span><span class="ag">ChatGPT</span><span class="ag">any agent</span></span></div>
-          <div class="bar"><code id="cmd">vote on marketing engineering - https://marketingengineering.dev/vote.md</code><button type="button" id="cp">Copy</button></div>
-        </div>
-        <span class="fine agentnote">it reads your setup, shows you the vote, and waits for a yes</span>
+      <p class="lede">what other marketers are actually using. turns out it's not what twitter says… <span class="seelinks"><a class="fine seerank" id="seeset" href="#setups" hidden>see the setups ↓</a><a class="fine seerank" href="#rank">see the ranking ↓</a></span></p>
+      <div class="join">
         <form class="field" id="drop" onsubmit="return false"><input type="email" id="em" placeholder="you@company.com" aria-label="Email"><button type="submit" id="join">join</button></form>
-        <span class="fine" id="dropNote">new tools every friday, nothing else.</span>
+        <span class="fine" id="dropNote">new tools every friday</span>
       </div>
+    </div>
+    <div class="getit">
+      <div class="agentbox">
+        <div class="lbl">give this to your agent <span class="agchips"><span class="ag">Claude</span><span class="ag">Cursor</span><span class="ag">Codex</span><span class="ag">ChatGPT</span><span class="ag">any agent</span></span></div>
+        <div class="bar"><code id="cmd">vote on marketing engineering - https://marketingengineering.dev/vote.md</code><button type="button" id="cp">Copy</button></div>
+      </div>
+      <span class="fine agentnote">it reads your setup, shows you the vote, and waits for a yes</span>
     </div>
   </div>
 </div>
