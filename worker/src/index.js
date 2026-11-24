@@ -18,8 +18,8 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const { pathname } = url;
-    // marketingengineering.dev is canonical. votes.useproxy.dev keeps serving (old links, POSTs). Anything else (www, other TLDs) redirects.
-    if (!["marketingengineering.dev", "votes.useproxy.dev", "localhost"].includes(url.hostname) && !url.hostname.endsWith(".workers.dev")) {
+    // marketingengineering.dev is canonical. Anything else (www, other TLDs) redirects to it.
+    if (!["marketingengineering.dev", "localhost"].includes(url.hostname) && !url.hostname.endsWith(".workers.dev")) {
       return Response.redirect(`https://marketingengineering.dev${pathname}${url.search}`, 301);
     }
 

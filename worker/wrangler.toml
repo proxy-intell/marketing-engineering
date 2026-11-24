@@ -6,7 +6,6 @@ workers_dev = false
 routes = [
   { pattern = "marketingengineering.dev", custom_domain = true },
   { pattern = "www.marketingengineering.dev", custom_domain = true },
-  { pattern = "votes.useproxy.dev", custom_domain = true },
 ]
 
 [vars]
