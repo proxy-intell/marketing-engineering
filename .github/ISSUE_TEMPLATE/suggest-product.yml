@@ -1,30 +1,60 @@
-name: Suggest a product
-description: Suggest a product without opening a PR.
+name: Suggest a tool
+description: 30 seconds, no JSON. A maintainer labels it `approved` and a bot opens the PR.
 title: "Suggest: <Name>"
 labels: [suggestion]
 body:
+  - type: markdown
+    attributes:
+      value: "Thanks for feeding the feed. Fill this in and a bot does the rest once it's approved."
   - type: input
     id: name
     attributes:
       label: Name
+      placeholder: Proxy
     validations:
       required: true
   - type: input
     id: url
     attributes:
       label: URL
+      description: Canonical homepage. No UTM or referral params.
+      placeholder: https://useproxy.dev
     validations:
       required: true
-  - type: textarea
-    id: why
+  - type: input
+    id: description
     attributes:
-      label: What it does and why it belongs here
+      label: One-sentence description
+      description: What it does, ≤160 chars, ends with a period. Don't start with the name. No "AI-powered" or "revolutionary".
+      placeholder: Live ad libraries for Meta, Google, LinkedIn and TikTok inside your AI assistant.
     validations:
       required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Ad intelligence
+        - AI models & agents
+        - Analytics
+        - Browser automation
+        - Data & scraping
+        - Email
+        - Launch & distribution
+        - Pricing & billing
+        - SEO & AEO
+        - Something new (say below)
+    validations:
+      required: true
+  - type: input
+    id: new_category
+    attributes:
+      label: New category name
+      description: Only if you picked "Something new".
   - type: checkboxes
     id: interfaces
     attributes:
-      label: Interfaces
+      label: How do you plug in?
       options:
         - label: MCP server
         - label: API
@@ -33,9 +63,25 @@ body:
         - label: Plugin
         - label: Web app
   - type: dropdown
+    id: pricing
+    attributes:
+      label: Pricing
+      options: [free, freemium, paid, open-source]
+    validations:
+      required: true
+  - type: input
+    id: mcp_url
+    attributes:
+      label: Remote MCP URL (optional)
+  - type: input
+    id: maker_x
+    attributes:
+      label: Maker's X handle (optional)
+      description: No @. We credit them in the Friday drop.
+  - type: dropdown
     id: affiliated
     attributes:
       label: Are you affiliated with it?
-      options: ["No", "Yes"]
+      options: ["No", "Yes, I make it"]
     validations:
       required: true

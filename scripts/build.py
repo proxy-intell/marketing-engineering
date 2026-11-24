@@ -20,7 +20,7 @@ def by_category(products):
     groups = {}
     for p in sorted(products, key=lambda p: p["name"].lower()):
         groups.setdefault(p["category"], []).append(p)
-    return dict(sorted(groups.items()))
+    return dict(sorted(groups.items(), key=lambda kv: kv[0].lower()))
 
 
 def readme_block(groups):
