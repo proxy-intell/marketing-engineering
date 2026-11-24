@@ -25,7 +25,7 @@ body:
     id: description
     attributes:
       label: One-sentence description
-      description: What it does, ≤160 chars, ends with a period. Don't start with the name. No "AI-powered" or "revolutionary".
+      description: What it does, ≤160 chars, ends with a period. Plain terms: what it is and what it does, with real platforms and limits. Don't start with the name. No filler (powerful, seamless, handy, "AI-powered").
       placeholder: Live ad libraries for Meta, Google, LinkedIn and TikTok inside your AI assistant.
     validations:
       required: true

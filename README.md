@@ -71,55 +71,55 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 ## AI search visibility (AEO)
 
-- [Perplexity Sonar API](https://docs.perplexity.ai) - Search-grounded answers with citations; useful for checking whether AI answers mention and cite your brand.
+- [Perplexity Sonar API](https://docs.perplexity.ai) - API for answers grounded in live web search, returned with source citations.
 
 ## Attribution & product analytics
 
-- [PostHog](https://posthog.com) - Product analytics, web analytics, session replay, feature flags and experiments in one tool; queryable from an agent.
+- [PostHog](https://posthog.com) - Open-source product analytics: events, funnels, session replay, feature flags and experiments. Self-hostable or cloud.
 
 ## Billing, credits & paywalls
 
-- [Autumn](https://useautumn.com) - Open-source pricing and billing layer over Stripe: define plans, credits and usage limits in config, then check and track them with one call.
-- [Stripe](https://stripe.com) - Payments, checkout, subscriptions and billing portal APIs; the money end of every funnel.
+- [Autumn](https://useautumn.com) - Billing layer on Stripe. Plans, credits and usage limits are defined in a config file; it tracks usage and keeps payments and webhooks in sync.
+- [Stripe](https://stripe.com) - Payments API with Checkout, subscriptions, invoicing and a customer billing portal.
 
 ## Bing & AI-search indexing
 
-- [Bing Webmaster Tools](https://www.bing.com/webmasters) - Index coverage, keywords and backlinks for Bing, the index behind several AI search products.
-- [IndexNow](https://www.indexnow.org) - Open protocol to ping Bing, Yandex and other engines the moment a URL is published or updated.
+- [Bing Webmaster Tools](https://www.bing.com/webmasters) - Search queries, index coverage and backlink reports for your site in Bing, plus URL submission.
+- [IndexNow](https://www.indexnow.org) - Open protocol that pings participating search engines (Bing, Yandex, Naver, Seznam) when a URL is published or changes.
 
 ## Coding agents
 
-- [Claude Code](https://claude.com/claude-code) - Coding agent in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops.
+- [Claude Code](https://claude.com/claude-code) - Anthropic's coding agent for the terminal, IDEs and web. Reads and edits a codebase, runs commands and connects to MCP servers.
 
 ## Competitor & market research
 
-- [Exa](https://exa.ai) - Web search API built for LLMs; finds companies, competitors and pages by meaning rather than keywords.
+- [Exa](https://exa.ai) - Web search API built for AI agents. Semantic search over the web, with page contents and structured results returned.
 
 ## Creative strategy
 
-- [Gemini API](https://ai.google.dev) - Multimodal model API that watches video and reads images, handy for transcribing and breaking down ad creatives at scale.
-- [Proxy](https://useproxy.dev) - Live ad libraries for Meta, Google, LinkedIn and TikTok inside your AI assistant, with ad video and image analysis.
+- [Gemini API](https://ai.google.dev) - Google's model API. Accepts text, image, audio and video input, so it can transcribe and describe video ads.
+- [Proxy](https://useproxy.dev) - MCP server for the Meta, Google, LinkedIn and TikTok (EU) ad libraries, with video and image analysis of ads.
 
 ## Email sending
 
-- [Resend](https://resend.com) - Email API for developers: transactional mail, broadcasts, contacts and templates written in React.
+- [Resend](https://resend.com) - Email API for transactional and marketing email. React templates, contacts, broadcasts and webhooks.
 
 ## Google SEO
 
-- [Google Search Console](https://search.google.com/search-console) - Clicks, impressions, queries and indexing status for your site in Google Search, plus manual indexing requests.
+- [Google Search Console](https://search.google.com/search-console) - Reports on your site's clicks, impressions, queries and indexing status in Google Search, with URL inspection and indexing requests.
 - [Semrush](https://www.semrush.com) - Keyword research, rank tracking, backlink data and competitor traffic estimates.
 
 ## Launching
 
-- [Product Hunt](https://www.producthunt.com) - Launch platform and directory for new tech products; also a feed of what competitors just shipped.
+- [Product Hunt](https://www.producthunt.com) - Site where new tech products launch daily and rank by upvotes. Also a searchable directory of past launches.
 
 ## Screenshots & browser automation
 
-- [Playwright](https://playwright.dev) - Scripts a real browser to screenshot landing pages, render OG images and click through funnels.
+- [Playwright](https://playwright.dev) - Browser automation library for Chromium, Firefox and WebKit. Drives pages, takes screenshots, runs end-to-end tests. Node, Python, Java and .NET.
 
 ## TikTok, Instagram & YouTube data
 
-- [ScrapeCreators](https://scrapecreators.com) - One API for public posts, profiles and ad libraries across TikTok, Instagram, YouTube, LinkedIn, X and more.
+- [ScrapeCreators](https://scrapecreators.com) - Scraping API for public data from TikTok, Instagram, YouTube, Facebook, LinkedIn and X, including ad libraries.
 
 <!-- END CATALOG -->
 

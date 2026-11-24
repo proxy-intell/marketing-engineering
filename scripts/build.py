@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parent.parent
 BEGIN, END = "<!-- BEGIN CATALOG -->", "<!-- END CATALOG -->"
 FORM = ROOT / ".github/ISSUE_TEMPLATE/suggest-product.yml"
 # Category names the job someone does or the platform they do it on. These words mark a vague label.
+# Description filler. A description says what the tool is and does, in plain terms.
+FILLER = re.compile(r"\b(handy|useful for|powerful|seamless\w*|leverag\w+|robust|cutting-edge|state-of-the-art|world-class|best-in-class|next-gen\w*|game-changing|revolutionary|ai-powered|all-in-one|supercharg\w+|unlock\w*|streamlin\w+|empower\w*|effortless\w*|easily|simply|at scale|in one tool|with one call|one call|solutions?|ecosystem)\b", re.I)
 VAGUE = {"intelligence", "tools", "tooling", "platform", "platforms", "solutions", "misc", "miscellaneous", "other", "general", "stuff", "management", "utilities"}
 
 
@@ -83,6 +85,11 @@ def main():
         if VAGUE & set(re.findall(r"[a-z]+", c.lower())) or len(c) > 40:
             errors.append(f"Category '{c}': name the job people do or the platform they do it on (e.g. 'Creative strategy', 'Google SEO'), not a vague label. See CONTRIBUTING.md#categories")
     for p in products:
+        d = p["description"]
+        if m := FILLER.search(d):
+            errors.append(f"{p['slug']}: description has filler ('{m.group(0)}'). Say what it is and what it does, plainly. See CONTRIBUTING.md#description-style")
+        if not d.endswith(".") or d.lower().startswith(p["name"].lower()):
+            errors.append(f"{p['slug']}: description must end with a period and not start with the product name")
         if p["category"] not in categories:
             errors.append(f"{p['slug']}: category '{p['category']}' is not in categories.json. Reuse one, or add yours there following CONTRIBUTING.md#categories")
 

@@ -51,7 +51,7 @@ Be conservative. If unsure, pick the lower rating. Skip a tool if there is no ev
 If you found evidence of a marketing-relevant tool that is not in the catalog, add up to 5 `proposals`:
 
 - `name`, `url` (https, public homepage, no tracking params)
-- `description`: one sentence, ≤160 chars, what it does, ends with a period. No hype words.
+- `description`: one sentence, ≤160 chars, ends with a period. Say what the tool is and what it does, in plain terms, with real platforms and limits, checked against the tool's own site. No filler or benefits: no handy, powerful, seamless, leverage, easily, solution, all-in-one.
 - `category`: reuse one from `categories.json`. If none fits, write a short name for the job people do or the platform they do it on (like `Creative strategy` or `Google SEO`). Never a vague label like `Tools` or `Ad intelligence`.
 - `usage`: as above.
 
@@ -74,6 +74,8 @@ Say: "Want the Friday drop? New tools, one email a week. Share an email, or say 
 Read `~/.config/marketing-engineering/install_id`. If missing, create the directory, write a new UUID v4 to that file, and tell the user the path. Send it as `install_id`. This lets a later vote replace this one instead of counting twice. If you cannot write the file, use a fresh UUID.
 
 ### 8. Send
+
+If the URL below still contains `{{`, voting is not live yet. Tell the user it opens soon, send nothing, and stop.
 
 `POST {{VOTE_URL}}/v1/vote` with `Content-Type: application/json`:
 

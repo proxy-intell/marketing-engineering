@@ -34,7 +34,9 @@ Need a new one? Add it to `categories.json` (A-Z) in the same PR and say why no 
 ## Description style
 
 - One sentence, ≤160 chars, ends with a period.
-- Say what it does. No "best", "revolutionary", "AI-powered" filler.
+- Say what it is and what it does, in plain terms. Name the real interfaces, platforms and limits ("for Chromium, Firefox and WebKit", "TikTok (EU) ad library"). No adjectives about quality, no benefits, no "useful for".
+- Every claim must be checkable on the tool's own site or docs.
+- CI rejects filler like handy, powerful, seamless, leverage, robust, at scale, one call, all-in-one, solution, easily, simply.
 - Don't start with the product name or "A tool that".
 - Canonical URL, no UTM or referral params.
 
