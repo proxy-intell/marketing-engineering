@@ -70,11 +70,11 @@ h1 { font: 850 clamp(3.6rem, 9.2vw, 8.6rem)/.9 var(--display); font-variation-se
 .lede { font: 500 clamp(1.05rem, 1.6vw, 1.3rem)/1.45 var(--body); max-width: 40ch; margin: 0 }
 .getit { max-width: 680px }
 .agentbox { background: var(--ink); color: var(--paper); padding: 12px }
-.agentbox .lbl { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; padding: 4px 4px 12px; font: 700 .8rem var(--mono); text-transform: uppercase; letter-spacing: .05em }
-.agentbox .chips { display: flex; flex-wrap: wrap; gap: 5px }
-.agentbox .ag { font: 600 .66rem var(--mono); letter-spacing: .04em; padding: 3px 7px; border: 1px solid #555 }
+.agentbox .lbl { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 2px 2px 12px; font: 700 .8rem/1 var(--mono); text-transform: uppercase; letter-spacing: .05em }
+.agentbox .agchips { display: flex; flex-wrap: wrap; gap: 5px; align-items: center }
+.agentbox .ag { display: inline-flex; align-items: center; height: 22px; font: 600 .66rem/1 var(--mono); letter-spacing: .04em; padding: 0 8px; border: 1px solid #555 }
 .agentbox .bar { display: flex; gap: 10px; align-items: stretch; background: #2c2c2c; padding: 8px 8px 8px 14px }
-.agentbox code { flex: 1; min-width: 0; align-self: center; font: 500 .84rem/1.5 var(--mono); color: var(--paper); overflow-wrap: break-word }
+.agentbox code { flex: 1; min-width: 0; align-self: center; font: 500 .84rem/1.5 var(--mono); color: var(--paper); overflow-wrap: break-word; padding-left: 1.25em; text-indent: -1.25em }
 .agentbox code::before { content: "$ "; color: #8a867c }
 .agentbox button { border: 0; background: var(--orange); color: var(--ink); font: 700 .78rem var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 0 18px; min-height: 40px; cursor: pointer }
 .agentnote { display: block; margin: 8px 0 18px }
@@ -286,7 +286,7 @@ table.rt td.nm .msub { display: none }
       <p class="lede">find the best tools based on what people actually use</p>
       <div class="getit">
         <div class="agentbox">
-          <div class="lbl">give this to your agent <span class="chips"><span class="ag">Claude Code</span><span class="ag">Cursor</span><span class="ag">Codex</span><span class="ag">ChatGPT</span><span class="ag">any agent</span></span></div>
+          <div class="lbl">give this to your agent <span class="agchips"><span class="ag">Claude</span><span class="ag">Cursor</span><span class="ag">Codex</span><span class="ag">ChatGPT</span><span class="ag">any agent</span></span></div>
           <div class="bar"><code id="cmd">vote on marketing engineering - https://marketingengineering.dev/vote.md</code><button type="button" id="cp">Copy</button></div>
         </div>
         <span class="fine agentnote">it reads your setup, shows you the vote, and waits for a yes</span>
