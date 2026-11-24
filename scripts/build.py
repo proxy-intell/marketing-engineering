@@ -23,7 +23,8 @@ def anchor(text):
 
 MIN_VOTERS = 3
 AGENT_NAMES = {"claude-code": "Claude Code", "cursor": "Cursor", "codex": "Codex", "copilot": "Copilot", "gemini": "Gemini CLI", "any": "any agent"}
-SKILL_COPY = ROOT / "plugins/marketing-engineering/skills/vote-marketing-engineering/SKILL.md"  # same text as vote.md
+# Every package ships the same skill text as vote.md: Claude Code + Cursor, Codex, Copilot, and the bare skill for `npx skills add`.
+SKILL_COPIES = [ROOT / d / "vote-marketing-engineering/SKILL.md" for d in ("plugins/marketing-engineering/skills", "plugins/codex/skills", "plugins/copilot/skills", "skills")]
 
 
 def kind_tag(p):
@@ -104,12 +105,13 @@ def main():
     votes = json.loads((ROOT / "votes.json").read_text())["tools"] if (ROOT / "votes.json").exists() else {}
     groups = by_category(products, votes)
     skill = (ROOT / "vote.md").read_text()
-    if not SKILL_COPY.exists() or SKILL_COPY.read_text() != skill:
-        if check:
-            errors.append("plugins/marketing-engineering/skills/.../SKILL.md is stale: run python scripts/build.py")
-        else:
-            SKILL_COPY.parent.mkdir(parents=True, exist_ok=True)
-            SKILL_COPY.write_text(skill)
+    for copy in SKILL_COPIES:
+        if not copy.exists() or copy.read_text() != skill:
+            if check:
+                errors.append(f"{copy.relative_to(ROOT)} is stale: run python scripts/build.py")
+            else:
+                copy.parent.mkdir(parents=True, exist_ok=True)
+                copy.write_text(skill)
     for name, block in (("README.md", readme_block(groups, votes)), ("llms.txt", llms_block(groups, votes))):
         path = ROOT / name
         new = splice(path, block)
