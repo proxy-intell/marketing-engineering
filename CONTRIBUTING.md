@@ -41,7 +41,7 @@ Pick one from [`categories.json`](categories.json). CI fails on anything else.
 
 **Name the job people do, or the platform they do it on.**
 
-- Good: `Creative strategy`, `Google SEO`, `TikTok, Instagram & YouTube data`, `Email sending`, `Billing, credits & paywalls`.
+- Good: `Creative strategy`, `Google SEO`, `TikTok, Instagram & YouTube data`, `Lifecycle comms`, `Billing, credits & paywalls`.
 - Bad: `Ad intelligence`, `Tools`, `AI platforms`, `Marketing solutions`, `Other`.
 - Platform-specific beats generic: `Meta ads` over `Social ads`. One platform per name where you can; list several only when the tool really spans them.
 - Sentence case, ≤40 characters, and none of: intelligence, tools, platform(s), solutions, misc, other, general, management, utilities.

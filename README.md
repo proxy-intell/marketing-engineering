@@ -110,15 +110,16 @@ paste into your agent: `set up "research competitors' ads" - https://marketingen
 - [Coding agents](#coding-agents)
 - [Competitor & market research](#competitor--market-research)
 - [Creative strategy](#creative-strategy)
-- [Email sending](#email-sending)
 - [Google SEO](#google-seo)
 - [Launching](#launching)
+- [Lifecycle comms](#lifecycle-comms)
 - [Screenshots & browser automation](#screenshots--browser-automation)
 - [TikTok, Instagram & YouTube data](#tiktok-instagram--youtube-data)
 
 ## AI search visibility (AEO)
 
 - [Perplexity Sonar API](https://docs.perplexity.ai) - API for answers grounded in live web search, returned with source citations. · data
+- [Semrush](https://www.semrush.com) - Tracks how a brand shows up in AI search answers, alongside keyword research, rank tracking and backlink data. · data
 
 ## Attribution & product analytics
 
@@ -147,18 +148,17 @@ paste into your agent: `set up "research competitors' ads" - https://marketingen
 - [Gemini API](https://ai.google.dev) - Google's model API. Accepts text, image, audio and video input, so it can transcribe and describe video ads.
 - [Proxy](https://useproxy.dev) - MCP server for the Meta, Google, LinkedIn and TikTok (EU) ad libraries, with video and image analysis of ads. · data
 
-## Email sending
-
-- [Resend](https://resend.com) - Email API for transactional and marketing email. React templates, contacts, broadcasts and webhooks.
-
 ## Google SEO
 
 - [Google Search Console](https://search.google.com/search-console) - Reports on your site's clicks, impressions, queries and indexing status in Google Search, with URL inspection and indexing requests. · data
-- [Semrush](https://www.semrush.com) - Keyword research, rank tracking, backlink data and competitor traffic estimates. · data
 
 ## Launching
 
 - [Product Hunt](https://www.producthunt.com) - Site where new tech products launch daily and rank by upvotes. Also a searchable directory of past launches.
+
+## Lifecycle comms
+
+- [Resend](https://resend.com) - Email API for transactional and marketing email. React templates, contacts, broadcasts and webhooks.
 
 ## Screenshots & browser automation
 
