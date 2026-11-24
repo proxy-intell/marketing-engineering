@@ -18,7 +18,7 @@
   "interface": {
     "displayName": "Marketing Engineering",
     "shortDescription": "Vote on marketing tools by real usage",
-    "longDescription": "Reads which marketing tools, skills and plugins you really use (names only), shows exactly what it will send, and votes only after you say yes.",
+    "longDescription": "Reads which marketing tools, skills and plugins you actually use (names only), shows exactly what it will send, and votes only after you say yes.",
     "developerName": "Marketing Engineering",
     "category": "Developer Tools",
     "capabilities": [
