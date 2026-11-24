@@ -1,7 +1,7 @@
 <h1 align="center">Marketing Engineering</h1>
 
 <p align="center">
-  <em>One thumb doomscrolling. One hand Clauding. Campaign shipped somehow.</em>
+  <em>one thumb doomscrolling. one hand clauding. campaign shipped somehow</em>
 </p>
 
 <p align="center">
@@ -18,13 +18,13 @@
   <a href="https://github.com/proxy-intell/marketing-engineering/releases"><b>📦 Friday drops</b></a>
 </p>
 
-> Tools for running marketing like software: ads, SEO and AEO, organic social, analytics, email, billing, and the agents that drive them.
+> tools for running marketing like software: ads, SEO and AEO, organic social, analytics, email, billing and the AI agents that drive them
 
-Marketers opened a terminal. Engineers got asked to "make it go viral". Same person now. This is their toolbox.
+marketers opened a terminal. engineers got asked to "make it go viral". same person now. this is their toolbox
 
-**Every entry tells you two things:** what it does, and how you plug in (MCP server, API, CLI, SDK, plugin, web app). Agents can skip the prose and read [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json), remote MCP URLs included.
+every entry says what it does and how you plug in: MCP server, API, CLI, SDK, plugin or web app. agents can skip the prose and read [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json), remote MCP URLs included
 
-**Stay current:** new tools ship every Friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases). Watch → Custom → Releases.
+new tools ship every friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases). watch → custom → releases
 
 <!-- BEGIN CATALOG -->
 
@@ -46,7 +46,7 @@ Marketers opened a terminal. Engineers got asked to "make it go viral". Same per
 
 ## AI models & agents
 
-- [Claude Code](https://claude.com/claude-code) - Agentic coding tool in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops.
+- [Claude Code](https://claude.com/claude-code) - Coding agent in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops.
 - [Gemini API](https://ai.google.dev) - Multimodal model API that watches video and reads images, handy for transcribing and breaking down ad creatives at scale.
 
 ## Analytics
@@ -87,15 +87,15 @@ Marketers opened a terminal. Engineers got asked to "make it go viral". Same per
 
 ## Contributing
 
-Three ways in, from laziest to most hands-on:
+three ways in, laziest first
 
-1. **Fill the form.** [Suggest a tool](https://github.com/proxy-intell/marketing-engineering/issues/new?template=suggest-product.yml). Once a maintainer labels it `approved`, a bot opens the PR.
-2. <a id="ask-your-agent"></a>**Ask your agent.** Paste this into Claude Code, Cursor or any agent with GitHub access:
+1. **[fill the form](https://github.com/proxy-intell/marketing-engineering/issues/new?template=suggest-product.yml).** once a maintainer labels it `approved`, a bot opens the PR
+2. <a id="ask-your-agent"></a>**ask your agent.** paste this into Claude Code, Cursor or any agent with GitHub access
 
    ```
    Add <tool URL> to github.com/proxy-intell/marketing-engineering. Follow AGENTS.md and open a PR.
    ```
 
-3. **Open a PR yourself.** Edit `catalog.json`, run `python scripts/build.py`. Details in [CONTRIBUTING.md](CONTRIBUTING.md).
+3. **open a PR yourself.** edit `catalog.json`, run `python scripts/build.py`. details in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-Listed? Grab the [badge](CONTRIBUTING.md#listed-add-the-badge): [![Featured on Marketing Engineering](https://img.shields.io/badge/featured%20on-Marketing%20Engineering-111111?style=flat-square)](https://github.com/proxy-intell/marketing-engineering)
+listed? grab the [badge](CONTRIBUTING.md#listed-add-the-badge) [![Featured on Marketing Engineering](https://img.shields.io/badge/featured%20on-Marketing%20Engineering-111111?style=flat-square)](https://github.com/proxy-intell/marketing-engineering)

@@ -5,7 +5,7 @@ labels: [suggestion]
 body:
   - type: markdown
     attributes:
-      value: "Thanks for feeding the feed. Fill this in and a bot does the rest once it's approved."
+      value: "thanks for feeding the feed. fill this in and a bot does the rest once it's approved"
   - type: input
     id: name
     attributes:

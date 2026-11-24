@@ -43,7 +43,7 @@
       "slug": "claude-code",
       "name": "Claude Code",
       "url": "https://claude.com/claude-code",
-      "description": "Agentic coding tool in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops.",
+      "description": "Coding agent in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops.",
       "category": "AI models & agents",
       "interfaces": [
         "cli",

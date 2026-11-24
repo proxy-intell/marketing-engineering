@@ -14,7 +14,7 @@ Machine-readable source of truth: catalog.json (JSON, schema in catalog.schema.j
 
 ### AI models & agents
 
-- [Claude Code](https://claude.com/claude-code): Agentic coding tool in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops. Interfaces: cli, plugin. Pricing: paid.
+- [Claude Code](https://claude.com/claude-code): Coding agent in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops. Interfaces: cli, plugin. Pricing: paid.
 - [Gemini API](https://ai.google.dev): Multimodal model API that watches video and reads images, handy for transcribing and breaking down ad creatives at scale. Interfaces: api, sdk. Pricing: freemium.
 
 ### Analytics
