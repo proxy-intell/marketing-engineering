@@ -41,6 +41,10 @@ Each voter adds a weight per tool:
 
 A tool's score is the sum over voters. Votes older than 90 days drop out. Within a category, higher score ranks first, then A-Z. `used by N` shows once 3 or more voters back a tool.
 
+## Setups
+
+A setup is one job done with several listed tools. A voter has a setup when their vote lists every tool in it, at any rating. Setups rank by voters who have the whole thing. In the README, `run by N` shows at 3 or more voters; the site shows the count at any number. The vote reply tells the voter which setups they have. No extra data is sent.
+
 ## What is sent
 
 Tool names, usage ratings, an agent label (`claude-code`, `cursor`, ...) and a random install id. Optionally an email, only if the person gives one.

@@ -1,0 +1,28 @@
+{
+  "setups": [
+    {"slug": "aeo", "job": "get cited in AI search", "steps": [
+      {"tool": "perplexity-sonar-api", "why": "see where you are cited today"},
+      {"tool": "bing-webmaster-tools", "why": "check Bing has your pages"},
+      {"tool": "indexnow", "why": "push new pages the day they ship"},
+      {"tool": "claude-code", "why": "run the check every week"}]},
+    {"slug": "competitor-ads", "job": "research competitors' ads", "steps": [
+      {"tool": "proxy", "why": "see the ads running now"},
+      {"tool": "scrapecreators", "why": "pull their organic posts"},
+      {"tool": "exa", "why": "find who else is in the market"},
+      {"tool": "gemini-api", "why": "break down the video creative"}]},
+    {"slug": "launch", "job": "launch day", "steps": [
+      {"tool": "product-hunt", "why": "post the launch"},
+      {"tool": "playwright", "why": "take the screenshots"},
+      {"tool": "resend", "why": "tell your list"}]},
+    {"slug": "paid-product", "job": "charge for your product", "steps": [
+      {"tool": "stripe", "why": "take the payment"},
+      {"tool": "autumn", "why": "track credits and limits"},
+      {"tool": "resend", "why": "send receipts and nudges"},
+      {"tool": "posthog", "why": "see who converts"}]},
+    {"slug": "whats-working", "job": "know what's working", "steps": [
+      {"tool": "posthog", "why": "who signed up and from where"},
+      {"tool": "google-search-console", "why": "which searches bring them"},
+      {"tool": "semrush", "why": "where competitors outrank you"},
+      {"tool": "claude-code", "why": "read all three every Friday"}]}
+  ]
+}

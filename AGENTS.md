@@ -19,6 +19,7 @@ If a user asks you to vote, rank or submit the tools they use, follow [`vote.md`
 
 - `catalog.json` is the source of truth. Edit only it, then run `python scripts/build.py` to regenerate `README.md` and `llms.txt`.
 - Never hand-edit between `<!-- BEGIN CATALOG -->` and `<!-- END CATALOG -->`.
+- `setups.json` references catalog slugs; edit it, then run `python scripts/build.py`. Never hand-edit between the `SETUPS` markers.
 - Sort `products` by `slug`. `python scripts/build.py --check` must pass.
 - Follow `CONTRIBUTING.md` for the bar and description style.
 - Never add tracking params to URLs.

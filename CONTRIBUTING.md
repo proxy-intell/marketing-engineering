@@ -18,6 +18,10 @@ No JSON wanted? Ask your agent: `Add <tool URL> to github.com/proxy-intell/marke
 3. Run `python scripts/build.py` — regenerates `README.md` and `llms.txt`. Don't hand-edit between the `CATALOG` markers.
 4. CI validates the schema, checks the generated files are current, and checks links.
 
+## Add a setup
+
+A setup is one job done with 2 to 6 listed tools. Edit `setups.json` (sorted by `slug`), use only slugs already in `catalog.json`, give each step a short `why`, then run `python scripts/build.py`. Don't hand-edit between the `SETUPS` markers.
+
 ## Skills and plugins
 
 Agent skills (`SKILL.md`) and plugins for coding agents are listed like tools, with `kind: skill` or `kind: plugin`, an `install` one-liner and the `agents` they work in (`claude-code`, `cursor`, `codex`, `copilot`, `gemini`, `any`). Put each in the category of the job it does (a CRO-audit skill goes in a category like `Google SEO` or `Creative strategy`, not in a "skills" bucket).

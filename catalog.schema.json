@@ -76,9 +76,10 @@
             "enum": [
               "tool",
               "skill",
-              "plugin"
+              "plugin",
+              "data"
             ],
-            "description": "Default tool. Use skill for an agent skill (SKILL.md) and plugin for a plugin or extension for coding agents."
+            "description": "Default tool. Use skill for an agent skill (SKILL.md) and plugin for a plugin or extension for coding agents. Use data for a source an agent reads market or site data from."
           },
           "install": {
             "type": "string",
