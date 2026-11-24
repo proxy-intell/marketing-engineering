@@ -35,7 +35,7 @@ Use only these sources:
 
 ### 3. Match and rate
 
-Match evidence to catalog entries by `slug`, `name`, the domain of `url` or `mcp_url`, or the package name. Rate each match:
+Match evidence to catalog entries by `slug`, `name`, the domain of `url` or `mcp_url`, or the package name. Match the tool itself, not a similar name: `claude-design` is not Claude Code, `google_ad_library` is not Google Search Console, `gemini-nanobanana` is not the Gemini API unless it calls that API. If unsure, skip it. Rate each match:
 
 | usage | meaning |
 |---|---|
