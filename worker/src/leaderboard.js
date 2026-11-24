@@ -210,7 +210,8 @@ table.rt td.desc { color: var(--mute); font-size: .82rem; line-height: 1.35; min
 table.rt td.bar { width: 160px } table.rt .c-bar { width: 160px }
 table.rt .meter { height: 12px }
 .empty-row td { text-align: center; color: var(--mute); font: 500 .85rem var(--mono); padding: 28px }
-@media (max-width: 900px) { .c-desc, td.desc, .c-bar, td.bar { display: none } }
+table.rt td.set a { color: inherit }
+@media (max-width: 900px) { .c-desc, td.desc, .c-bar, td.bar, .c-set, td.set { display: none } }
 @media (max-width: 600px) { .c-cat, td.cat { display: none } }
 footer.site { background: var(--ink); color: var(--paper); margin-inline: calc(50% - 50vw); padding: 26px max(16px, calc(50vw - 620px)); display: flex; flex-wrap: wrap; gap: 8px 28px }
 footer.site a { color: var(--paper) }
@@ -340,6 +341,7 @@ table.rt td.nm .msub { display: none }
       <th data-k="cat" aria-sort="none" class="c-cat"><button type="button">Category</button></th>
       <th class="c-desc">What it does</th>
       <th class="c-bar">vs top</th>
+      <th data-k="setups" aria-sort="none" class="num c-set"><button type="button">Setups</button></th>
       <th data-k="pts" aria-sort="descending" class="num"><button type="button">Pts</button></th>
       <th data-k="voters" aria-sort="none" class="num"><button type="button">Voters</button></th>
     </tr></thead>
@@ -382,7 +384,7 @@ table.rt td.nm .msub { display: none }
     else if (e.key === "Enter" && !ddl.hidden && hl >= 0) { e.preventDefault(); ddPick(hl); }
   });
   var sortK = "pts", sortDir = -1;
-  function val(r, k) { return k === "pts" ? r.score : k === "voters" ? r.voters : String(r[k]).toLowerCase(); }
+  function val(r, k) { return k === "pts" ? r.score : k === "voters" ? r.voters : k === "setups" ? r.setups : String(r[k]).toLowerCase(); }
   function render() {
     var q = qEl.value.trim().toLowerCase(), c = catVal;
     var rows = D.rows.filter(function (r) { return (!c || r.cat === c) && (!q || (r.name + " " + r.cat + " " + r.desc).toLowerCase().indexOf(q) >= 0); });
@@ -391,17 +393,17 @@ table.rt td.nm .msub { display: none }
     countEl.textContent = rows.length + " of " + D.rows.length + " tools";
     var board = document.getElementById("board");
     board.innerHTML = rows.length ? rows.map(function (r, i) {
-      return '<tr><td class="rk">' + String(i + 1).padStart(2, "0") + '</td><td class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a>' + (r.kind && r.kind !== "tool" ? '<span class="kd">' + esc(r.kind) + '</span>' : "") + (r.setups ? '<a class="kd" href="#setups">in ' + r.setups + (r.setups === 1 ? " setup" : " setups") + '</a>' : "") + '<span class="msub">' + esc(r.cat) + '</span></td>' +
+      return '<tr><td class="rk">' + String(i + 1).padStart(2, "0") + '</td><td class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a>' + '<span class="msub">' + esc(r.cat) + '</span></td>' +
         '<td class="cat">' + esc(r.cat) + '</td><td class="desc">' + esc(r.desc) + '</td>' +
         '<td class="bar"><div class="meter"><i style="width:' + (r.score / max) * 100 + '%"></i></div></td>' +
-        '<td class="num">' + r.score + '</td><td class="num">' + r.voters + "</td></tr>";
-    }).join("") : '<tr class="empty-row"><td colspan="7">no tools match</td></tr>';
+        '<td class="num set">' + (r.setups ? '<a href="#setups">' + r.setups + '</a>' : "") + '</td><td class="num">' + r.score + '</td><td class="num">' + r.voters + "</td></tr>";
+    }).join("") : '<tr class="empty-row"><td colspan="8">no tools match</td></tr>';
   }
   qEl.addEventListener("input", render);
   [].forEach.call(document.querySelectorAll("table.rt th[data-k]"), function (th) {
     th.querySelector("button").addEventListener("click", function () {
       var k = th.getAttribute("data-k");
-      sortDir = sortK === k ? -sortDir : (k === "pts" || k === "voters" ? -1 : 1); sortK = k;
+      sortDir = sortK === k ? -sortDir : (k === "pts" || k === "voters" || k === "setups" ? -1 : 1); sortK = k;
       [].forEach.call(document.querySelectorAll("table.rt th[data-k]"), function (x) { x.setAttribute("aria-sort", x === th ? (sortDir > 0 ? "ascending" : "descending") : "none"); });
       render();
     });
