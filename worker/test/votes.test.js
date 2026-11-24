@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateVote, score, proposalKey } from "../src/votes.js";
+import { validateVote, score, proposalKey, matchSetups } from "../src/votes.js";
 
 const ok = (over = {}) => ({ v: 1, install_id: "3f1b8c0e-9d2a", agent: "claude-code", tools: [{ slug: "posthog", usage: "daily" }], ...over });
 
@@ -78,4 +78,40 @@ test("proposals accept kind and install, reject bad ones", () => {
   assert.equal(validateVote(base).vote.proposals[0].install, "npx skills add x");
   assert.ok(validateVote({ ...base, proposals: [{ ...base.proposals[0], kind: "virus" }] }).error);
   assert.ok(validateVote({ ...base, proposals: [{ ...base.proposals[0], install: "a\nb" }] }).error);
+});
+
+const S = [
+  { slug: "aeo", job: "get cited in AI search", steps: [{ tool: "a" }, { tool: "b" }] },
+  { slug: "launch", job: "launch day", steps: [{ tool: "c" }, { tool: "d" }, { tool: "e" }] },
+];
+const row = (slugs, updated_at = 1000) => ({ updated_at, payload: { tools: slugs.map((slug) => ({ slug, usage: "installed" })), proposals: [] } });
+
+test("score counts voters who have every tool in a setup", () => {
+  const out = score([row(["a", "b", "x"]), row(["a"]), row(["a", "b"])], 2000, S);
+  assert.deepEqual(out.setups, { aeo: { voters: 2 }, launch: { voters: 0 } });
+});
+
+test("score ignores expired votes for setups and defaults to no setups", () => {
+  const old = row(["a", "b"], 0);
+  assert.deepEqual(score([old], 91 * 86400000, S).setups, { aeo: { voters: 0 }, launch: { voters: 0 } });
+  assert.deepEqual(score([row(["a", "b"])], 2000).setups, {});
+});
+
+test("matchSetups lists setups the voter touches, closest first", () => {
+  const tools = [{ slug: "a", usage: "daily" }, { slug: "b", usage: "installed" }, { slug: "c", usage: "weekly" }];
+  assert.deepEqual(matchSetups(tools, S), [
+    { slug: "aeo", job: "get cited in AI search", have: 2, of: 2, missing: [] },
+    { slug: "launch", job: "launch day", have: 1, of: 3, missing: ["d", "e"] },
+  ]);
+});
+
+test("matchSetups returns nothing for no tools or no overlap", () => {
+  assert.deepEqual(matchSetups([], S), []);
+  assert.deepEqual(matchSetups([{ slug: "zzz", usage: "daily" }], S), []);
+  assert.deepEqual(matchSetups([{ slug: "a", usage: "daily" }], []), []);
+});
+
+test("a proposal may be kind data", () => {
+  const p = { name: "X", url: "https://x.com", description: "d.", category: "C", usage: "daily", kind: "data" };
+  assert.equal(validateVote(ok({ proposals: [p] })).vote.proposals[0].kind, "data");
 });

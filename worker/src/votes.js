@@ -5,7 +5,7 @@ export const WINDOW_DAYS = 90;
 export const MAX_TOOLS = 40;
 export const MAX_PROPOSALS = 5;
 
-const KINDS = ["tool", "skill", "plugin"];
+const KINDS = ["tool", "skill", "plugin", "data"];
 const AGENTS = ["claude-code", "cursor", "codex", "chatgpt", "gemini", "other"];
 export const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 
@@ -38,7 +38,7 @@ export function validateVote(body) {
     if (typeof p.description !== "string" || p.description.length < 1 || p.description.length > 160) return { error: "proposal description must be 1-160 chars" };
     if (typeof p.category !== "string" || p.category.length < 1 || p.category.length > 40) return { error: "proposal category must be 1-40 chars" };
     if (!(p.usage in WEIGHTS)) return { error: "proposal usage must be daily, weekly, monthly or installed" };
-    if (p.kind != null && !KINDS.includes(p.kind)) return { error: "proposal kind must be tool, skill or plugin" };
+    if (p.kind != null && !KINDS.includes(p.kind)) return { error: "proposal kind must be tool, skill, plugin or data" };
     if (p.install != null && (typeof p.install !== "string" || p.install.length > 200 || /[\r\n]/.test(p.install))) return { error: "proposal install must be one line, 200 chars max" };
   }
 
@@ -67,14 +67,17 @@ export function proposalKey(url) {
 }
 
 // rows: [{ updated_at (ms), payload (parsed vote) }]
-export function score(rows, now = Date.now()) {
+export function score(rows, now = Date.now(), setups = []) {
   const cutoff = now - WINDOW_DAYS * 86400000;
   const tools = {};
   const proposals = {};
+  const setupVoters = Object.fromEntries(setups.map((s) => [s.slug, { voters: 0 }]));
   let voters = 0;
   for (const { updated_at, payload } of rows) {
     if (updated_at < cutoff) continue;
     voters++;
+    const have = new Set(payload.tools.map((t) => t.slug));
+    for (const s of setups) if (s.steps.every((st) => have.has(st.tool))) setupVoters[s.slug].voters++;
     for (const t of payload.tools) {
       const e = (tools[t.slug] ??= { score: 0, voters: 0 });
       e.score += WEIGHTS[t.usage];
@@ -91,6 +94,19 @@ export function score(rows, now = Date.now()) {
     updated: new Date(now).toISOString(),
     voters,
     tools,
+    setups: setupVoters,
     proposals: Object.values(proposals).sort((a, b) => b.voters - a.voters || b.score - a.score),
   };
+}
+
+// tools: [{slug, usage}]; setups: [{slug, job, steps: [{tool}]}]. Setups the voter touches, closest first.
+export function matchSetups(tools, setups) {
+  const have = new Set(tools.map((t) => t.slug));
+  return setups
+    .map(({ slug, job, steps }) => {
+      const missing = steps.map((st) => st.tool).filter((t) => !have.has(t));
+      return { slug, job, have: steps.length - missing.length, of: steps.length, missing };
+    })
+    .filter((m) => m.have >= 1)
+    .sort((a, b) => a.missing.length - b.missing.length || a.slug.localeCompare(b.slug));
 }
