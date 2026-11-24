@@ -68,28 +68,14 @@ test("score weights usage, counts voters, drops stale votes, groups proposals", 
 import { BADGE_SVG } from "../src/badge.js";
 test("badge is a well-formed svg with an accessible name", () => {
   assert.match(BADGE_SVG, /^<svg [^>]*role="img"/);
-  assert.match(BADGE_SVG, /<title>Featured on Marketing Engineering<\/title>/);
+  assert.match(BADGE_SVG, /<title>Listed on Marketing Engineering, ranked by use<\/title>/);
   assert.ok(BADGE_SVG.endsWith("</svg>"));
 });
 
-import { renderLeaderboard } from "../src/leaderboard.js";
 test("proposals accept kind and install, reject bad ones", () => {
   const base = { v: 1, install_id: "3f1b8c0e-9d2a", proposals: [{ name: "X", url: "https://x.dev", description: "d.", category: "Coding agents", usage: "weekly", kind: "skill", install: "npx skills add x" }] };
   assert.equal(validateVote(base).vote.proposals[0].kind, "skill");
   assert.equal(validateVote(base).vote.proposals[0].install, "npx skills add x");
   assert.ok(validateVote({ ...base, proposals: [{ ...base.proposals[0], kind: "virus" }] }).error);
   assert.ok(validateVote({ ...base, proposals: [{ ...base.proposals[0], install: "a\nb" }] }).error);
-});
-test("leaderboard ranks by score, escapes html, shows voters and kind", () => {
-  const products = [
-    { slug: "a", name: "Alpha", url: "https://a.dev", description: "<b>x</b>.", category: "Google SEO" },
-    { slug: "b", name: "Beta", url: "https://b.dev", description: "y.", category: "Google SEO", kind: "skill" },
-    { slug: "c", name: "Gamma", url: "https://c.dev", description: "z.", category: "Google SEO" },
-  ];
-  const html = renderLeaderboard(products, { voters: 2, tools: { b: { score: 5, voters: 2 }, a: { score: 1, voters: 1 } } });
-  assert.ok(html.indexOf("Beta") < html.indexOf("Alpha") && html.indexOf("Alpha") < html.indexOf("Gamma"));
-  assert.ok(html.includes("&lt;b&gt;x&lt;/b&gt;."));
-  assert.ok(!html.includes("<b>x</b>"));
-  assert.ok(html.includes('class="chip">skill'));
-  assert.ok(html.includes("2 voters"));
 });

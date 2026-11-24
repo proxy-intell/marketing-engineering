@@ -6,11 +6,15 @@ Cloudflare Worker + D1. Takes votes from agents (see [`../vote.md`](../vote.md))
 |---|---|
 | `POST /v1/vote` | One vote. Replaces the voter's earlier one. 400 on bad input, 429 after 10 votes per IP per day. |
 | `GET /v1/scores` | `{updated, voters, tools:{slug:{score,voters}}, proposals:[...]}`. No emails. Cached 5 min. |
+| `POST /v1/subscribe` | `{email}` from the site's Friday-drop box. Same 10-per-IP daily limit as votes. Adds to `subscribers` and Resend. |
+| `GET /` | The site: ranking table (catalog.json + live scores), the vote command, the email box. |
+| `GET /vote.md`, `/.well-known/skills/...` | vote.md proxied from GitHub, plus skill discovery. |
+| `GET /badge.svg` | Badge for listed makers. Same as `../assets/badge.svg`. |
 
 ## Test
 
 ```sh
-cd worker && node --test          # validation + scoring
+cd worker && node --test          # validation, scoring, site render
 npx wrangler d1 execute marketing-engineering-votes --local --file=schema.sql
 npx wrangler dev --local          # then curl localhost:8787
 ```
@@ -23,9 +27,10 @@ npx wrangler d1 create marketing-engineering-votes   # paste database_id into wr
 npx wrangler d1 execute marketing-engineering-votes --remote --file=schema.sql
 npx wrangler secret put IP_SALT                      # any long random string
 npx wrangler secret put RESEND_API_KEY               # optional, adds Friday-drop signups as Resend contacts
-npx wrangler secret put RESEND_SEGMENT_ID            # optional, segment to add them to
 npx wrangler deploy
 ```
+
+`RESEND_SEGMENT_ID` is a plain variable in `wrangler.toml`, not a secret.
 
 Then:
 

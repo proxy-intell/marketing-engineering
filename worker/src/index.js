@@ -1,4 +1,4 @@
-import { validateVote, score } from "./votes.js";
+import { validateVote, score, EMAIL } from "./votes.js";
 import { BADGE_SVG } from "./badge.js";
 import { renderLeaderboard } from "./leaderboard.js";
 
@@ -72,6 +72,30 @@ export default {
       }
 
       return json({ ok: true, counted: { tools: vote.tools.length, proposals: vote.proposals.length }, subscribed: vote.weekly_drop });
+    }
+
+    // Friday drop sign-up from the site's email box. Shares the per-IP daily limit with votes.
+    if (request.method === "POST" && pathname === "/v1/subscribe") {
+      const text = await request.text();
+      if (text.length > 1000) return json({ error: "body too large" }, 413);
+      let email;
+      try {
+        email = JSON.parse(text).email;
+      } catch {
+        return json({ error: "body must be JSON" }, 400);
+      }
+      if (typeof email !== "string" || email.length > 254 || !EMAIL.test(email.trim())) return json({ error: "that email doesn't look right" }, 400);
+      email = email.trim().toLowerCase();
+      const day = new Date().toISOString().slice(0, 10);
+      const ipHash = await sha256(`${env.IP_SALT ?? ""}${request.headers.get("cf-connecting-ip") ?? "unknown"}`);
+      const hit = await env.DB.prepare(
+        "INSERT INTO rate (ip_hash, day, n) VALUES (?, ?, 1) ON CONFLICT(ip_hash, day) DO UPDATE SET n = n + 1 RETURNING n",
+      ).bind(ipHash, day).first();
+      if (hit.n > MAX_VOTES_PER_IP_PER_DAY) return json({ error: "too many tries from this address today" }, 429);
+      await env.DB.prepare("INSERT INTO subscribers (email_hash, email, created_at) VALUES (?, ?, ?) ON CONFLICT(email_hash) DO NOTHING")
+        .bind(await sha256(email), email, Date.now()).run();
+      if (env.RESEND_API_KEY) ctx.waitUntil(addToResend(env, email));
+      return json({ ok: true });
     }
 
     // Short, stable URL for agents: "vote on marketing engineering - https://marketingengineering.dev/vote.md"
