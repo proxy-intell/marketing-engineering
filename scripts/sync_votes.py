@@ -38,6 +38,8 @@ if len(sys.argv) > 1:
             continue
         slug = re.sub(r"[^a-z0-9]+", "-", p["name"].lower()).strip("-")
         entry = {"slug": slug, "name": p["name"], "url": p["url"], "description": p["description"], "category": p["category"], "interfaces": ["web"], "pricing": "freemium", "added": date.today().isoformat()}
+        if p.get("kind") in ("skill", "plugin"):
+            entry.update({"kind": p["kind"], "interfaces": [p["kind"]], "install": p.get("install", "FILL IN"), "agents": ["any"], "pricing": "open-source"})
         note = "" if p["category"] in categories else f"\n\n`{p['category']}` is not in categories.json. Add it there or pick an existing category (see CONTRIBUTING.md#categories)."
         body = (
             f"{p['voters']} agents use {p['name']} and it is not listed. Entry to add to `catalog.json` (sorted by slug). "

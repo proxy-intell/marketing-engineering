@@ -58,7 +58,8 @@
                 "cli",
                 "sdk",
                 "web",
-                "plugin"
+                "plugin",
+                "skill"
               ]
             },
             "description": "How a human or agent uses it."
@@ -70,6 +71,34 @@
               "paid",
               "open-source"
             ]
+          },
+          "kind": {
+            "enum": [
+              "tool",
+              "skill",
+              "plugin"
+            ],
+            "description": "Default tool. Use skill for an agent skill (SKILL.md) and plugin for a plugin or extension for coding agents."
+          },
+          "install": {
+            "type": "string",
+            "maxLength": 200,
+            "pattern": "^[^\\n\\r]+$",
+            "description": "One-line install command or instruction. Required for skill and plugin."
+          },
+          "agents": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "claude-code",
+                "cursor",
+                "codex",
+                "copilot",
+                "gemini",
+                "any"
+              ]
+            },
+            "description": "Agents a skill or plugin works in."
           },
           "docs_url": {
             "type": "string",
@@ -100,7 +129,30 @@
             "type": "string",
             "format": "date"
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "skill",
+                    "plugin"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "install",
+                "agents"
+              ]
+            }
+          }
+        ]
       }
     }
   }

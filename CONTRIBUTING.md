@@ -18,6 +18,19 @@ No JSON wanted? Ask your agent: `Add <tool URL> to github.com/proxy-intell/marke
 3. Run `python scripts/build.py` — regenerates `README.md` and `llms.txt`. Don't hand-edit between the `CATALOG` markers.
 4. CI validates the schema, checks the generated files are current, and checks links.
 
+## Skills and plugins
+
+Agent skills (`SKILL.md`) and plugins for coding agents are listed like tools, with `kind: skill` or `kind: plugin`, an `install` one-liner and the `agents` they work in (`claude-code`, `cursor`, `codex`, `copilot`, `gemini`, `any`). Put each in the category of the job it does (a CRO-audit skill goes in a category like `Google SEO` or `Creative strategy`, not in a "skills" bucket).
+
+A skill or plugin runs inside people's agents, so the bar is higher. All of these:
+
+- Public source repo with an open license, readable (no minified or obfuscated code).
+- The `install` line runs from that source and does what the README says. No `curl | sh` from a host that isn't the source.
+- States what it reads and which hosts it sends data to. No credentials requested beyond what its job needs.
+- Maintained: a commit in the last 12 months.
+
+CI checks the fields. It does not check safety: a maintainer reads the `SKILL.md` or plugin before merging.
+
 ## Categories
 
 Pick one from [`categories.json`](categories.json). CI fails on anything else.

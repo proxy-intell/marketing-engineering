@@ -5,6 +5,7 @@ export const WINDOW_DAYS = 90;
 export const MAX_TOOLS = 40;
 export const MAX_PROPOSALS = 5;
 
+const KINDS = ["tool", "skill", "plugin"];
 const AGENTS = ["claude-code", "cursor", "codex", "chatgpt", "gemini", "other"];
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 
@@ -37,6 +38,8 @@ export function validateVote(body) {
     if (typeof p.description !== "string" || p.description.length < 1 || p.description.length > 160) return { error: "proposal description must be 1-160 chars" };
     if (typeof p.category !== "string" || p.category.length < 1 || p.category.length > 40) return { error: "proposal category must be 1-40 chars" };
     if (!(p.usage in WEIGHTS)) return { error: "proposal usage must be daily, weekly, monthly or installed" };
+    if (p.kind != null && !KINDS.includes(p.kind)) return { error: "proposal kind must be tool, skill or plugin" };
+    if (p.install != null && (typeof p.install !== "string" || p.install.length > 200 || /[\r\n]/.test(p.install))) return { error: "proposal install must be one line, 200 chars max" };
   }
 
   if (!tools.length && !proposals.length) return { error: "send at least one tool or proposal" };
@@ -48,7 +51,7 @@ export function validateVote(body) {
       email,
       weekly_drop: body.weekly_drop === true && email !== null,
       tools: tools.map(({ slug, usage }) => ({ slug, usage })),
-      proposals: proposals.map(({ name, url, description, category, usage }) => ({ name, url, description, category, usage })),
+      proposals: proposals.map(({ name, url, description, category, usage, kind, install }) => ({ name, url, description, category, usage, ...(kind && kind !== "tool" ? { kind } : {}), ...(install ? { install } : {}) })),
     },
   };
 }
@@ -79,7 +82,7 @@ export function score(rows, now = Date.now()) {
     }
     for (const p of payload.proposals) {
       const k = proposalKey(p.url);
-      const e = (proposals[k] ??= { name: p.name, url: p.url, description: p.description, category: p.category, score: 0, voters: 0 });
+      const e = (proposals[k] ??= { name: p.name, url: p.url, description: p.description, category: p.category, ...(p.kind ? { kind: p.kind } : {}), ...(p.install ? { install: p.install } : {}), score: 0, voters: 0 });
       e.score += WEIGHTS[p.usage];
       e.voters++;
     }

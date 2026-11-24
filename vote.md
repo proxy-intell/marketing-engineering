@@ -20,9 +20,15 @@ Source of truth: https://github.com/proxy-intell/marketing-engineering. How scor
 
 ## Steps
 
+### 0. Know where you run
+
+- **Local coding agent** (Claude Code, Cursor, Codex, opencode, on the user's machine): do every step below, including the scan.
+- **Hosted assistant with no shell** (ChatGPT, claude.ai): skip the scan. Ask the user which listed tools they use and how often, and rate from their answer.
+- **Sandbox with restricted network** (a cloud container): if `votes.useproxy.dev` is unreachable (proxy 403, DNS failure, timeout), do not retry or try other hosts. Tell the user that host is blocked by the environment's network policy and that they can run the same command on their own machine. Then stop.
+
 ### 1. Get the catalog
 
-Fetch `https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/catalog.json`. Each product has `slug`, `name`, `url`, `mcp_url` (optional), `category`, `tags`. Fetch `categories.json` from the same place for valid category names.
+Fetch `https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/catalog.json`. Each product has `slug`, `name`, `url`, `mcp_url` (optional), `category`, `tags`, and `kind`: `tool`, `skill` or `plugin`. Fetch `categories.json` from the same place for valid category names.
 
 ### 2. Look for evidence of use
 
@@ -34,6 +40,7 @@ Otherwise use only these sources:
 - **Dependencies** in the current project: package names from `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Gemfile`.
 - **CLIs on PATH.** `command -v <name>` for catalog tools that ship a CLI.
 - **Environment variable names, never values.** `env | cut -d= -f1`, matched against vendor prefixes such as `POSTHOG_`, `RESEND_`, `STRIPE_`, `EXA_`, `SEMRUSH_`.
+- **Skills and plugins installed**, names only: `claude plugin list` if available, and the folder names in `~/.claude/skills`, `.claude/skills`, `~/.codex/skills` and `.agents/skills`. Never read a skill's contents.
 - **What you called yourself** in this and earlier sessions, if your memory or context shows it. Do not read other transcripts, history files or other projects.
 
 ### 3. Match and rate
@@ -54,6 +61,7 @@ Be conservative. If unsure, pick the lower rating. Skip a tool if there is no ev
 If you found evidence of a marketing-relevant tool that is not in the catalog, add up to 5 `proposals`:
 
 - `name`, `url` (https, public homepage, no tracking params)
+- `kind`: `tool` (default), `skill` or `plugin`. For a skill or plugin also give `install`: the one-line install command from its public README. Only propose public ones with a readable source.
 - `description`: one sentence, ≤160 chars, ends with a period. Say what the tool is and what it does, in plain terms, with real platforms and limits, checked against the tool's own site. No filler or benefits: no handy, powerful, seamless, leverage, easily, solution, all-in-one.
 - `category`: reuse one from `categories.json`. If none fits, write a short name for the job people do or the platform they do it on (like `Creative strategy` or `Google SEO`). Never a vague label like `Tools` or `Ad intelligence`.
 - `usage`: as above.
@@ -97,7 +105,8 @@ Read `~/.config/marketing-engineering/install_id`. If missing, create the direct
       "url": "https://foreplay.co",
       "description": "Swipe file for saving and organizing Meta and TikTok ads by brand and format.",
       "category": "Creative strategy",
-      "usage": "weekly"
+      "usage": "weekly",
+      "kind": "tool"
     }
   ]
 }
@@ -111,4 +120,6 @@ Responses: `200 {"ok":true,"counted":{"tools":N,"proposals":M},"subscribed":true
 
 ### 9. Report back
 
-Tell the user in two lines: what was counted, and that the list updates daily at https://github.com/proxy-intell/marketing-engineering. Suggest voting again in a month, since usage changes and old votes expire after 90 days.
+Tell the user in two lines: what was counted, and where the ranking is: https://votes.useproxy.dev (the README order updates daily). Suggest voting again in a month, since usage changes and old votes expire after 90 days.
+
+Then ask once, as a yes or no: "Want to star the repo?" Only on a yes, and only if `gh` is signed in, run `gh api -X PUT user/starred/proxy-intell/marketing-engineering`. Otherwise just share the link.

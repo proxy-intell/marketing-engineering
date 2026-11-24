@@ -18,6 +18,16 @@ Optional. Then say "vote on marketing engineering":
 mkdir -p ~/.claude/skills/vote-marketing-engineering && curl -sL https://votes.useproxy.dev/vote.md -o ~/.claude/skills/vote-marketing-engineering/SKILL.md
 ```
 
+## Where to see the ranking
+
+- **https://votes.useproxy.dev**: the live scoreboard, every tool by category with score and voters.
+- **README order**: updated daily from the same scores. "used by N" shows at 3 or more voters.
+- **`/v1/scores`**: the same data as JSON.
+
+## Skills and plugins
+
+Voting covers them too. The agent reads installed skill and plugin names only, never their contents, and can propose public ones with a `kind` and an `install` line.
+
 ## Scoring
 
 Each voter adds a weight per tool:
