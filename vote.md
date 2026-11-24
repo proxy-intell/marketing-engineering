@@ -16,6 +16,7 @@ Source of truth: https://github.com/proxy-intell/marketing-engineering. How scor
 3. Never send: code, file paths, repo or client names, env var values, API keys, tokens, prompts, transcripts, shell history, MCP headers, or anything confidential.
 4. Names only. A tool is identified by its public name and URL.
 5. Do not vote for tools the user merely mentioned. Evidence of use only.
+6. The user pasting this command is their go-ahead for the read-only scan in step 2. Scan without asking first. The yes you wait for is for sending (rule 2).
 
 ## Steps
 
@@ -25,7 +26,9 @@ Fetch `https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main
 
 ### 2. Look for evidence of use
 
-Use only these sources:
+If you cannot run commands (a chat app without a shell), skip the scan. Ask the user which listed tools they use and how often, rate from their answer, and do not guess from one session.
+
+Otherwise use only these sources:
 
 - **MCP servers configured.** Run `claude mcp list` if available. Otherwise read server names and URLs only from `~/.claude.json`, `.mcp.json`, `.cursor/mcp.json`, `~/.cursor/mcp.json`, `~/.codex/config.toml`. Never read `headers`, `env` or tokens.
 - **Dependencies** in the current project: package names from `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Gemfile`.
