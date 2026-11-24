@@ -4,8 +4,6 @@
 
 Machine-readable source of truth: catalog.json (JSON, schema in catalog.schema.json). Prefer it over this file when parsing. License: CC0 1.0 (public domain).
 
-## Products
-
 ## Setups
 
 <!-- BEGIN SETUPS -->
@@ -55,6 +53,8 @@ paste into your agent: `set up "launch day" - https://marketingengineering.dev/s
 paste into your agent: `set up "research competitors' ads" - https://marketingengineering.dev/setups/competitor-ads.md`
 
 <!-- END SETUPS -->
+
+## Products
 
 <!-- BEGIN CATALOG -->
 

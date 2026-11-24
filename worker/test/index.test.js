@@ -37,7 +37,9 @@ test("a vote response lists the voter's setups with missing tool names", async (
   ]);
 });
 
-test("setups.json down or broken never fails a vote, the scores or the page", async () => {
+const quiet = async (fn) => { const e = console.error; console.error = () => {}; try { await fn(); } finally { console.error = e; } };
+
+test("setups.json down or broken never fails a vote, the scores or the page", () => quiet(async () => {
   for (const broken of [new Response("nope", { status: 502 }), new Response("{not json")]) {
     serve(broken.clone());
     const v = await vote([{ slug: "a", usage: "daily" }]);
@@ -48,13 +50,36 @@ test("setups.json down or broken never fails a vote, the scores or the page", as
     serve(broken.clone());
     assert.equal((await get("/")).status, 200);
   }
-});
+}));
 
-test("a throwing fetch never fails a vote", async () => {
+test("a throwing fetch never fails a vote", () => quiet(async () => {
   globalThis.fetch = async () => { throw new Error("offline"); };
   const v = await vote([{ slug: "a", usage: "daily" }]);
   assert.equal(v.status, 200);
   assert.deepEqual((await v.json()).setups, []);
+}));
+
+test("a failed catalog fetch gives setups: []", () => quiet(async () => {
+  globalThis.fetch = async (u) => String(u).endsWith("setups.json") ? new Response(JSON.stringify(SETUPS)) : new Response("no", { status: 502 });
+  assert.deepEqual((await (await vote([{ slug: "a", usage: "daily" }])).json()).setups, []);
+}));
+
+test("a setup naming a tool not in the catalog never reaches a vote reply", async () => {
+  serve(new Response(JSON.stringify({ setups: [...SETUPS.setups, { slug: "az", job: "do az", steps: [{ tool: "a", why: "x" }, { tool: "zzz", why: "y" }] }] })));
+  const body = await (await vote([{ slug: "a", usage: "daily" }, { slug: "b", usage: "daily" }])).json();
+  assert.deepEqual(body.setups.map((s) => s.slug), ["ab", "bc"]);
+});
+
+test("a vote reply holds at most 3 setups", async () => {
+  const steps = [{ tool: "a", why: "x" }, { tool: "b", why: "y" }];
+  serve(new Response(JSON.stringify({ setups: ["s1", "s2", "s3", "s4"].map((slug) => ({ slug, job: slug, steps })) })));
+  const body = await (await vote([{ slug: "a", usage: "daily" }, { slug: "b", usage: "daily" }])).json();
+  assert.equal(body.setups.length, 3);
+});
+
+test("setup page: a throwing catalog fetch is a 502", async () => {
+  globalThis.fetch = async () => { throw new Error("offline"); };
+  assert.equal((await get("/setups/ab.md")).status, 502);
 });
 
 test("setup pages: known slug is markdown, unknown or odd slug is 404", async () => {

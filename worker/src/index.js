@@ -75,11 +75,14 @@ export default {
       // The vote is stored by now. A setups lookup failure only empties the list.
       let setups = [];
       try {
-        const matches = matchSetups(vote.tools, await loadSetups()).slice(0, 3);
-        const res = matches.length ? await fetch(`${RAW}/catalog.json`, { cf: { cacheTtl: 300, cacheEverything: true } }) : null;
-        const names = res?.ok ? Object.fromEntries((await res.json()).products.map((p) => [p.slug, p.name])) : {};
-        setups = matches.map((m) => ({ ...m, missing: m.missing.map((s) => names[s] ?? s) }));
-      } catch {}
+        const res = await fetch(`${RAW}/catalog.json`, { cf: { cacheTtl: 300, cacheEverything: true } });
+        if (res.ok) {
+          const { products } = await res.json();
+          const names = Object.fromEntries(products.map((p) => [p.slug, p.name]));
+          setups = matchSetups(vote.tools, await loadSetups(new Set(Object.keys(names)))).slice(0, 3)
+            .map((m) => ({ ...m, missing: m.missing.map((s) => names[s] ?? s) }));
+        }
+      } catch (e) { console.error("setups lookup failed", e); }
 
       return json({ ok: true, counted: { tools: vote.tools.length, proposals: vote.proposals.length }, subscribed: vote.weekly_drop, setups });
     }
@@ -126,9 +129,14 @@ export default {
     // One setup as agent-readable markdown
     const setupMatch = (request.method === "GET" || request.method === "HEAD") && pathname.match(/^\/setups\/([a-z0-9-]{1,40})\.md$/);
     if (setupMatch) {
-      const catalogRes = await fetch(`${RAW}/catalog.json`, { cf: { cacheTtl: 300, cacheEverything: true } });
-      if (!catalogRes.ok) return json({ error: "catalog unavailable" }, 502);
-      const { products } = await catalogRes.json();
+      let products;
+      try {
+        const catalogRes = await fetch(`${RAW}/catalog.json`, { cf: { cacheTtl: 300, cacheEverything: true } });
+        if (!catalogRes.ok) return json({ error: "catalog unavailable" }, 502);
+        ({ products } = await catalogRes.json());
+      } catch {
+        return json({ error: "catalog unavailable" }, 502);
+      }
       const setup = (await loadSetups(new Set(products.map((p) => p.slug)))).find((s) => s.slug === setupMatch[1]);
       if (setup) return new Response(renderSetupMd(setup, products), { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" } });
     }

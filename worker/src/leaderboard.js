@@ -419,7 +419,8 @@ table.rt td.nm .msub { display: none }
     sgrid.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       var t = b.previousElementSibling.textContent;
-      try { navigator.clipboard.writeText(t).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); }); } catch (x) {}
+      try { navigator.clipboard.writeText(t).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); }, sel); } catch (x) { sel(); }
+      function sel() { var r = document.createRange(); r.selectNodeContents(b.previousElementSibling); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
     });
   }
 
