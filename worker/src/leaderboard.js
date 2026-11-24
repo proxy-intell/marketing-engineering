@@ -221,7 +221,8 @@ footer.site a { color: var(--paper) }
 
 @media (max-width: 1080px) {
   .h-left { grid-column: 1 / -1 } .h-right { grid-column: 1 / -1 }
-  .comp { display: none }
+  .hero > .comp { order: 2; position: static; transform: none; grid-column: 1 / -1; width: 100%; max-width: 560px; margin-top: 8px }
+  .hero > .comp svg { width: 100%; height: auto; display: block }
 }
 @media (max-width: 760px) {
   .tr, .th { grid-template-columns: 28px minmax(0, 1fr) 54px 44px }
@@ -230,6 +231,31 @@ footer.site a { color: var(--paper) }
   .nums div:nth-child(2) { border-right: 0 } .nums div:nth-child(-n+2) { border-bottom: 2px solid var(--ink) }
   .two > div { grid-column: 1 / -1 }
   .sec-h .n, .sec-h h2 { grid-column: 1 / -1 }
+}
+table.rt td.nm .msub { display: none }
+@media (max-width: 600px) {
+  .tools { display: grid; grid-template-columns: 1fr; gap: 8px }
+  .tools input { max-width: none; min-width: 0 }
+  .dd, .dd button { width: 100%; min-width: 0 }
+  .tools .count { margin-left: 0 }
+  .tools input, .getit .field input, .field input { font-size: 16px }
+  table.rt { table-layout: fixed }
+  table.rt th, table.rt td { padding: 12px 6px; height: auto }
+  table.rt th.num, table.rt td.num { width: 58px }
+  table.rt th[data-k="name"], table.rt td.nm { width: auto; overflow: hidden }
+  table.rt .n, table.rt td.rk { width: 30px }
+  table.rt td.nm a { white-space: normal }
+  table.rt td.nm .msub { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 3px; font: 500 .66rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--mute) }
+  .getit .code { flex-direction: column }
+  .getit .code code { font-size: .78rem; padding: 14px 14px 10px }
+  .getit .code button { align-self: flex-end; border: 0; margin: 0 12px 12px; padding: 8px 16px }
+  .getit .field { max-width: none }
+  .getit .field button { padding: 0 18px }
+  footer.site { flex-direction: column; gap: 10px }
+  .hero { padding-bottom: 40px }
+  .hero > .comp { margin-top: 20px }
+  .sec-h { margin-bottom: 18px }
+  .nums strong { font-size: 3.6rem }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
 .kd { margin-left: 8px; font: 700 .62rem var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--cobalt); vertical-align: middle }
@@ -244,7 +270,7 @@ footer.site a { color: var(--paper) }
     <div class="comp" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="510" height="340" viewBox="0 0 600 400" aria-hidden="true"><g transform="translate(0 0)"><rect width="100" height="100" fill="#F5B5E1"/><rect x="100" width="100" height="100" fill="#2448FF"/><rect y="100" width="100" height="100" fill="#1FA35B"/><rect x="100" y="100" width="100" height="100" fill="#FFC53D"/><path d="M100 0 L0 0 A100 100 0 0 0 100 100 Z" fill="#FF5A1F"/><path d="M200 100 L100 100 A100 100 0 0 1 200 0 Z" fill="#FFC53D"/><path d="M100 200 L200 200 A100 100 0 0 0 100 100 Z" fill="#F5B5E1"/><path d="M0 100 L100 100 A100 100 0 0 1 0 200 Z" fill="#2448FF"/></g><g transform="translate(200 0)"><rect width="200" height="200" fill="#BFDAF5"/><path d="M14 100 A86 86 0 0 1 186 100 Z" fill="#2448FF"/><path d="M14 100 A86 86 0 0 0 186 100 Z" fill="#FF5A1F"/><circle cx="100" cy="100" r="30" fill="#FFC53D"/></g><g transform="translate(400 0)"><rect width="200" height="200" fill="#1FA35B"/><rect x="28" y="28" width="144" height="144" fill="#FFC53D"/><rect x="58" y="58" width="84" height="84" fill="#FF5A1F"/><rect x="82" y="82" width="36" height="36" fill="#F5B5E1"/></g><g transform="translate(0 200)"><rect x="0" y="0" width="100" height="100" fill="#F5B5E1"/><path d="M0 0 L100 0 A100 100 0 0 1 0 100 Z" fill="#FF5A1F"/><rect x="100" y="0" width="100" height="100" fill="#2448FF"/><path d="M200 0 L100 0 A100 100 0 0 0 200 100 Z" fill="#FFC53D"/><rect x="200" y="0" width="100" height="100" fill="#1FA35B"/><path d="M300 100 L200 100 A100 100 0 0 1 300 0 Z" fill="#BFDAF5"/><rect x="300" y="0" width="100" height="100" fill="#FFC53D"/><path d="M300 100 L400 100 A100 100 0 0 0 300 0 Z" fill="#2448FF"/><rect x="0" y="100" width="100" height="100" fill="#BFDAF5"/><path d="M0 100 L100 100 A100 100 0 0 1 0 200 Z" fill="#1FA35B"/><rect x="100" y="100" width="100" height="100" fill="#FF5A1F"/><path d="M200 100 L100 100 A100 100 0 0 0 200 200 Z" fill="#F5B5E1"/><rect x="200" y="100" width="100" height="100" fill="#FFC53D"/><path d="M300 200 L200 200 A100 100 0 0 1 300 100 Z" fill="#3B38A3"/><rect x="300" y="100" width="100" height="100" fill="#F5B5E1"/><path d="M300 200 L400 200 A100 100 0 0 0 300 100 Z" fill="#2448FF"/></g><g transform="translate(400 200)"><rect width="200" height="200" fill="#F5B5E1"/><polygon points="200,0 200,200 0,200" fill="#3B38A3"/><circle cx="100" cy="100" r="44" fill="#FFC53D"/></g></svg></div>
     <div class="h-left">
       <h1>marketing engineering</h1>
-      <p class="lede">the list ranks tools by what you actually use, not what you say you use</p>
+      <p class="lede">find the best tools based on what people actually use</p>
       <div class="getit">
         <div class="code"><code id="cmd">vote on marketing engineering - https://marketingengineering.dev/vote.md</code><button type="button" id="cp">Copy</button></div>
         <form class="field" id="drop" onsubmit="return false"><input type="email" id="em" placeholder="you@company.com" aria-label="Email"><button type="submit" id="join">join</button></form>
@@ -319,7 +345,7 @@ footer.site a { color: var(--paper) }
     countEl.textContent = rows.length + " of " + D.rows.length + " tools";
     var board = document.getElementById("board");
     board.innerHTML = rows.length ? rows.map(function (r, i) {
-      return '<tr><td class="rk">' + String(i + 1).padStart(2, "0") + '</td><td class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a>' + (r.kind && r.kind !== "tool" ? '<span class="kd">' + esc(r.kind) + '</span>' : "") + '</td>' +
+      return '<tr><td class="rk">' + String(i + 1).padStart(2, "0") + '</td><td class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a>' + (r.kind && r.kind !== "tool" ? '<span class="kd">' + esc(r.kind) + '</span>' : "") + '<span class="msub">' + esc(r.cat) + '</span></td>' +
         '<td class="cat">' + esc(r.cat) + '</td><td class="desc">' + esc(r.desc) + '</td>' +
         '<td class="bar"><div class="meter"><i style="width:' + (r.score / max) * 100 + '%"></i></div></td>' +
         '<td class="num">' + r.score + '</td><td class="num">' + r.voters + "</td></tr>";
