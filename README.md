@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/icon.svg" width="64" height="64" alt=""></p>
+
 <h1 align="center">Marketing Engineering</h1>
 
 <p align="center">
@@ -9,9 +11,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/ranked%20by-real%20usage-FF5A1F?style=flat&labelColor=181818" alt="Ranked by real usage">
-  <img src="https://img.shields.io/badge/meetings-0-FF5A1F?style=flat&labelColor=181818" alt="Meetings: 0">
-  <a href="llms.txt"><img src="https://img.shields.io/badge/llms.txt-ready-FF5A1F?style=flat&labelColor=181818" alt="llms.txt ready"></a>
+  <a href="https://marketingengineering.dev"><img src="assets/badge.svg" height="20" alt="marketing engineering: ranked by use"></a>
+  <img src="https://img.shields.io/badge/meetings-0-FF5A1F?style=flat-square&labelColor=181818" alt="Meetings: 0">
+  <a href="llms.txt"><img src="https://img.shields.io/badge/llms.txt-ready-FF5A1F?style=flat-square&labelColor=181818" alt="llms.txt ready"></a>
 </p>
 
 <p align="center">
