@@ -47,6 +47,58 @@ every entry says what it does and how you plug in: MCP server, API, CLI, SDK, pl
 
 new tools ship every friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases) and an email. watch → custom → releases, drop your email on [marketingengineering.dev](https://marketingengineering.dev), or give it to your agent when it asks
 
+## setups
+
+one job, done end to end. ranked by how many voters have the whole thing
+
+<!-- BEGIN SETUPS -->
+
+### charge for your product
+
+1. [Stripe](https://stripe.com): take the payment
+2. [Autumn](https://useautumn.com): track credits and limits
+3. [Resend](https://resend.com): send receipts and nudges
+4. [PostHog](https://posthog.com): see who converts
+
+paste into your agent: `set up "charge for your product" - https://marketingengineering.dev/setups/paid-product.md`
+
+### get cited in AI search
+
+1. [Perplexity Sonar API](https://docs.perplexity.ai): see where you are cited today
+2. [Bing Webmaster Tools](https://www.bing.com/webmasters): check Bing has your pages
+3. [IndexNow](https://www.indexnow.org): push new pages the day they ship
+4. [Claude Code](https://claude.com/claude-code): run the check every week
+
+paste into your agent: `set up "get cited in AI search" - https://marketingengineering.dev/setups/aeo.md`
+
+### know what's working
+
+1. [PostHog](https://posthog.com): who signed up and from where
+2. [Google Search Console](https://search.google.com/search-console): which searches bring them
+3. [Semrush](https://www.semrush.com): where competitors outrank you
+4. [Claude Code](https://claude.com/claude-code): read all three every Friday
+
+paste into your agent: `set up "know what's working" - https://marketingengineering.dev/setups/whats-working.md`
+
+### launch day
+
+1. [Product Hunt](https://www.producthunt.com): post the launch
+2. [Playwright](https://playwright.dev): take the screenshots
+3. [Resend](https://resend.com): tell your list
+
+paste into your agent: `set up "launch day" - https://marketingengineering.dev/setups/launch.md`
+
+### research competitors' ads
+
+1. [Proxy](https://useproxy.dev): see the ads running now
+2. [ScrapeCreators](https://scrapecreators.com): pull their organic posts
+3. [Exa](https://exa.ai): find who else is in the market
+4. [Gemini API](https://ai.google.dev): break down the video creative
+
+paste into your agent: `set up "research competitors' ads" - https://marketingengineering.dev/setups/competitor-ads.md`
+
+<!-- END SETUPS -->
+
 <!-- BEGIN CATALOG -->
 
 ## Contents
@@ -66,11 +118,11 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 ## AI search visibility (AEO)
 
-- [Perplexity Sonar API](https://docs.perplexity.ai) - API for answers grounded in live web search, returned with source citations.
+- [Perplexity Sonar API](https://docs.perplexity.ai) - API for answers grounded in live web search, returned with source citations. · data
 
 ## Attribution & product analytics
 
-- [PostHog](https://posthog.com) - Open-source product analytics: events, funnels, session replay, feature flags and experiments. Self-hostable or cloud.
+- [PostHog](https://posthog.com) - Open-source product analytics: events, funnels, session replay, feature flags and experiments. Self-hostable or cloud. · data
 
 ## Billing, credits & paywalls
 
@@ -80,7 +132,7 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 ## Bing & AI-search indexing
 
 - [IndexNow](https://www.indexnow.org) - Open protocol that pings participating search engines (Bing, Yandex, Naver, Seznam) when a URL is published or changes.
-- [Bing Webmaster Tools](https://www.bing.com/webmasters) - Search queries, index coverage and backlink reports for your site in Bing, plus URL submission.
+- [Bing Webmaster Tools](https://www.bing.com/webmasters) - Search queries, index coverage and backlink reports for your site in Bing, plus URL submission. · data
 
 ## Coding agents
 
@@ -88,12 +140,12 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 ## Competitor & market research
 
-- [Exa](https://exa.ai) - Web search API built for AI agents. Semantic search over the web, with page contents and structured results returned.
+- [Exa](https://exa.ai) - Web search API built for AI agents. Semantic search over the web, with page contents and structured results returned. · data
 
 ## Creative strategy
 
 - [Gemini API](https://ai.google.dev) - Google's model API. Accepts text, image, audio and video input, so it can transcribe and describe video ads.
-- [Proxy](https://useproxy.dev) - MCP server for the Meta, Google, LinkedIn and TikTok (EU) ad libraries, with video and image analysis of ads.
+- [Proxy](https://useproxy.dev) - MCP server for the Meta, Google, LinkedIn and TikTok (EU) ad libraries, with video and image analysis of ads. · data
 
 ## Email sending
 
@@ -101,8 +153,8 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 ## Google SEO
 
-- [Google Search Console](https://search.google.com/search-console) - Reports on your site's clicks, impressions, queries and indexing status in Google Search, with URL inspection and indexing requests.
-- [Semrush](https://www.semrush.com) - Keyword research, rank tracking, backlink data and competitor traffic estimates.
+- [Google Search Console](https://search.google.com/search-console) - Reports on your site's clicks, impressions, queries and indexing status in Google Search, with URL inspection and indexing requests. · data
+- [Semrush](https://www.semrush.com) - Keyword research, rank tracking, backlink data and competitor traffic estimates. · data
 
 ## Launching
 
@@ -114,7 +166,7 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 ## TikTok, Instagram & YouTube data
 
-- [ScrapeCreators](https://scrapecreators.com) - Scraping API for public data from TikTok, Instagram, YouTube, Facebook, LinkedIn and X, including ad libraries.
+- [ScrapeCreators](https://scrapecreators.com) - Scraping API for public data from TikTok, Instagram, YouTube, Facebook, LinkedIn and X, including ad libraries. · data
 
 <!-- END CATALOG -->
 

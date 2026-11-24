@@ -28,7 +28,7 @@ Source of truth: https://github.com/proxy-intell/marketing-engineering. How scor
 
 ### 1. Get the catalog
 
-Fetch `https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/catalog.json`. Each product has `slug`, `name`, `url`, `mcp_url` (optional), `category`, `tags`, and `kind`: `tool`, `skill` or `plugin`. Fetch `categories.json` from the same place for valid category names.
+Fetch `https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/catalog.json`. Each product has `slug`, `name`, `url`, `mcp_url` (optional), `category`, `tags`, and `kind`: `tool`, `data` (a source an agent reads market or site data from), `skill` or `plugin`. Fetch `categories.json` from the same place for valid category names.
 
 ### 2. Look for evidence of use
 
@@ -61,7 +61,7 @@ Be conservative. If unsure, pick the lower rating. Skip a tool if there is no ev
 If you found evidence of a marketing-relevant tool that is not in the catalog, add up to 5 `proposals`:
 
 - `name`, `url` (https, public homepage, no tracking params)
-- `kind`: `tool` (default), `skill` or `plugin`. For a skill or plugin also give `install`: the one-line install command from its public README. Only propose public ones with a readable source.
+- `kind`: `tool` (default), `data` (a source an agent reads market or site data from), `skill` or `plugin`. For a skill or plugin also give `install`: the one-line install command from its public README. Only propose public ones with a readable source.
 - `description`: one sentence, ≤160 chars, ends with a period. Say what the tool is and what it does, in plain terms, with real platforms and limits, checked against the tool's own site. No filler or benefits: no handy, powerful, seamless, leverage, easily, solution, all-in-one.
 - `category`: reuse one from `categories.json`. If none fits, write a short name for the job people do or the platform they do it on (like `Creative strategy` or `Google SEO`). Never a vague label like `Tools` or `Ad intelligence`.
 - `usage`: as above.
@@ -116,11 +116,19 @@ Read `~/.config/marketing-engineering/install_id`. If missing, create the direct
 - `email`, `weekly_drop`, `proposals` are optional. At least one of `tools` or `proposals` is required.
 - Limits: 40 tools, 5 proposals per vote.
 
-Responses: `200 {"ok":true,"counted":{"tools":N,"proposals":M},"subscribed":true|false,"new":true|false,"voters":V,"ranks":[{"slug":"posthog","rank":2}]}`. `ranks` is the overall rank of up to 3 of the user's tools, best first. `400` has an `error` string: fix it and retry once. `429`: tell the user to try again tomorrow.
+Responses: `200 {"ok":true,"counted":{"tools":N,"proposals":M},"subscribed":true|false,"new":true|false,"voters":V,"ranks":[{"slug":"posthog","rank":2}],"setups":[{"slug":"aeo","job":"get cited in AI search","have":3,"of":4,"missing":["IndexNow"]}]}`. `ranks` is the overall rank of up to 3 of the user's tools, best first. `setups` lists up to 3 setups built from tools you voted for. It may be empty. `400` has an `error` string: fix it and retry once. `429`: tell the user to try again tomorrow.
 
 ### 9. Report back
 
 Tell the user in two lines what was counted and where they stand. If `new`, say "You're voter #V". Otherwise say "Vote updated, V voters so far". Name the tools in `ranks` by their catalog name, for example "PostHog is #2 overall". Link the live ranking: https://marketingengineering.dev. Suggest voting again in a month, since usage changes and old votes expire after 90 days.
+
+If the response has `setups`, add one line for each, at most 3:
+
+- `missing` is empty: `you have the whole "<job>" setup.`
+- exactly one missing: `one tool short of "<job>": <missing tool>.`
+- more than one missing: skip it.
+
+Then link https://marketingengineering.dev/#setups. Do not install anything and do not ask to. If `setups` is empty or absent, say nothing about setups.
 
 Then ask once, as a yes or no: "Stars are how other marketers find this list. Star it? ⭐" Only on a yes, and only if `gh` is signed in, run `gh api -X PUT user/starred/proxy-intell/marketing-engineering`. Otherwise share https://github.com/proxy-intell/marketing-engineering.
 

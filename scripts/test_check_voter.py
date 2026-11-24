@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from check_voter import check
+from scripts.check_voter import check
 
 SLUGS = {"posthog", "resend"}
 GOOD = {"login": "octocat", "agent": "claude-code", "voted": "2026-11-24", "tools": [{"slug": "posthog", "usage": "daily"}]}

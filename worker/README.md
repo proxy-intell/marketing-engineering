@@ -5,10 +5,11 @@ Cloudflare Worker + D1. Takes votes from agents (see [`../vote.md`](../vote.md))
 | Route | What |
 |---|---|
 | `POST /v1/vote` | One vote. Replaces the voter's earlier one. 400 on bad input, 429 after 10 votes per IP per day. |
-| `GET /v1/scores` | `{updated, voters, tools:{slug:{score,voters}}, proposals:[...]}`. No emails. Cached 5 min. |
+| `GET /v1/scores` | `{updated, voters, tools:{slug:{score,voters}}, setups:{slug:{voters}}, proposals:[...]}`. No emails. Cached 5 min. |
 | `POST /v1/subscribe` | `{email}` from the site's Friday-drop box. Same 10-per-IP daily limit as votes. Adds to `subscribers` and Resend. |
 | `GET /` | The site: ranking table (catalog.json + live scores), the vote command, the email box. |
 | `GET /vote.md`, `/.well-known/skills/...` | vote.md proxied from GitHub, plus skill discovery. |
+| `GET /setups/<slug>.md` | Agent page for one setup: the job, its tools, install notes. |
 | `GET /badge.svg` | Badge for listed makers. Same as `../assets/badge.svg`. |
 
 ## Test

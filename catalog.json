@@ -33,6 +33,7 @@
         "api"
       ],
       "pricing": "free",
+      "kind": "data",
       "tags": [
         "indexing",
         "aeo"
@@ -69,6 +70,7 @@
         "mcp"
       ],
       "pricing": "freemium",
+      "kind": "data",
       "docs_url": "https://docs.exa.ai",
       "mcp_url": "https://mcp.exa.ai/mcp",
       "tags": [
@@ -106,6 +108,7 @@
         "api"
       ],
       "pricing": "free",
+      "kind": "data",
       "tags": [
         "indexing",
         "keywords"
@@ -137,6 +140,7 @@
         "api"
       ],
       "pricing": "paid",
+      "kind": "data",
       "tags": [
         "aeo",
         "brand-monitoring"
@@ -173,6 +177,7 @@
         "mcp"
       ],
       "pricing": "freemium",
+      "kind": "data",
       "docs_url": "https://posthog.com/docs",
       "mcp_url": "https://mcp.posthog.com/mcp",
       "tags": [
@@ -210,6 +215,7 @@
         "plugin"
       ],
       "pricing": "freemium",
+      "kind": "data",
       "docs_url": "https://useproxy.dev/docs",
       "mcp_url": "https://mcp.useproxy.dev/mcp?ref=marketing-engineering",
       "tags": [
@@ -248,6 +254,7 @@
         "api"
       ],
       "pricing": "paid",
+      "kind": "data",
       "tags": [
         "social-data",
         "organic"
@@ -265,6 +272,7 @@
         "api"
       ],
       "pricing": "paid",
+      "kind": "data",
       "tags": [
         "keywords",
         "competitor-research"

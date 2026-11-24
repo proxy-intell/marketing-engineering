@@ -1,4 +1,5 @@
 // Public site: catalog + scores -> one HTML page. Pure, so it runs under `node --test`.
+const OURS = ["proxy"];
 const PAGE = String.raw`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Marketing Engineering: marketing tools ranked by real usage</title><meta name="description" content="Marketing tools, skills and plugins ranked by what other marketers actually use. Ads, SEO and AEO, analytics, email, billing."><meta property="og:title" content="Marketing Engineering"><meta property="og:description" content="What other marketers are actually using. Turns out it's not what Twitter says…"><meta property="og:image" content="https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/assets/social-preview.png"><meta property="og:url" content="https://marketingengineering.dev/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/assets/social-preview.png"><link rel="apple-touch-icon" href="https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/assets/icon-180.png"><link rel="alternate" type="text/markdown" href="/vote.md"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%23BFDAF5%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%2210%22%20width%3D%2220%22%20height%3D%2220%22%20rx%3D%225.5%22%20fill%3D%22%23FFC53D%22%2F%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%2220%22%20r%3D%2210%22%20fill%3D%22%23F5B5E1%22%2F%3E%3Cpolygon%20points%3D%2231.0%2C44.0%2025.5%2C53.5%2014.5%2C53.5%209.0%2C44.0%2014.5%2C34.5%2025.5%2C34.5%22%20fill%3D%22%231FA35B%22%2F%3E%3Crect%20x%3D%2236.8%22%20y%3D%2236.8%22%20width%3D%2214.4%22%20height%3D%2214.4%22%20rx%3D%222.4%22%20fill%3D%22%23FF5A1F%22%20transform%3D%22rotate%2845%2044%2044%29%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"><style>
 :root {
   --yellow: #FFC53D;
@@ -78,7 +79,8 @@ h1 { font: 850 clamp(3.6rem, 9.2vw, 8.6rem)/.9 var(--display); font-variation-se
 .agentbox code::before { content: "$ "; color: #8a867c }
 .agentbox button { border: 0; background: var(--orange); color: var(--ink); font: 700 .78rem var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 0 18px; min-height: 40px; cursor: pointer }
 .agentnote { display: block; margin: 8px 0 18px }
-.seerank { display: inline-block; margin: 10px 0 0; color: var(--ink) }
+.seerank { display: inline-block; margin: 10px 18px 0 0; color: var(--ink) }
+.seerank[hidden] { display: none }
 
 .getit .code { margin: 0 0 18px; background: var(--ink); border-color: var(--ink) }
 .getit .code code { background: var(--ink); color: var(--paper); font-size: .8rem; padding: 16px 14px; white-space: normal; overflow-wrap: anywhere }
@@ -272,6 +274,17 @@ table.rt td.nm .msub { display: none }
   .nums strong { font-size: 3.6rem }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
+.sgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 22px }
+.scard { border: 2px solid var(--ink); background: var(--paper); padding: 16px; min-width: 0; display: flex; flex-direction: column; gap: 12px }
+.scard h3 { margin: 0; font: 850 1.35rem/1.05 var(--display); font-variation-settings: "wdth" 80; letter-spacing: -.02em }
+.scard ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: .88rem; line-height: 1.4 }
+.scard ol a { color: var(--ink); font-weight: 700 }
+.scard ol span.w { color: var(--mute) }
+.scard .fine { margin: 0; margin-top: auto }
+.scard .code { margin: 0 }
+.scard .code code { white-space: normal; overflow-wrap: anywhere }
+.smore { margin-top: 16px; border: 2px solid var(--ink); background: var(--paper); padding: 9px 16px; font: 700 .75rem var(--mono); text-transform: uppercase; letter-spacing: .05em }
+@media (max-width: 560px) { .sgrid { grid-template-columns: minmax(0, 1fr) } }
 .kd { margin-left: 8px; font: 700 .62rem var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--cobalt); vertical-align: middle }
 </style></head><body><main>
 <div class="wrap">
@@ -285,7 +298,7 @@ table.rt td.nm .msub { display: none }
     <div class="h-left">
       <h1>marketing engineering</h1>
       <p class="lede">what other marketers are actually using. turns out it's not what twitter says…</p>
-      <a class="fine seerank" href="#rank">see the ranking ↓</a>
+      <a class="fine seerank" id="seeset" href="#setups" hidden>see the setups ↓</a><a class="fine seerank" href="#rank">see the ranking ↓</a>
       <div class="getit">
         <div class="agentbox">
           <div class="lbl">give this to your agent <span class="agchips"><span class="ag">Claude</span><span class="ag">Cursor</span><span class="ag">Codex</span><span class="ag">ChatGPT</span><span class="ag">any agent</span></span></div>
@@ -297,6 +310,12 @@ table.rt td.nm .msub { display: none }
       </div>
     </div>
   </div>
+</div>
+
+<div class="wrap sec" id="setups" hidden>
+  <div class="sec-h"><h2>setups</h2></div>
+  <p class="fine">one job, done end to end. ranked by how many voters have the whole thing</p>
+  <div class="sgrid" id="sgrid"></div>
 </div>
 
 <div class="wrap sec" id="rank">
@@ -364,7 +383,7 @@ table.rt td.nm .msub { display: none }
     countEl.textContent = rows.length + " of " + D.rows.length + " tools";
     var board = document.getElementById("board");
     board.innerHTML = rows.length ? rows.map(function (r, i) {
-      return '<tr><td class="rk">' + String(i + 1).padStart(2, "0") + '</td><td class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a>' + (r.kind && r.kind !== "tool" ? '<span class="kd">' + esc(r.kind) + '</span>' : "") + '<span class="msub">' + esc(r.cat) + '</span></td>' +
+      return '<tr><td class="rk">' + String(i + 1).padStart(2, "0") + '</td><td class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a>' + (r.kind && r.kind !== "tool" ? '<span class="kd">' + esc(r.kind) + '</span>' : "") + (r.setups ? '<a class="kd" href="#setups">in ' + r.setups + (r.setups === 1 ? " setup" : " setups") + '</a>' : "") + '<span class="msub">' + esc(r.cat) + '</span></td>' +
         '<td class="cat">' + esc(r.cat) + '</td><td class="desc">' + esc(r.desc) + '</td>' +
         '<td class="bar"><div class="meter"><i style="width:' + (r.score / max) * 100 + '%"></i></div></td>' +
         '<td class="num">' + r.score + '</td><td class="num">' + r.voters + "</td></tr>";
@@ -380,6 +399,30 @@ table.rt td.nm .msub { display: none }
     });
   });
   render();
+
+  var sgrid = document.getElementById("sgrid");
+  function scard(s) {
+    var v = s.voters ? s.voters + (s.voters === 1 ? " voter has" : " voters have") + " all of this" : "nobody has all of this yet";
+    var cmd = 'set up "' + s.job + '" - https://marketingengineering.dev/setups/' + s.slug + ".md";
+    return '<article class="scard"><h3>' + esc(s.job) + "</h3><ol>" + s.steps.map(function (t) {
+      return '<li><a href="' + esc(t.url) + '" target="_blank" rel="noopener">' + esc(t.name) + '</a> <span class="w">' + esc(t.why) + "</span>" + (t.ours ? '<span class="kd">made by us</span>' : "") + "</li>";
+    }).join("") + '</ol><p class="fine">' + v + '</p><div class="code"><code>' + esc(cmd) + "</code><button type=\"button\">Copy</button></div></article>";
+  }
+  if (D.setups.length) {
+    document.getElementById("setups").hidden = false; document.getElementById("seeset").hidden = false;
+    sgrid.innerHTML = D.setups.slice(0, 6).map(scard).join("");
+    if (D.setups.length > 6) {
+      var more = document.createElement("button"); more.type = "button"; more.className = "smore"; more.textContent = "show all " + D.setups.length + " setups";
+      more.addEventListener("click", function () { sgrid.innerHTML = D.setups.map(scard).join(""); more.remove(); });
+      sgrid.parentNode.appendChild(more);
+    }
+    sgrid.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      var t = b.previousElementSibling.textContent;
+      try { navigator.clipboard.writeText(t).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); }, sel); } catch (x) { sel(); }
+      function sel() { var r = document.createRange(); r.selectNodeContents(b.previousElementSibling); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    });
+  }
 
   document.getElementById("cp").addEventListener("click", function () {
     var t = document.getElementById("cmd").textContent, b = this;
@@ -401,11 +444,18 @@ table.rt td.nm .msub { display: none }
 </script>
 </body></html>`;
 
-export function renderLeaderboard(products, scores) {
+export function renderLeaderboard(products, scores, setups = []) {
+  const by = Object.fromEntries(products.map((p) => [p.slug, p]));
+  const count = {};
+  for (const st of setups) for (const t of st.steps) count[t.tool] = (count[t.tool] ?? 0) + 1;
   const rows = products.map((p) => {
     const s = scores.tools[p.slug] ?? { score: 0, voters: 0 };
-    return { slug: p.slug, name: p.name, url: p.url, cat: p.category, desc: p.description, kind: p.kind ?? "tool", score: s.score, voters: s.voters };
+    return { slug: p.slug, name: p.name, url: p.url, cat: p.category, desc: p.description, kind: p.kind ?? "tool", score: s.score, voters: s.voters, setups: count[p.slug] ?? 0 };
   }).sort((a, b) => b.score - a.score || a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-  const data = JSON.stringify({ voters: scores.voters, rows }).replace(/</g, "\\u003c");
+  const sets = setups.map((st) => ({
+    slug: st.slug, job: st.job, voters: scores.setups?.[st.slug]?.voters ?? 0,
+    steps: st.steps.map((t) => ({ slug: t.tool, name: by[t.tool]?.name ?? t.tool, url: by[t.tool]?.url, why: t.why, ours: OURS.includes(t.tool) })),
+  })).sort((a, b) => b.voters - a.voters || a.job.localeCompare(b.job));
+  const data = JSON.stringify({ voters: scores.voters, rows, setups: sets }).replace(/</g, "\\u003c");
   return PAGE.replace("/*DATA*/", () => data);
 }
