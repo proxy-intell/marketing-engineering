@@ -10,7 +10,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/ranked%20by-real%20usage-d7ff3a?style=flat&labelColor=111111" alt="Ranked by real usage">
-  <img src="https://img.shields.io/badge/meetings-0-ff4d8d?style=flat&labelColor=111111" alt="Meetings: 0">
+  <img src="https://img.shields.io/badge/meetings-0-d7ff3a?style=flat&labelColor=111111" alt="Meetings: 0">
   <a href="llms.txt"><img src="https://img.shields.io/badge/llms.txt-ready-d7ff3a?style=flat&labelColor=111111" alt="llms.txt ready"></a>
 </p>
 
