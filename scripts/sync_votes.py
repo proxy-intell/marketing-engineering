@@ -23,6 +23,7 @@ votes = {
     "updated": data["updated"][:10],
     "voters": data["voters"],
     "tools": {slug: {"score": t["score"], "voters": t["voters"]} for slug, t in sorted(data["tools"].items())},
+    "setups": {slug: {"voters": s["voters"]} for slug, s in sorted(data.get("setups", {}).items())},
 }
 (ROOT / "votes.json").write_text(json.dumps(votes, indent=2) + "\n")
 print(f"{votes['voters']} voters, {len(votes['tools'])} tools")
