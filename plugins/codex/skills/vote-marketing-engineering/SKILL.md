@@ -24,7 +24,7 @@ Source of truth: https://github.com/proxy-intell/marketing-engineering. How scor
 
 - **Local coding agent** (Claude Code, Cursor, Codex, opencode, on the user's machine): do every step below, including the scan.
 - **Hosted assistant with no shell** (ChatGPT, claude.ai): skip the scan. Ask the user which listed tools they use and how often, and rate from their answer.
-- **Sandbox with restricted network** (a cloud container): if `votes.useproxy.dev` is unreachable (proxy 403, DNS failure, timeout), do not retry or try other hosts. Tell the user that host is blocked by the environment's network policy and that they can run the same command on their own machine. Then stop.
+- **Sandbox with restricted network** (a cloud container): if `marketingengineering.dev` is unreachable (proxy 403, DNS failure, timeout), do not retry or try other hosts. Tell the user that host is blocked by the environment's network policy and that they can run the same command on their own machine. Then stop.
 
 ### 1. Get the catalog
 
@@ -86,7 +86,7 @@ Read `~/.config/marketing-engineering/install_id`. If missing, create the direct
 
 ### 8. Send
 
-`POST https://votes.useproxy.dev/v1/vote` with `Content-Type: application/json`:
+`POST https://marketingengineering.dev/v1/vote` with `Content-Type: application/json`:
 
 ```json
 {
@@ -120,6 +120,6 @@ Responses: `200 {"ok":true,"counted":{"tools":N,"proposals":M},"subscribed":true
 
 ### 9. Report back
 
-Tell the user in two lines: what was counted, and where the ranking is: https://votes.useproxy.dev (the README order updates daily). Suggest voting again in a month, since usage changes and old votes expire after 90 days.
+Tell the user in two lines: what was counted, and where the ranking is: https://marketingengineering.dev (the README order updates daily). Suggest voting again in a month, since usage changes and old votes expire after 90 days.
 
 Then ask once, as a yes or no: "Want to star the repo?" Only on a yes, and only if `gh` is signed in, run `gh api -X PUT user/starred/proxy-intell/marketing-engineering`. Otherwise just share the link.

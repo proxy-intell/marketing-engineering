@@ -29,7 +29,7 @@ npx wrangler deploy
 
 Then:
 
-1. Live at `https://votes.useproxy.dev` (custom domain in `wrangler.toml`, `workers_dev` off). Change the domain there.
+1. Live at `https://marketingengineering.dev` (custom domain in `wrangler.toml`, `workers_dev` off). `votes.useproxy.dev` still serves, for old links and installed copies. Any other host (www, other TLDs) redirects to the canonical domain.
 2. The URL is written into [`../vote.md`](../vote.md).
 3. Set the repo variable `VOTES_URL` (Settings → Secrets and variables → Actions → Variables) so `sync-votes.yml` runs.
 

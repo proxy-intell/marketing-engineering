@@ -3,7 +3,11 @@ main = "src/index.js"
 compatibility_date = "2026-10-01"
 workers_dev = false
 
-routes = [{ pattern = "votes.useproxy.dev", custom_domain = true }]
+routes = [
+  { pattern = "marketingengineering.dev", custom_domain = true },
+  { pattern = "www.marketingengineering.dev", custom_domain = true },
+  { pattern = "votes.useproxy.dev", custom_domain = true },
+]
 
 [vars]
 RESEND_SEGMENT_ID = "8c596f7f-071d-4468-8a5b-f899189aa4ef"
