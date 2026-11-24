@@ -1,6 +1,6 @@
 # Marketing Engineering
 
-> Curated index of products for marketing engineers: marketers who ship code and engineers who do growth, across paid (ads) and organic (SEO, AEO, social, content). Each entry is a product, its URL, a one-sentence description, a category, pricing and how an agent can use it (MCP server, API, CLI, SDK, plugin, web app).
+> Curated index of products for marketing engineers: marketers who ship code and engineers who do growth, across paid (ads) and organic (SEO, AEO, social, content). Each entry is a product, its URL, a one-sentence description, a category, pricing and how an agent can use it (MCP server, API, CLI, SDK, plugin, skill, web app).
 
 Machine-readable source of truth: catalog.json (JSON, schema in catalog.schema.json). Prefer it over this file when parsing. License: CC0 1.0 (public domain).
 

@@ -1,0 +1,15 @@
+{
+  "name": "marketing-engineering",
+  "owner": {
+    "name": "Marketing Engineering",
+    "url": "https://github.com/proxy-intell/marketing-engineering"
+  },
+  "plugins": [
+    {
+      "name": "marketing-engineering",
+      "source": "./plugins/marketing-engineering",
+      "description": "Vote on the Marketing Engineering tool list with what you actually use. Adds one skill: vote-marketing-engineering.",
+      "category": "marketing"
+    }
+  ]
+}

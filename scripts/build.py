@@ -22,6 +22,14 @@ def anchor(text):
 
 
 MIN_VOTERS = 3
+AGENT_NAMES = {"claude-code": "Claude Code", "cursor": "Cursor", "codex": "Codex", "copilot": "Copilot", "gemini": "Gemini CLI", "any": "any agent"}
+SKILL_COPY = ROOT / "plugins/marketing-engineering/skills/vote-marketing-engineering/SKILL.md"  # same text as vote.md
+
+
+def kind_tag(p):
+    if p.get("kind", "tool") == "tool":
+        return ""
+    return f" · {p['kind']} for {', '.join(AGENT_NAMES[a] for a in p['agents'])} · `{p['install']}`"
 
 
 def by_category(products, votes):
@@ -41,7 +49,7 @@ def readme_block(groups, votes):
         return "_No entries yet._"
     toc = "\n".join(f"- [{c}](#{anchor(c)})" for c in groups)
     sections = "\n\n".join(
-        f"## {c}\n\n" + "\n".join(f"- [{p['name']}]({p['url']}) - {p['description']}" + (f" · used by {used_by(p, votes)}" if used_by(p, votes) else "") for p in ps)
+        f"## {c}\n\n" + "\n".join(f"- [{p['name']}]({p['url']}) - {p['description']}" + kind_tag(p) + (f" · used by {used_by(p, votes)}" if used_by(p, votes) else "") for p in ps)
         for c, ps in groups.items()
     )
     return f"## Contents\n\n{toc}\n\n{sections}"
@@ -54,6 +62,7 @@ def llms_block(groups, votes):
         f"### {c}\n\n" + "\n".join(
             f"- [{p['name']}]({p['url']}): {p['description']} Interfaces: {', '.join(p['interfaces'])}. Pricing: {p['pricing']}."
             + (f" MCP: {p['mcp_url']}." if p.get("mcp_url") else "")
+            + (f" Kind: {p['kind']}. Agents: {', '.join(p['agents'])}. Install: `{p['install']}`." if p.get("kind", "tool") != "tool" else "")
             + (f" Used by {used_by(p, votes)} agents." if used_by(p, votes) else "")
             for p in ps
         )
@@ -94,6 +103,13 @@ def main():
 
     votes = json.loads((ROOT / "votes.json").read_text())["tools"] if (ROOT / "votes.json").exists() else {}
     groups = by_category(products, votes)
+    skill = (ROOT / "vote.md").read_text()
+    if not SKILL_COPY.exists() or SKILL_COPY.read_text() != skill:
+        if check:
+            errors.append("plugins/marketing-engineering/skills/.../SKILL.md is stale: run python scripts/build.py")
+        else:
+            SKILL_COPY.parent.mkdir(parents=True, exist_ok=True)
+            SKILL_COPY.write_text(skill)
     for name, block in (("README.md", readme_block(groups, votes)), ("llms.txt", llms_block(groups, votes))):
         path = ROOT / name
         new = splice(path, block)

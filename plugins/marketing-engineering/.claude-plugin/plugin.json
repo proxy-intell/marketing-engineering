@@ -1,0 +1,12 @@
+{
+  "name": "marketing-engineering",
+  "version": "0.1.0",
+  "description": "Vote on the Marketing Engineering tool list with what you actually use.",
+  "homepage": "https://github.com/proxy-intell/marketing-engineering",
+  "license": "CC0-1.0",
+  "keywords": [
+    "marketing",
+    "vote",
+    "skills"
+  ]
+}

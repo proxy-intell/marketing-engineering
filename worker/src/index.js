@@ -1,5 +1,9 @@
 import { validateVote, score } from "./votes.js";
 import { BADGE_SVG } from "./badge.js";
+import { renderLeaderboard } from "./leaderboard.js";
+
+const RAW = "https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main";
+const SKILL_DESCRIPTION = "Vote on the Marketing Engineering tool list using what the user actually uses. Use when the user asks to vote, rank, submit or add marketing tools, skills or plugins to proxy-intell/marketing-engineering, or pastes the vote.md link.";
 
 const MAX_BODY = 20_000;
 const MAX_VOTES_PER_IP_PER_DAY = 10;
@@ -66,18 +70,30 @@ export default {
     }
 
     // Short, stable URL for agents: "vote on marketing engineering - https://votes.useproxy.dev/vote.md"
-    if ((request.method === "GET" || request.method === "HEAD") && pathname === "/vote.md") {
-      const res = await fetch("https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/vote.md", { cf: { cacheTtl: 300, cacheEverything: true } });
-      if (!res.ok) return json({ error: "vote.md unavailable, read it on GitHub" }, 502);
-      return new Response(await res.text(), { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" } });
-    }
+    if ((request.method === "GET" || request.method === "HEAD") && pathname === "/vote.md") return fetchVoteMd();
 
     if ((request.method === "GET" || request.method === "HEAD") && pathname === "/badge.svg") {
       return new Response(BADGE_SVG, { headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=86400" } });
     }
 
-    if (request.method === "GET" && pathname === "/") {
-      return new Response("marketing-engineering votes. Agents: read https://votes.useproxy.dev/vote.md\n");
+    // Agent Skills discovery, same shape other skill catalogs publish at /.well-known/skills/
+    if (request.method === "GET" && pathname === "/.well-known/skills/index.json") {
+      return json({ skills: [{ name: "vote-marketing-engineering", description: SKILL_DESCRIPTION, files: ["SKILL.md"] }] }, 200, { "cache-control": "public, max-age=3600" });
+    }
+    if (request.method === "GET" && pathname === "/.well-known/skills/vote-marketing-engineering/SKILL.md") {
+      return fetchVoteMd();
+    }
+
+    // Public scoreboard
+    if (request.method === "GET" && (pathname === "/" || pathname === "/leaderboard")) {
+      const [catalogRes, { results }] = await Promise.all([
+        fetch(`${RAW}/catalog.json`, { cf: { cacheTtl: 300, cacheEverything: true } }),
+        env.DB.prepare("SELECT updated_at, payload FROM votes").all(),
+      ]);
+      if (!catalogRes.ok) return json({ error: "catalog unavailable" }, 502);
+      const { products } = await catalogRes.json();
+      const scores = score(results.map((r) => ({ updated_at: r.updated_at, payload: JSON.parse(r.payload) })));
+      return new Response(renderLeaderboard(products, scores), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
     }
 
     return json({ error: "not found" }, 404);
@@ -94,4 +110,10 @@ async function addToResend(env, email) {
     body: JSON.stringify(body),
   });
   if (!res.ok) console.error("resend contact create failed", res.status, await res.text());
+}
+
+async function fetchVoteMd() {
+  const res = await fetch(`${RAW}/vote.md`, { cf: { cacheTtl: 300, cacheEverything: true } });
+  if (!res.ok) return new Response(JSON.stringify({ error: "vote.md unavailable, read it on GitHub" }), { status: 502, headers: { "content-type": "application/json" } });
+  return new Response(await res.text(), { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" } });
 }
