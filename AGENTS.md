@@ -8,3 +8,4 @@ Instructions for AI agents maintaining or reading this repo.
 - Follow `CONTRIBUTING.md` for the bar and description style.
 - Never add tracking params to URLs.
 - Weekly releases come from `.github/workflows/weekly-drop.yml` via `scripts/drop.py`, keyed on each entry's `added` date. Set `added` to the merge date.
+- PR titles and branch names are funny but descriptive, matching the repo vibe (e.g. branch `thumbs-on-the-feed-eyes-on-the-og-image`, PR "Touch grass? No. Touch catalog.json"). Squash commits keep the PR title.
