@@ -37,6 +37,14 @@ test("a vote response lists the voter's setups with missing tool names", async (
   ]);
 });
 
+test("a vote response says where the voter stands", async () => {
+  serve(new Response(JSON.stringify(SETUPS)));
+  const body = await (await vote([{ slug: "a", usage: "daily" }])).json();
+  assert.equal(body.new, false); // the stub DB already has this install
+  assert.equal(body.voters, 1);
+  assert.deepEqual(body.ranks, [{ slug: "a", rank: 1 }]);
+});
+
 const quiet = async (fn) => { const e = console.error; console.error = () => {}; try { await fn(); } finally { console.error = e; } };
 
 test("setups.json down or broken never fails a vote, the scores or the page", () => quiet(async () => {

@@ -11,7 +11,7 @@ Source of truth: https://github.com/proxy-intell/marketing-engineering. How scor
 
 ## Rules
 
-1. Read-only. Change nothing on the user's machine except the one id file in step 7.
+1. Read-only. Change nothing on the user's machine except the one id file in step 7. On GitHub, change only what the user says yes to in steps 9 and 10.
 2. Ask before sending. Show the exact payload. Send nothing without a clear yes.
 3. Never send: code, file paths, repo or client names, env var values, API keys, tokens, prompts, transcripts, shell history, MCP headers, or anything confidential.
 4. Names only. A tool is identified by its public name and URL.
@@ -116,11 +116,11 @@ Read `~/.config/marketing-engineering/install_id`. If missing, create the direct
 - `email`, `weekly_drop`, `proposals` are optional. At least one of `tools` or `proposals` is required.
 - Limits: 40 tools, 5 proposals per vote.
 
-Responses: `200 {"ok":true,"counted":{"tools":N,"proposals":M},"subscribed":true|false,"setups":[{"slug":"aeo","job":"get cited in AI search","have":3,"of":4,"missing":["IndexNow"]}]}`. `setups` lists up to 3 setups built from tools you voted for. It may be empty. `400` has an `error` string: fix it and retry once. `429`: tell the user to try again tomorrow.
+Responses: `200 {"ok":true,"counted":{"tools":N,"proposals":M},"subscribed":true|false,"new":true|false,"voters":V,"ranks":[{"slug":"posthog","rank":2}],"setups":[{"slug":"aeo","job":"get cited in AI search","have":3,"of":4,"missing":["IndexNow"]}]}`. `ranks` is the overall rank of up to 3 of the user's tools, best first. `setups` lists up to 3 setups built from tools you voted for. It may be empty. `400` has an `error` string: fix it and retry once. `429`: tell the user to try again tomorrow.
 
 ### 9. Report back
 
-Tell the user in two lines: what was counted, and where the ranking is: https://marketingengineering.dev (the README order updates daily). Suggest voting again in a month, since usage changes and old votes expire after 90 days.
+Tell the user in two lines what was counted and where they stand. If `new`, say "You're voter #V". Otherwise say "Vote updated, V voters so far". Name the tools in `ranks` by their catalog name, for example "PostHog is #2 overall". Link the live ranking: https://marketingengineering.dev. Suggest voting again in a month, since usage changes and old votes expire after 90 days.
 
 If the response has `setups`, add one line for each, at most 3:
 
@@ -130,4 +130,49 @@ If the response has `setups`, add one line for each, at most 3:
 
 Then link https://marketingengineering.dev/#setups. Do not install anything and do not ask to. If `setups` is empty or absent, say nothing about setups.
 
-Then ask once, as a yes or no: "Want to star the repo?" Only on a yes, and only if `gh` is signed in, run `gh api -X PUT user/starred/proxy-intell/marketing-engineering`. Otherwise just share the link.
+Then ask once, as a yes or no: "Stars are how other marketers find this list. Star it? ⭐" Only on a yes, and only if `gh` is signed in, run `gh api -X PUT user/starred/proxy-intell/marketing-engineering`. Otherwise share https://github.com/proxy-intell/marketing-engineering.
+
+### 10. Put the stack on GitHub (optional)
+
+Only if `gh auth status` succeeds. Skip this step silently otherwise.
+
+Ask once, as a yes or no: "Want your stack on GitHub too? I'd open a PR from your account adding `voters/<login>.json` with the tools above. It's public and tied to your GitHub handle, merges automatically, and you may be credited by handle in the Friday release." Show the exact file first:
+
+```json
+{
+  "login": "octocat",
+  "agent": "claude-code",
+  "voted": "2026-11-24",
+  "tools": [{ "slug": "posthog", "usage": "daily" }]
+}
+```
+
+- `login` is from `gh api user --jq .login`. `voted` is today, UTC.
+- `tools` are the listed tools from the vote you sent, with the same ratings. Leave out `proposals`, and add nothing that wasn't in the vote.
+
+On a yes, run these. They write nothing to disk.
+
+```bash
+FILE_JSON='<the file you showed the user>'
+login=$(gh api user --jq .login)
+fork=$(gh api -X POST repos/proxy-intell/marketing-engineering/forks -F default_branch_only=true --jq .full_name)
+branch="vote-$(date -u +%F)"
+sha=$(gh api repos/proxy-intell/marketing-engineering/commits/main --jq .sha)
+gh api -X POST "repos/$fork/merge-upstream" -f branch=main >/dev/null 2>&1 || true
+gh api -X POST "repos/$fork/git/refs" -f ref="refs/heads/$branch" -f sha="$sha" \
+  || gh api -X PATCH "repos/$fork/git/refs/heads/$branch" -f sha="$sha" -F force=true
+content=$(printf '%s\n' "$FILE_JSON" | base64 | tr -d '\n')
+old=$(gh api "repos/proxy-intell/marketing-engineering/contents/voters/$login.json" --jq .sha 2>/dev/null || true)
+if [ -n "$old" ]; then
+  gh api -X PUT "repos/$fork/contents/voters/$login.json" -f message="vote: $login's stack" -f branch="$branch" -f content="$content" -f sha="$old"
+else
+  gh api -X PUT "repos/$fork/contents/voters/$login.json" -f message="vote: $login's stack" -f branch="$branch" -f content="$content"
+fi
+gh api -X POST repos/proxy-intell/marketing-engineering/pulls -f base=main -f head="${fork%%/*}:$branch" \
+  -f title="$login voted with their usage" -f body="Opened by their agent via vote.md. Auto-merges when it only touches voters/$login.json."
+```
+
+- Forking is async. If the ref call says the repo or object does not exist, wait 3 seconds and retry it, up to 5 times.
+- If the PR call says a pull request already exists, the open PR now carries the new file. Say so.
+
+Give the user the PR link and tell them it merges within a minute or two. To remove the file later, they open a PR that deletes `voters/<login>.json`, and it merges the same way.
