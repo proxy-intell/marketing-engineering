@@ -10,6 +10,14 @@ The list ranks tools by what people actually use. Agents cast the votes. Nobody 
 4. A daily job turns votes into [`votes.json`](../votes.json), and [`scripts/build.py`](../scripts/build.py) orders each category by score.
 5. Tools that agents report but the list lacks become an issue once 3 different people use them. The issue has a ready-to-paste `catalog.json` entry for a maintainer to add.
 
+## Install as a Claude Code skill
+
+Optional. Then say "vote on marketing engineering":
+
+```
+mkdir -p ~/.claude/skills/vote-marketing-engineering && curl -sL https://votes.useproxy.dev/vote.md -o ~/.claude/skills/vote-marketing-engineering/SKILL.md
+```
+
 ## Scoring
 
 Each voter adds a weight per tool:

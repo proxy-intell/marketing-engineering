@@ -47,5 +47,5 @@ Add `maker_x` (the maker's X handle, no @). Every Friday new entries ship as a G
 ## Listed? Add the badge
 
 ```md
-[![Featured on Marketing Engineering](https://img.shields.io/badge/featured%20on-Marketing%20Engineering-111111?style=flat-square)](https://github.com/proxy-intell/marketing-engineering)
+[![Featured on Marketing Engineering](https://votes.useproxy.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering)
 ```

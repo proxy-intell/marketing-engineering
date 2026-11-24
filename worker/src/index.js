@@ -1,4 +1,5 @@
 import { validateVote, score } from "./votes.js";
+import { BADGE_SVG } from "./badge.js";
 
 const MAX_BODY = 20_000;
 const MAX_VOTES_PER_IP_PER_DAY = 10;
@@ -64,8 +65,19 @@ export default {
       return json({ ok: true, counted: { tools: vote.tools.length, proposals: vote.proposals.length }, subscribed: vote.weekly_drop });
     }
 
+    // Short, stable URL for agents: "vote on marketing engineering - https://votes.useproxy.dev/vote.md"
+    if ((request.method === "GET" || request.method === "HEAD") && pathname === "/vote.md") {
+      const res = await fetch("https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/vote.md", { cf: { cacheTtl: 300, cacheEverything: true } });
+      if (!res.ok) return json({ error: "vote.md unavailable, read it on GitHub" }, 502);
+      return new Response(await res.text(), { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" } });
+    }
+
+    if ((request.method === "GET" || request.method === "HEAD") && pathname === "/badge.svg") {
+      return new Response(BADGE_SVG, { headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=86400" } });
+    }
+
     if (request.method === "GET" && pathname === "/") {
-      return new Response("marketing-engineering votes. Agents: read https://github.com/proxy-intell/marketing-engineering/blob/main/vote.md\n");
+      return new Response("marketing-engineering votes. Agents: read https://votes.useproxy.dev/vote.md\n");
     }
 
     return json({ error: "not found" }, 404);

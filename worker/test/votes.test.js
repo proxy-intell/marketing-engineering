@@ -64,3 +64,10 @@ test("score weights usage, counts voters, drops stale votes, groups proposals", 
   assert.equal(s.proposals[0].voters, 2);
   assert.equal(s.proposals[0].score, 5);
 });
+
+import { BADGE_SVG } from "../src/badge.js";
+test("badge is a well-formed svg with an accessible name", () => {
+  assert.match(BADGE_SVG, /^<svg [^>]*role="img"/);
+  assert.match(BADGE_SVG, /<title>Featured on Marketing Engineering<\/title>/);
+  assert.ok(BADGE_SVG.endsWith("</svg>"));
+});
