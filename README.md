@@ -1,7 +1,7 @@
 <h1 align="center">Marketing Engineering</h1>
 
 <p align="center">
-  <img src="assets/header.png" alt="Your agent votes, you just scroll. Claude scans your setup, votes for the marketing tools you really use, and asks if you want the Friday drop." width="100%">
+  <img src="assets/header.png" alt="your agent votes. you just scroll. An agent terminal scans your setup and votes for the marketing tools you really use." width="100%">
 </p>
 
 <p align="center">
@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/ranked%20by-real%20usage-d7ff3a?style=flat&labelColor=111111" alt="Ranked by real usage">
-  <img src="https://img.shields.io/badge/meetings-0-d7ff3a?style=flat&labelColor=111111" alt="Meetings: 0">
-  <a href="llms.txt"><img src="https://img.shields.io/badge/llms.txt-ready-d7ff3a?style=flat&labelColor=111111" alt="llms.txt ready"></a>
+  <img src="https://img.shields.io/badge/ranked%20by-real%20usage-FF5A1F?style=flat&labelColor=181818" alt="Ranked by real usage">
+  <img src="https://img.shields.io/badge/meetings-0-FF5A1F?style=flat&labelColor=181818" alt="Meetings: 0">
+  <a href="llms.txt"><img src="https://img.shields.io/badge/llms.txt-ready-FF5A1F?style=flat&labelColor=181818" alt="llms.txt ready"></a>
 </p>
 
 <p align="center">
@@ -33,7 +33,7 @@ give this to your agent (Claude Code, Cursor, Codex, any agent that can fetch a 
 vote on marketing engineering - https://marketingengineering.dev/vote.md
 ```
 
-it checks which of these tools you really use, shows you exactly what it will send, and waits for a yes. it asks once if you want the friday email (give one or say no, the vote counts either way). tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 agents use them
+it checks which of these tools you really use, shows you exactly what it will send, and waits for a yes. it asks once if you want the friday email (give one or say no, the vote counts either way). tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 agents use them. live ranking: [marketingengineering.dev](https://marketingengineering.dev)
 
 only tool names and usage ratings leave your machine. never code, paths, keys or prompts. [how voting works](docs/how-voting-works.md)
 
@@ -41,7 +41,7 @@ want it permanent? `npx skills add proxy-intell/marketing-engineering` installs 
 
 every entry says what it does and how you plug in: MCP server, API, CLI, SDK, plugin, skill or web app. skills and plugins for coding agents are listed too, with an install line. agents can skip the prose and read [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json), remote MCP URLs included
 
-new tools ship every friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases) and an email. watch → custom → releases, or give your agent an email when it asks
+new tools ship every friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases) and an email. watch → custom → releases, drop your email on [marketingengineering.dev](https://marketingengineering.dev), or give it to your agent when it asks
 
 <!-- BEGIN CATALOG -->
 
@@ -124,4 +124,4 @@ new tools ship every friday as a [release](https://github.com/proxy-intell/marke
 
 2. **open a PR yourself.** edit `catalog.json`, run `python scripts/build.py`. details in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-listed? put the badge in your README: [![Featured on Marketing Engineering](https://marketingengineering.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering) ([snippet](CONTRIBUTING.md#listed-add-the-badge))
+listed? put the badge in your README: [![Listed on Marketing Engineering](https://marketingengineering.dev/badge.svg)](https://github.com/proxy-intell/marketing-engineering) ([snippet](CONTRIBUTING.md#listed-add-the-badge))

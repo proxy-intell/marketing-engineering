@@ -7,7 +7,7 @@ export const MAX_PROPOSALS = 5;
 
 const KINDS = ["tool", "skill", "plugin"];
 const AGENTS = ["claude-code", "cursor", "codex", "chatgpt", "gemini", "other"];
-const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
+export const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 
 export function validateVote(body) {
   if (!body || typeof body !== "object" || body.v !== 1) return { error: "v must be 1" };

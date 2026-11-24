@@ -20,7 +20,7 @@ mkdir -p ~/.claude/skills/vote-marketing-engineering && curl -sL https://marketi
 
 ## Where to see the ranking
 
-- **https://marketingengineering.dev**: the live scoreboard, every tool by category with score and voters.
+- **https://marketingengineering.dev**: the live ranking: one table of every tool, sorted by score, with search, a category filter and voter counts. Also takes Friday-drop sign-ups.
 - **README order**: updated daily from the same scores. "used by N" shows at 3 or more voters.
 - **`/v1/scores`**: the same data as JSON.
 
