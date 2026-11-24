@@ -1,6 +1,6 @@
 # Contributing
 
-**Best way in: vote with your usage.** Paste [`vote.md`](vote.md) into your agent. It reports which listed tools you really use, proposes ones we lack, and ranks the list. See [how voting works](docs/how-voting-works.md). The routes below are for adding a tool by hand.
+**Best way in: vote with your usage.** Paste [`vote.md`](vote.md) into your agent. It reports which listed tools you actually use, proposes ones we lack, and ranks the list. See [how voting works](docs/how-voting-works.md). The routes below are for adding a tool by hand.
 
 No JSON wanted? Ask your agent: `Add <tool URL> to github.com/proxy-intell/marketing-engineering. Follow AGENTS.md and open a PR.`
 

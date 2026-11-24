@@ -3,7 +3,7 @@
 <h1 align="center">Marketing Engineering</h1>
 
 <p align="center">
-  <img src="assets/header.png" alt="your agent votes. you just scroll. An agent terminal scans your setup and votes for the marketing tools you really use." width="100%">
+  <img src="assets/header.png" alt="your agent votes. you just scroll. An agent terminal scans your setup and votes for the marketing tools you actually use." width="100%">
 </p>
 
 <p align="center">
@@ -23,6 +23,8 @@
   <a href="#add-a-tool-by-hand"><b>Add a tool by hand</b></a>
 </p>
 
+> what other marketers are actually using. turns out it's not what twitter says…
+>
 > tools for running marketing like software: ads, SEO and AEO, organic social, analytics, email, billing and the AI agents that drive them
 
 marketers opened a terminal. engineers got asked to "make it go viral". same person now. this is their toolbox
@@ -35,7 +37,7 @@ give this to your agent (Claude Code, Cursor, Codex, ChatGPT, any agent that can
 vote on marketing engineering - https://marketingengineering.dev/vote.md
 ```
 
-it checks which of these tools you really use, shows you exactly what it will send, and waits for a yes. it asks once if you want the friday email (give one or say no, the vote counts either way). tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 agents use them. live ranking: [marketingengineering.dev](https://marketingengineering.dev)
+it checks which of these tools you actually use, shows you exactly what it will send, and waits for a yes. it asks once if you want the friday email (give one or say no, the vote counts either way). tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 people use them. live ranking: [marketingengineering.dev](https://marketingengineering.dev)
 
 only tool names and usage ratings leave your machine. never code, paths, keys or prompts. [how voting works](docs/how-voting-works.md)
 
