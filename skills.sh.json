@@ -1,0 +1,22 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "groupings": [
+    {
+      "title": "Marketing tools",
+      "skills": [
+        "vote-marketing-engineering",
+        "find-marketing-tool"
+      ]
+    },
+    {
+      "title": "Setups",
+      "skills": [
+        "setup-aeo",
+        "setup-competitor-ads",
+        "setup-launch",
+        "setup-paid-product",
+        "setup-whats-working"
+      ]
+    }
+  ]
+}

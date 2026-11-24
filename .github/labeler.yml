@@ -1,0 +1,18 @@
+new-entry:
+  - changed-files:
+      - any-glob-to-any-file: [catalog.json, categories.json]
+setup:
+  - changed-files:
+      - any-glob-to-any-file: [setups.json]
+vote:
+  - changed-files:
+      - any-glob-to-any-file: ["voters/**"]
+site:
+  - changed-files:
+      - any-glob-to-any-file: ["worker/**"]
+skills:
+  - changed-files:
+      - any-glob-to-any-file: [vote.md, "skills/**", "plugins/**"]
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", CONTRIBUTING.md, AGENTS.md]

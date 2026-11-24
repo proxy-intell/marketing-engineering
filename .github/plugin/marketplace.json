@@ -10,7 +10,7 @@
       "name": "marketing-engineering",
       "source": "./plugins/copilot",
       "category": "marketing",
-      "description": "Vote on the Marketing Engineering tool list with what you actually use. Adds one skill: vote-marketing-engineering."
+      "description": "Vote on the Marketing Engineering tool list with what you actually use, find a tool for a job, and set up a whole stack. Skills: vote-marketing-engineering, find-marketing-tool and one setup skill per job."
     }
   ]
 }

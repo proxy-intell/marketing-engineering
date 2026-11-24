@@ -22,7 +22,7 @@ jobs:
           RESEND_SEGMENT_ID: ${{ vars.RESEND_SEGMENT_ID }}
           RESEND_FROM: ${{ vars.RESEND_FROM }}
         run: |
-          since=$(gh release view --json tagName --jq .tagName 2>/dev/null | sed 's/^drop-//' || true)
+          since=$(gh release list --limit 100 --json tagName --jq '[.[].tagName | select(startswith("drop-"))][0] // empty' | sed 's/^drop-//')
           since=${since:-1970-01-01}
           flags=""
           if [ -n "$RESEND_API_KEY" ] && [ -n "$RESEND_SEGMENT_ID" ] && [ -n "$RESEND_FROM" ]; then flags="--resend"; fi
