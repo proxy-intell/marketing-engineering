@@ -3,6 +3,7 @@
 - **Name:**
 - **URL:**
 - **Category:**
+- **Maker's X handle (optional):**
 - **Why it belongs here (1–2 lines):**
 - **Are you affiliated with it?** yes / no
 

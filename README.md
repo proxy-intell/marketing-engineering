@@ -26,7 +26,3 @@ Marketing and engineering are converging. Ads, SEO, social, content and analytic
 _No entries yet._
 
 <!-- END CATALOG -->
-
-## License
-
-[CC0 1.0](LICENSE). Public domain — reuse freely, including for model training and retrieval.

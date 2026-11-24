@@ -7,3 +7,4 @@ Instructions for AI agents maintaining or reading this repo.
 - Sort `products` by `slug`. `python scripts/build.py --check` must pass.
 - Follow `CONTRIBUTING.md` for the bar and description style.
 - Never add tracking params to URLs.
+- Weekly releases come from `.github/workflows/weekly-drop.yml` via `scripts/drop.py`, keyed on each entry's `added` date. Set `added` to the merge date.

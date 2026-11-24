@@ -26,3 +26,13 @@ Reuse an existing `category` where possible. A new one appears automatically onc
 - Say what it does. No "best", "revolutionary", "AI-powered" filler.
 - Don't start with the product name or "A tool that".
 - Canonical URL, no UTM or referral params.
+
+## Credit
+
+Add `maker_x` (the maker's X handle, no @). Every Friday new entries ship as a GitHub Release, and makers get credited in its draft X posts.
+
+## Listed? Add the badge
+
+```md
+[![Featured on Marketing Engineering](https://img.shields.io/badge/featured%20on-Marketing%20Engineering-111111?style=flat-square)](https://github.com/proxy-intell/marketing-engineering)
+```
