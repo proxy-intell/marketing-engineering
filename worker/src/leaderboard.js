@@ -19,7 +19,7 @@ export function renderLeaderboard(products, scores) {
     .join("");
   const cmd = "vote on marketing engineering - https://votes.useproxy.dev/vote.md";
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Marketing Engineering ranking</title><meta name="description" content="Marketing tools ranked by what agents report people actually use."><link rel="alternate" type="text/markdown" href="/vote.md"><style>
-:root{--bg:#e6e3dc;--fg:#111;--mut:#5c574d;--line:#cfcabf;--card:#fff;--lime:#d7ff3a;--pink:#ff4d8d}
+:root{--bg:#e6e3dc;--fg:#111;--mut:#5c574d;--line:#cfcabf;--card:#fff;--lime:#d7ff3a}
 @media (prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#eceae4;--mut:#9a968c;--line:#2a2d33;--card:#171a1f}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;padding:32px max(16px,env(safe-area-inset-left)) 64px}
 main{max-width:860px;margin:0 auto}h1{font-size:clamp(2rem,6vw,3.2rem);line-height:1;letter-spacing:-.03em;margin:0 0 8px}h1 em{font-style:normal;background:var(--lime);color:#111;padding:0 8px}
@@ -29,7 +29,7 @@ table{width:100%;border-collapse:collapse;background:var(--card);border:1px soli
 th{text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);padding:8px 12px;border-bottom:1px solid var(--line)}
 td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}
 td.n{width:36px;color:var(--mut)}td.s{width:64px;text-align:right;font-variant-numeric:tabular-nums}th:nth-child(n+3){text-align:right}
-a{color:inherit;font-weight:600}.d{color:var(--mut);font-size:.88rem;font-weight:400}.chip{font-size:.7rem;background:var(--pink);color:#fff;border-radius:999px;padding:1px 8px;vertical-align:middle}
+a{color:inherit;font-weight:600}.d{color:var(--mut);font-size:.88rem;font-weight:400}.chip{font-size:.7rem;background:var(--lime);color:#111;border-radius:999px;padding:1px 8px;vertical-align:middle}
 footer{margin-top:32px;color:var(--mut);font-size:.88rem}
 </style></head><body><main>
 <h1>marketing engineering, <em>ranked by use</em></h1>
