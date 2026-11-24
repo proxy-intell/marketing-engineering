@@ -1,4 +1,4 @@
-import { validateVote, score, EMAIL } from "./votes.js";
+import { validateVote, score, ranksFor, EMAIL } from "./votes.js";
 import { BADGE_SVG } from "./badge.js";
 import { renderLeaderboard } from "./leaderboard.js";
 
@@ -49,6 +49,7 @@ export default {
       ).bind(ipHash, day).first();
       if (hit.n > MAX_VOTES_PER_IP_PER_DAY) return json({ error: "too many votes from this address today" }, 429);
 
+      const existed = await env.DB.prepare("SELECT 1 FROM votes WHERE install_id = ?").bind(vote.install_id).first();
       const emailHash = vote.email ? await sha256(vote.email) : null;
       const now = Date.now();
       const statements = [];
@@ -71,7 +72,17 @@ export default {
         ctx.waitUntil(addToResend(env, vote.email));
       }
 
-      return json({ ok: true, counted: { tools: vote.tools.length, proposals: vote.proposals.length }, subscribed: vote.weekly_drop });
+      // Where the voter now stands, so the agent can say "you're voter #N, PostHog is #2".
+      const { results } = await env.DB.prepare("SELECT updated_at, payload FROM votes").all();
+      const scores = score(results.map((r) => ({ updated_at: r.updated_at, payload: JSON.parse(r.payload) })));
+      return json({
+        ok: true,
+        counted: { tools: vote.tools.length, proposals: vote.proposals.length },
+        subscribed: vote.weekly_drop,
+        new: !existed,
+        voters: scores.voters,
+        ranks: ranksFor(scores.tools, vote.tools.map((t) => t.slug)),
+      });
     }
 
     // Friday drop sign-up from the site's email box. Shares the per-IP daily limit with votes.

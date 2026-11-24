@@ -18,6 +18,13 @@ Optional. Then say "vote on marketing engineering":
 mkdir -p ~/.claude/skills/vote-marketing-engineering && curl -sL https://marketingengineering.dev/vote.md -o ~/.claude/skills/vote-marketing-engineering/SKILL.md
 ```
 
+## On GitHub (optional)
+
+After a vote, an agent with `gh` signed in offers two things, each a separate yes or no:
+
+- **Star the repo.** People who follow you on GitHub can see it.
+- **A voter PR from your account** adding `voters/<login>.json`: the listed tools from your vote, with their ratings. [`voter-pr.yml`](../.github/workflows/voter-pr.yml) merges it once it touches only your own file and lists catalog tools. It never runs the PR's code. The file is public and tied to your handle, and the Friday release may credit you by handle. To remove it, open a PR that deletes the file. Scores still come from the votes; the file is a public receipt.
+
 ## Where to see the ranking
 
 - **https://marketingengineering.dev**: the live ranking: one table of every tool, sorted by score, with search, a category filter and voter counts. Also takes Friday-drop sign-ups.

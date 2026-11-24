@@ -1,0 +1,48 @@
+name: Voter PR
+
+# A voter's agent opens a PR from their own fork adding voters/<login>.json (vote.md step 10).
+# It merges here once it only touches the author's own file and lists catalog tools.
+# pull_request_target runs this base-branch code with a write token: the PR's code is never checked out or run,
+# its one file is fetched through the API and parsed as JSON.
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    paths: ["voters/**"]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: voter-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      AUTHOR: ${{ github.event.pull_request.user.login }}
+      HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check it only touches the author's own voter file
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/files?per_page=100" > "$RUNNER_TEMP/files.json"
+          gh api "repos/$HEAD_REPO/contents/voters/$AUTHOR.json?ref=$HEAD_SHA" --jq .content 2>/dev/null | base64 -d > "$RUNNER_TEMP/voter.json" || true
+          python scripts/check_voter.py "$AUTHOR" "$RUNNER_TEMP/files.json" "$RUNNER_TEMP/voter.json" > "$RUNNER_TEMP/why"
+      - name: Merge
+        run: |
+          gh api -X PUT "repos/$GITHUB_REPOSITORY/pulls/$PR/merge" -f merge_method=squash -f sha="$HEAD_SHA" \
+            -f commit_title="$AUTHOR voted with their usage (#$PR)"
+      - name: Say why it didn't merge
+        if: failure()
+        run: |
+          why=$(cat "$RUNNER_TEMP/why" 2>/dev/null)
+          gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="Not auto-merged: ${why:-the merge failed, a maintainer will look}. Push a fix to this branch and it re-checks."

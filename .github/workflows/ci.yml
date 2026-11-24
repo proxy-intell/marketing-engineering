@@ -18,6 +18,7 @@ jobs:
       - run: pip install check-jsonschema==0.29.4
       - run: check-jsonschema --schemafile catalog.schema.json catalog.json
       - run: python scripts/build.py --check
+      - run: python -m unittest discover -s scripts -p 'test_*.py'
 
   worker:
     runs-on: ubuntu-latest

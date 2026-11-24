@@ -94,3 +94,13 @@ export function score(rows, now = Date.now()) {
     proposals: Object.values(proposals).sort((a, b) => b.voters - a.voters || b.score - a.score),
   };
 }
+
+// Overall rank (1 = highest score) of a voter's tools, best first. Ties share a rank.
+export function ranksFor(tools, slugs, limit = 3) {
+  const scores = Object.values(tools).map((t) => t.score);
+  return slugs
+    .filter((slug) => tools[slug])
+    .map((slug) => ({ slug, rank: 1 + scores.filter((x) => x > tools[slug].score).length }))
+    .sort((a, b) => a.rank - b.rank || a.slug.localeCompare(b.slug))
+    .slice(0, limit);
+}

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateVote, score, proposalKey } from "../src/votes.js";
+import { validateVote, score, proposalKey, ranksFor } from "../src/votes.js";
 
 const ok = (over = {}) => ({ v: 1, install_id: "3f1b8c0e-9d2a", agent: "claude-code", tools: [{ slug: "posthog", usage: "daily" }], ...over });
 
@@ -78,4 +78,11 @@ test("proposals accept kind and install, reject bad ones", () => {
   assert.equal(validateVote(base).vote.proposals[0].install, "npx skills add x");
   assert.ok(validateVote({ ...base, proposals: [{ ...base.proposals[0], kind: "virus" }] }).error);
   assert.ok(validateVote({ ...base, proposals: [{ ...base.proposals[0], install: "a\nb" }] }).error);
+});
+
+test("ranksFor: overall rank of the voter's tools, ties shared, best first, capped", () => {
+  const tools = { a: { score: 9 }, b: { score: 5 }, c: { score: 5 }, d: { score: 1 }, e: { score: 0.5 } };
+  assert.deepEqual(ranksFor(tools, ["d", "c", "b", "zzz"]), [{ slug: "b", rank: 2 }, { slug: "c", rank: 2 }, { slug: "d", rank: 4 }]);
+  assert.deepEqual(ranksFor(tools, ["e", "d", "b", "a"], 2), [{ slug: "a", rank: 1 }, { slug: "b", rank: 2 }]);
+  assert.deepEqual(ranksFor(tools, []), []);
 });
