@@ -221,7 +221,8 @@ footer.site a { color: var(--paper) }
 
 @media (max-width: 1080px) {
   .h-left { grid-column: 1 / -1 } .h-right { grid-column: 1 / -1 }
-  .comp { display: none }
+  .hero > .comp { order: 2; position: static; transform: none; grid-column: 1 / -1; width: 100%; max-width: 560px; margin-top: 8px }
+  .hero > .comp svg { width: 100%; height: auto; display: block }
 }
 @media (max-width: 760px) {
   .tr, .th { grid-template-columns: 28px minmax(0, 1fr) 54px 44px }
@@ -230,6 +231,24 @@ footer.site a { color: var(--paper) }
   .nums div:nth-child(2) { border-right: 0 } .nums div:nth-child(-n+2) { border-bottom: 2px solid var(--ink) }
   .two > div { grid-column: 1 / -1 }
   .sec-h .n, .sec-h h2 { grid-column: 1 / -1 }
+}
+table.rt td.nm .msub { display: none }
+@media (max-width: 600px) {
+  .tools { display: grid; grid-template-columns: 1fr; gap: 8px }
+  .tools input { max-width: none; min-width: 0 }
+  .dd, .dd button { width: 100%; min-width: 0 }
+  .tools .count { margin-left: 0 }
+  .tools input, .getit .field input, .field input { font-size: 16px }
+  table.rt td { padding: 12px 8px; height: auto }
+  table.rt .n, table.rt td.rk { width: 30px }
+  table.rt td.nm a { white-space: normal }
+  table.rt td.nm .msub { display: block; margin-top: 3px; font: 500 .66rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--mute) }
+  .getit .code { flex-direction: column }
+  .getit .code code { font-size: .78rem; padding: 14px 14px 10px }
+  .getit .code button { border-left: 0; border-top: 2px solid var(--orange); padding: 12px 0 }
+  .getit .field { max-width: none }
+  .getit .field button { padding: 0 18px }
+  footer.site { flex-direction: column; gap: 10px }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
 .kd { margin-left: 8px; font: 700 .62rem var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--cobalt); vertical-align: middle }
@@ -319,7 +338,7 @@ footer.site a { color: var(--paper) }
     countEl.textContent = rows.length + " of " + D.rows.length + " tools";
     var board = document.getElementById("board");
     board.innerHTML = rows.length ? rows.map(function (r, i) {
-      return '<tr><td class="rk">' + String(i + 1).padStart(2, "0") + '</td><td class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a>' + (r.kind && r.kind !== "tool" ? '<span class="kd">' + esc(r.kind) + '</span>' : "") + '</td>' +
+      return '<tr><td class="rk">' + String(i + 1).padStart(2, "0") + '</td><td class="nm"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.name) + '</a>' + (r.kind && r.kind !== "tool" ? '<span class="kd">' + esc(r.kind) + '</span>' : "") + '<span class="msub">' + esc(r.cat) + '</span></td>' +
         '<td class="cat">' + esc(r.cat) + '</td><td class="desc">' + esc(r.desc) + '</td>' +
         '<td class="bar"><div class="meter"><i style="width:' + (r.score / max) * 100 + '%"></i></div></td>' +
         '<td class="num">' + r.score + '</td><td class="num">' + r.voters + "</td></tr>";
