@@ -2,6 +2,7 @@
   "setups": [
     {"slug": "aeo", "job": "get cited in AI search", "steps": [
       {"tool": "perplexity-sonar-api", "why": "see where you are cited today"},
+      {"tool": "semrush", "why": "see who gets cited instead of you"},
       {"tool": "bing-webmaster-tools", "why": "check Bing has your pages"},
       {"tool": "indexnow", "why": "push new pages the day they ship"},
       {"tool": "claude-code", "why": "run the check every week"}]},

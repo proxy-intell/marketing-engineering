@@ -65,9 +65,10 @@ paste into your agent: `set up "charge for your product" - https://marketingengi
 ### get cited in AI search
 
 1. [Perplexity Sonar API](https://docs.perplexity.ai): see where you are cited today
-2. [Bing Webmaster Tools](https://www.bing.com/webmasters): check Bing has your pages
-3. [IndexNow](https://www.indexnow.org): push new pages the day they ship
-4. [Claude Code](https://claude.com/claude-code): run the check every week
+2. [Semrush](https://www.semrush.com): see who gets cited instead of you
+3. [Bing Webmaster Tools](https://www.bing.com/webmasters): check Bing has your pages
+4. [IndexNow](https://www.indexnow.org): push new pages the day they ship
+5. [Claude Code](https://claude.com/claude-code): run the check every week
 
 paste into your agent: `set up "get cited in AI search" - https://marketingengineering.dev/setups/aeo.md`
 
