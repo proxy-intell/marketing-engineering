@@ -8,7 +8,48 @@ Machine-readable source of truth: catalog.json (JSON, schema in catalog.schema.j
 
 <!-- BEGIN CATALOG -->
 
-_No entries yet._
+### Ad intelligence
+
+- [Proxy](https://useproxy.dev): Live ad libraries for Meta, Google, LinkedIn and TikTok inside your AI assistant, with ad video and image analysis. Interfaces: mcp, cli, plugin. Pricing: freemium. MCP: https://mcp.useproxy.dev/mcp?ref=marketing-engineering.
+
+### AI models & agents
+
+- [Claude Code](https://claude.com/claude-code): Coding agent in the terminal; writes landing pages, scripts and pipelines, and drives MCP servers for research and ops. Interfaces: cli, plugin. Pricing: paid.
+- [Gemini API](https://ai.google.dev): Multimodal model API that watches video and reads images, handy for transcribing and breaking down ad creatives at scale. Interfaces: api, sdk. Pricing: freemium.
+
+### Analytics
+
+- [PostHog](https://posthog.com): Product analytics, web analytics, session replay, feature flags and experiments in one tool; queryable from an agent. Interfaces: web, api, sdk, mcp. Pricing: freemium. MCP: https://mcp.posthog.com/mcp.
+
+### Browser automation
+
+- [Playwright](https://playwright.dev): Scripts a real browser to screenshot landing pages, render OG images and click through funnels. Interfaces: sdk, cli. Pricing: open-source.
+
+### Data & scraping
+
+- [Exa](https://exa.ai): Web search API built for LLMs; finds companies, competitors and pages by meaning rather than keywords. Interfaces: api, sdk, mcp. Pricing: freemium. MCP: https://mcp.exa.ai/mcp.
+- [ScrapeCreators](https://scrapecreators.com): One API for public posts, profiles and ad libraries across TikTok, Instagram, YouTube, LinkedIn, X and more. Interfaces: api. Pricing: paid.
+
+### Email
+
+- [Resend](https://resend.com): Email API for developers: transactional mail, broadcasts, contacts and templates written in React. Interfaces: api, sdk, cli, mcp. Pricing: freemium.
+
+### Launch & distribution
+
+- [Product Hunt](https://www.producthunt.com): Launch platform and directory for new tech products; also a feed of what competitors just shipped. Interfaces: web, api. Pricing: free.
+
+### Pricing & billing
+
+- [Autumn](https://useautumn.com): Open-source pricing and billing layer over Stripe: define plans, credits and usage limits in config, then check and track them with one call. Interfaces: api, sdk, cli. Pricing: freemium.
+- [Stripe](https://stripe.com): Payments, checkout, subscriptions and billing portal APIs; the money end of every funnel. Interfaces: api, sdk, cli, mcp. Pricing: paid. MCP: https://mcp.stripe.com.
+
+### SEO & AEO
+
+- [Bing Webmaster Tools](https://www.bing.com/webmasters): Index coverage, keywords and backlinks for Bing, the index behind several AI search products. Interfaces: web, api. Pricing: free.
+- [Google Search Console](https://search.google.com/search-console): Clicks, impressions, queries and indexing status for your site in Google Search, plus manual indexing requests. Interfaces: web, api. Pricing: free.
+- [IndexNow](https://www.indexnow.org): Open protocol to ping Bing, Yandex and other engines the moment a URL is published or updated. Interfaces: api. Pricing: free.
+- [Perplexity Sonar API](https://docs.perplexity.ai): Search-grounded answers with citations; useful for checking whether AI answers mention and cite your brand. Interfaces: api. Pricing: paid.
+- [Semrush](https://www.semrush.com): Keyword research, rank tracking, backlink data and competitor traffic estimates. Interfaces: web, api. Pricing: paid.
 
 <!-- END CATALOG -->
 

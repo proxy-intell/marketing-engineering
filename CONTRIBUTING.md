@@ -1,6 +1,6 @@
 # Contributing
 
-Not sure it fits? [Suggest it in an issue](../../issues/new?template=suggest-product.yml) instead.
+No JSON wanted? [Suggest it with the form](https://github.com/proxy-intell/marketing-engineering/issues/new?template=suggest-product.yml) and a bot opens the PR once it's approved. Or ask your agent: `Add <tool URL> to github.com/proxy-intell/marketing-engineering. Follow AGENTS.md and open a PR.`
 
 ## Bar for inclusion
 
@@ -11,7 +11,7 @@ Not sure it fits? [Suggest it in an issue](../../issues/new?template=suggest-pro
 
 ## How to submit
 
-1. One product per PR. Title: `Add <Name>`.
+1. One product per PR. Title starts with `Add <Name>`; a funny suffix is welcome.
 2. Add an object to `catalog.json` `products` (fields in `catalog.schema.json`). Keep the array sorted by `slug`.
 3. Run `python scripts/build.py` — regenerates `README.md` and `llms.txt`. Don't hand-edit between the `CATALOG` markers.
 4. CI validates the schema, checks the generated files are current, and checks links.
