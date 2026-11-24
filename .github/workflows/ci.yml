@@ -19,6 +19,16 @@ jobs:
       - run: check-jsonschema --schemafile catalog.schema.json catalog.json
       - run: python scripts/build.py --check
 
+  worker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test
+        working-directory: worker
+
   links:
     runs-on: ubuntu-latest
     steps:

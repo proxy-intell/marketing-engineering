@@ -1,5 +1,7 @@
 # Contributing
 
+**Best way in: vote with your usage.** Paste [`vote.md`](vote.md) into your agent. It reports which listed tools you really use, proposes ones we lack, and ranks the list. See [how voting works](docs/how-voting-works.md). The routes below are for adding a tool by hand.
+
 No JSON wanted? [Suggest it with the form](https://github.com/proxy-intell/marketing-engineering/issues/new?template=suggest-product.yml) and a bot opens the PR once it's approved. Or ask your agent: `Add <tool URL> to github.com/proxy-intell/marketing-engineering. Follow AGENTS.md and open a PR.`
 
 ## Bar for inclusion
@@ -32,7 +34,9 @@ Need a new one? Add it to `categories.json` (A-Z) in the same PR and say why no 
 ## Description style
 
 - One sentence, ≤160 chars, ends with a period.
-- Say what it does. No "best", "revolutionary", "AI-powered" filler.
+- Say what it is and what it does, in plain terms. Name the real interfaces, platforms and limits ("for Chromium, Firefox and WebKit", "TikTok (EU) ad library"). No adjectives about quality, no benefits, no "useful for".
+- Every claim must be checkable on the tool's own site or docs.
+- CI rejects filler like handy, powerful, seamless, leverage, robust, at scale, one call, all-in-one, solution, easily, simply.
 - Don't start with the product name or "A tool that".
 - Canonical URL, no UTM or referral params.
 

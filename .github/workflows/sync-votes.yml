@@ -1,0 +1,43 @@
+name: Sync votes
+
+on:
+  schedule:
+    - cron: "11 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    if: vars.VOTES_URL != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pull scores, rebuild lists
+        env:
+          VOTES_URL: ${{ vars.VOTES_URL }}
+        run: |
+          python scripts/sync_votes.py "$RUNNER_TEMP/proposals.json"
+          python scripts/build.py
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add votes.json README.md llms.txt
+          git diff --cached --quiet || (git commit -m "Votes: daily sync" && git push)
+      - name: Open issues for tools agents use that we don't list
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          jq -c '.[]' "$RUNNER_TEMP/proposals.json" | while read -r p; do
+            title=$(jq -r .title <<<"$p")
+            name=${title%% (*}
+            if [ -z "$(gh issue list --state all --search "\"$name\" in:title" --json number --jq '.[0].number')" ]; then
+              gh issue create --title "$title" --label suggestion --body "$(jq -r .body <<<"$p")"
+            fi
+          done
