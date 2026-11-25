@@ -6,29 +6,33 @@ const OURS = ["proxy"];
 
 const META = String.raw`<title>Marketing Engineering: marketing tools ranked by real usage</title><meta name="description" content="Marketing tools, skills and plugins ranked by what other marketers actually use. Ads, SEO and AEO, analytics, email, billing."><meta property="og:title" content="Marketing Engineering"><meta property="og:description" content="What other marketers are actually using. Turns out it's not what Twitter says…"><meta property="og:image" content="https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/assets/social-preview.png"><meta property="og:url" content="https://marketingengineering.dev/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/assets/social-preview.png"><link rel="apple-touch-icon" href="https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main/assets/icon-180.png"><link rel="alternate" type="text/markdown" href="/vote.md">`;
 
-const body = (data: string) => String.raw`<body><main>
+const body = (data: string, voters: number) => String.raw`<body><main>
 <div class="wrap">
   ${NAV}
 
   <div class="hero">
-    <div class="comp" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="510" height="340" viewBox="0 0 600 400" preserveAspectRatio="xMidYMin slice" aria-hidden="true"><g transform="translate(0 0)"><rect width="100" height="100" fill="#F5B5E1"/><rect x="100" width="100" height="100" fill="#2448FF"/><rect y="100" width="100" height="100" fill="#1FA35B"/><rect x="100" y="100" width="100" height="100" fill="#FFC53D"/><path d="M100 0 L0 0 A100 100 0 0 0 100 100 Z" fill="#FF5A1F"/><path d="M200 100 L100 100 A100 100 0 0 1 200 0 Z" fill="#FFC53D"/><path d="M100 200 L200 200 A100 100 0 0 0 100 100 Z" fill="#F5B5E1"/><path d="M0 100 L100 100 A100 100 0 0 1 0 200 Z" fill="#2448FF"/></g><g transform="translate(200 0)"><rect width="200" height="200" fill="#BFDAF5"/><path d="M14 100 A86 86 0 0 1 186 100 Z" fill="#2448FF"/><path d="M14 100 A86 86 0 0 0 186 100 Z" fill="#FF5A1F"/><circle cx="100" cy="100" r="30" fill="#FFC53D"/></g><g transform="translate(400 0)"><rect width="200" height="200" fill="#1FA35B"/><rect x="28" y="28" width="144" height="144" fill="#FFC53D"/><rect x="58" y="58" width="84" height="84" fill="#FF5A1F"/><rect x="82" y="82" width="36" height="36" fill="#F5B5E1"/></g><g transform="translate(0 200)"><rect x="0" y="0" width="100" height="100" fill="#F5B5E1"/><path d="M0 0 L100 0 A100 100 0 0 1 0 100 Z" fill="#FF5A1F"/><rect x="100" y="0" width="100" height="100" fill="#2448FF"/><path d="M200 0 L100 0 A100 100 0 0 0 200 100 Z" fill="#FFC53D"/><rect x="200" y="0" width="100" height="100" fill="#1FA35B"/><path d="M300 100 L200 100 A100 100 0 0 1 300 0 Z" fill="#BFDAF5"/><rect x="300" y="0" width="100" height="100" fill="#FFC53D"/><path d="M300 100 L400 100 A100 100 0 0 0 300 0 Z" fill="#2448FF"/><rect x="0" y="100" width="100" height="100" fill="#BFDAF5"/><path d="M0 100 L100 100 A100 100 0 0 1 0 200 Z" fill="#1FA35B"/><rect x="100" y="100" width="100" height="100" fill="#FF5A1F"/><path d="M200 100 L100 100 A100 100 0 0 0 200 200 Z" fill="#F5B5E1"/><rect x="200" y="100" width="100" height="100" fill="#FFC53D"/><path d="M300 200 L200 200 A100 100 0 0 1 300 100 Z" fill="#3B38A3"/><rect x="300" y="100" width="100" height="100" fill="#F5B5E1"/><path d="M300 200 L400 200 A100 100 0 0 0 300 100 Z" fill="#2448FF"/></g><g transform="translate(400 200)"><rect width="200" height="200" fill="#F5B5E1"/><polygon points="200,0 200,200 0,200" fill="#3B38A3"/><circle cx="100" cy="100" r="44" fill="#FFC53D"/></g></svg></div>
     <div class="h-left">
-      <h1>marketing engineering</h1>
-      <p class="lede">what other marketers are actually using. turns out it's not what x/twitter says… <span class="seelinks"><a class="fine seerank" href="#rank">see the rankings ↓</a></span></p>
+      <h1>what marketers actually use. add your&nbsp;vote.</h1>
+      <p class="lede">join <b>${voters}</b> marketers ranking tools by real use, not hype.</p>
     </div>
-    <div class="getit">
-      <div class="agentbox">
-        <div class="lbl">give this to your agent <span class="agchips"><span class="ag">Claude</span><span class="ag">Cursor</span><span class="ag">Codex</span><span class="ag">ChatGPT</span><span class="ag">any agent</span></span></div>
-        <div class="bar"><code id="cmd">vote on marketing engineering - https://marketingengineering.dev/vote.md</code><button type="button" id="cp">Copy</button></div>
-      </div>
-      <span class="fine agentnote">it reads your setup, shows you the vote, and waits for a yes</span>
+    <div class="votecard">
+      <div class="vc-h">vote with your agent</div>
+      <div class="works"><span class="ag" title="Claude"><svg viewBox="0 0 24 24" aria-label="Claude" role="img"><path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z" fill="currentColor"/></svg></span><span class="ag" title="Cursor"><svg viewBox="0 0 24 24" aria-label="Cursor" role="img"><path d="M11.925 24l10.425-6-10.425-6L1.5 18l10.425 6z" fill="currentColor" opacity="0.55"/><path d="M22.35 18V6L11.925 0v12l10.425 6z" fill="currentColor" opacity="0.8"/><path d="M11.925 0L1.5 6v12l10.425-6V0z" fill="currentColor" opacity="1"/><path d="M22.35 6L11.925 24V12L22.35 6z" fill="currentColor" opacity="0.4"/><path d="M22.35 6l-10.425 6L1.5 6h20.85z" fill="currentColor" opacity="0.65"/></svg></span><span class="ag" title="ChatGPT and Codex"><svg viewBox="0 0 24 24" aria-label="ChatGPT and Codex" role="img"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" fill="currentColor"/></svg></span><span class="ag more" title="any agent">+ any agent</span></div>
+      <ol class="steps"><li><b>copy this</b></li></ol>
+      <div class="vc-bar"><code id="cmd">vote on marketing engineering - https://marketingengineering.dev/vote.md</code><button type="button" id="cp">copy vote</button></div>
+      <ol class="steps" start="2">
+        <li><span><b>paste it into your agent.</b> it only looks at tool names</span></li>
+        <li><span><b>check the vote and say yes</b></span></li>
+      </ol>
+      <a href="#how" class="howlink">how votes count ↓</a>
     </div>
   </div>
 </div>
+<div class="band" aria-hidden="true"><div class="band-in" id="band"></div></div>
 
 <div class="wrap sec" id="setups" hidden>
   <div class="sec-h"><h2>setups</h2></div>
-  <p class="fine">a setup is a few tools people use together for one job. the more voters who use all of them, the higher it ranks</p>
+  <p class="fine">a few tools that do one job together, built from votes automatically. copy one and your agent sets it up.</p>
   <div class="sgrid" id="sgrid"></div>
 </div>
 
@@ -121,7 +125,7 @@ const body = (data: string) => String.raw`<body><main>
     var cmd = 'set up "' + s.job + '" - https://marketingengineering.dev/setups/' + s.slug + ".md";
     return '<article class="scard"><h3>' + esc(s.job) + "</h3><ol>" + s.steps.map(function (t) {
       return '<li><a href="' + esc(t.url) + '" target="_blank" rel="noopener">' + esc(t.name) + '</a> <span class="w">' + esc(t.why) + "</span>" + (t.ours ? '<span class="kd">made by us</span>' : "") + "</li>";
-    }).join("") + '</ol><p class="fine">' + v + '</p><div class="code"><code>' + esc(cmd) + "</code><button type=\"button\">Copy</button></div></article>";
+    }).join("") + '</ol><p class="fine">' + v + '</p><div class="code"><code>' + esc(cmd) + "</code><button type=\"button\">copy setup</button></div></article>";
   }
   if (D.setups.length) {
     document.getElementById("setups").hidden = false;
@@ -135,7 +139,7 @@ const body = (data: string) => String.raw`<body><main>
       var b = e.target.closest("button"); if (!b) return;
       var t = b.previousElementSibling.textContent;
       posthog.capture("setup_command_copied", { setup: b.closest("article").querySelector("h3").textContent });
-      try { navigator.clipboard.writeText(t).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); }, sel); } catch (x) { sel(); }
+      try { navigator.clipboard.writeText(t).then(function () { b.textContent = "copied"; setTimeout(function () { b.textContent = "copy setup"; }, 1400); }, sel); } catch (x) { sel(); }
       function sel() { var r = document.createRange(); r.selectNodeContents(b.previousElementSibling); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
     });
   }
@@ -143,9 +147,26 @@ const body = (data: string) => String.raw`<body><main>
   document.getElementById("cp").addEventListener("click", function () {
     var t = document.getElementById("cmd").textContent, b = this;
     posthog.capture("vote_command_copied");
-    try { navigator.clipboard.writeText(t).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); }, function () { sel(); }); } catch (e) { sel(); }
+    try { navigator.clipboard.writeText(t).then(function () { b.textContent = "copied"; setTimeout(function () { b.textContent = "copy vote"; }, 1400); }, function () { sel(); }); } catch (e) { sel(); }
     function sel() { var r = document.createRange(); r.selectNodeContents(document.getElementById("cmd")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
   });
+
+  // Shape band (Config-style supergraphic): colour cells with a nested primitive. Decorative, built here to keep the HTML small.
+  var C = [["#FF5A1F","#FFC53D"],["#2448FF","#BFDAF5"],["#1FA35B","#F5B5E1"],["#FFC53D","#2448FF"],["#F5B5E1","#3B38A3"],["#BFDAF5","#FF5A1F"],["#3B38A3","#FFC53D"],["#F3EFE3","#1FA35B"],["#FFC53D","#FF5A1F"]];
+  var SH = ["s-circle","s-diamond","s-pill","s-ring","s-quarter","s-square","s-star","s-pillv","s-half"];
+  var band = document.getElementById("band");
+  for (var c = 0; c < 30; c++) {
+    var el = document.createElement("div"), col = C[(c * 4) % C.length], sh = SH[(c * 5 + 2) % SH.length];
+    el.className = "cell " + sh; el.style.setProperty("--bg", col[0]); el.style.setProperty("--fg", col[1]);
+    el.innerHTML = "<i></i>" + (/ring|square|star/.test(sh) ? "<i></i>" : "");
+    band.append(el);
+  }
+  // Every couple of seconds one cell turns and nudges its neighbour. Off with reduced motion.
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(function () {
+    var k = Math.floor(Math.random() * band.children.length);
+    band.children[k].classList.toggle("on");
+    setTimeout(function () { if (band.children[k + 1]) band.children[k + 1].classList.toggle("on"); }, 250);
+  }, 2200);
 })();
 </script>
 </body></html>`;
@@ -163,5 +184,5 @@ export function renderLeaderboard(products: Product[], scores: Pick<Scores, "vot
     steps: st.steps.map((t) => ({ slug: t.tool, name: by[t.tool]?.name ?? t.tool, url: by[t.tool]?.url, why: t.why, ours: OURS.includes(t.tool) })),
   })).sort((a, b) => b.voters - a.voters || a.job.localeCompare(b.job));
   const data = JSON.stringify({ voters: scores.voters, rows, setups: sets }).replace(/</g, "\\u003c");
-  return layout(META, "", body(data));
+  return layout(META, "", body(data, scores.voters));
 }

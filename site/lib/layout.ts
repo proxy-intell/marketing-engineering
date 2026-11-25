@@ -52,34 +52,51 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .nav a { color: var(--ink); text-decoration: none }
 .nav a:hover { color: var(--cobalt) }
 .nav .live { color: var(--cobalt); font-weight: 700 }
-.hero { position: relative; overflow: hidden; padding: clamp(28px, 6vw, 72px) 0 clamp(36px, 6vw, 72px); display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px }
-.hero > .comp { grid-column: 8 / -1; grid-row: 1; align-self: center; z-index: 0; line-height: 0 }
-.hero > .comp svg { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2 }
-.hero .shape2 { position: absolute; width: 180px; height: 180px; background: var(--orange); left: -90px; bottom: 32px; border-radius: 0 100% 0 0; z-index: 0 }
-.hero > * { position: relative; z-index: 1 }
-.h-left { grid-column: 1 / span 8; grid-row: 1; display: flex; flex-direction: column; gap: clamp(20px, 2.2vw, 28px); min-width: 0 }
 .h-right { grid-column: 8 / span 5; min-width: 0 }
+/* hero: the ask on the left, how to vote on the right */
+.hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 56px); align-items: center; padding-block: clamp(28px, 5vw, 64px) }
+.h-left { min-width: 0 }
+.hero h1 { font-size: clamp(2.6rem, 6.4vw, 5.6rem); line-height: .92; font-variation-settings: "wdth" 80; text-wrap: balance }
+.lede { margin: 22px 0 0; font-size: clamp(1.02rem, 1.4vw, 1.2rem); line-height: 1.5 }
+.lede b { font-weight: 800 }
+.votecard { min-width: 0; background: var(--ink); color: var(--paper); padding: 18px; box-shadow: 8px 8px 0 var(--orange) }
+.vc-h { font: 800 1.35rem var(--display); font-variation-settings: "wdth" 85; margin-bottom: 10px }
+.works { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; color: #d9d4c5 }
+.works .ag { display: inline-flex } .works .ag svg { width: 18px; height: 18px }
+.works .more { font: 500 .72rem var(--mono); color: #bdb8a8 }
+.steps { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 10px }
+.steps[start="2"] { counter-reset: s 1; margin-top: 12px }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; font-size: .92rem; line-height: 1.45; color: #e7e2d4 }
+.steps li::before { content: counter(s); width: 26px; height: 26px; display: grid; place-items: center; background: var(--paper); color: var(--ink); font: 800 .8rem var(--mono) }
+.steps b { color: var(--paper) }
+.vc-bar { display: flex; gap: 12px; align-items: center; background: #2a2a2a; padding: 10px 10px 10px 14px; margin-top: 8px }
+.vc-bar code { flex: 1; min-width: 0; font: 500 .82rem/1.5 var(--mono); color: var(--paper); overflow-wrap: anywhere }
+.vc-bar button { border: 0; background: var(--orange); color: var(--ink); font: 700 .78rem var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 0 16px; min-height: 40px; white-space: nowrap }
+.howlink { display: block; margin-top: 16px; padding-top: 12px; border-top: 1px solid #3a3a3a; text-align: right; font: 500 .72rem var(--mono); color: #bdb8a8; text-transform: uppercase; letter-spacing: .04em }
+.howlink:hover { color: var(--paper) }
+/* shape band (Config-style supergraphic): colour cells with a nested primitive, cropped at the screen edges */
+.band { margin-inline: calc(50% - 50vw); overflow: hidden; border-block: 2px solid var(--ink); background: var(--ink) }
+.band-in { display: flex; gap: 2px; width: max-content; margin-left: -40px }
+.cell { --s: clamp(56px, 7.4vw, 108px); width: var(--s); height: var(--s); flex: none; position: relative; overflow: hidden; background: var(--bg) }
+.cell i { position: absolute; background: var(--fg); transition: transform .6s cubic-bezier(.6, 0, .2, 1), border-radius .6s cubic-bezier(.6, 0, .2, 1) }
+.cell i + i { background: var(--bg) }
+.s-circle i { inset: 14%; border-radius: 50% }
+.s-ring i { inset: 10%; border-radius: 50% } .s-ring i + i { inset: 32% }
+.s-diamond i { inset: 20%; transform: rotate(45deg) }
+.s-pill i { inset: 30% 8%; border-radius: 999px } .s-pillv i { inset: 8% 30%; border-radius: 999px }
+.s-quarter i { inset: 0; border-radius: 0 0 0 100% }
+.s-half i { inset: 50% 0 0 0; border-radius: 999px 999px 0 0 }
+.s-square i { inset: 18% } .s-square i + i { inset: 38% }
+.s-star i { inset: 40% 10%; border-radius: 999px } .s-star i + i { inset: 10% 40%; background: var(--fg); border-radius: 999px }
+.cell:hover i, .cell.on i { transform: rotate(90deg) scale(.86) }
+.s-circle:hover i, .s-circle.on i { border-radius: 22% }
+.s-diamond:hover i, .s-diamond.on i { transform: rotate(0deg) scale(.86) }
+.band + .wrap.sec { border-top: 0 }
 h1 { font: 850 clamp(3.6rem, 9.2vw, 8.6rem)/.9 var(--display); font-variation-settings: "wdth" 76; letter-spacing: -.012em; font-kerning: normal; margin: 0 }
-.lede { font: 500 clamp(1.05rem, 1.6vw, 1.3rem)/1.45 var(--body); max-width: 40ch; margin: 0; text-wrap: pretty }
-.getit { grid-column: 1 / -1; justify-self: center; width: min(740px, 100%); min-width: 0; margin-top: clamp(4px, 2.6vw, 40px) }
-.agentbox { background: var(--ink); color: var(--paper); padding: 12px }
-.agentbox .lbl { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 2px 2px 12px; font: 700 .8rem/1 var(--mono); text-transform: uppercase; letter-spacing: .05em }
-.agentbox .agchips { display: flex; flex-wrap: wrap; gap: 5px; align-items: center }
-.agentbox .ag { display: inline-flex; align-items: center; height: 22px; font: 600 .66rem/1 var(--mono); letter-spacing: .04em; padding: 0 8px; border: 1px solid #555 }
-.agentbox .bar { display: flex; gap: 10px; align-items: stretch; background: #2c2c2c; padding: 8px 8px 8px 14px }
-.agentbox code { flex: 1; min-width: 0; align-self: center; font: 500 .84rem/1.5 var(--mono); color: var(--paper); overflow-wrap: break-word; padding-left: 1.25em; text-indent: -1.25em }
-.agentbox code::before { content: "$ "; color: #8a867c }
-.agentbox button { border: 0; background: var(--orange); color: var(--ink); font: 700 .78rem var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 0 18px; min-height: 40px; cursor: pointer }
-.agentnote { display: block; margin: 10px 0 0; text-align: center }
-.seelinks { white-space: nowrap }
-.seerank { margin-left: .7em; color: var(--ink) }
-.seerank[hidden] { display: none }
 
-.getit .code { margin: 0 0 18px; background: var(--ink); border-color: var(--ink) }
-.getit .code code { background: var(--ink); color: var(--paper); font-size: .8rem; padding: 16px 14px; white-space: normal; overflow-wrap: anywhere }
-.getit .code button { background: var(--orange); color: var(--ink); border-left: 2px solid var(--ink); font-size: .8rem; padding: 0 20px }
-.signup { border: 2px solid var(--ink); background: var(--orange); color: var(--ink); padding: 4px 12px; font: 700 .75rem var(--mono); text-transform: uppercase; letter-spacing: .05em; box-shadow: 3px 3px 0 var(--ink); transition: transform .12s, box-shadow .12s }
-.signup:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink) }
+/* outline: orange is kept for the vote */
+.signup { border: 2px solid var(--ink); background: transparent; color: var(--ink); padding: 4px 12px; font: 700 .75rem var(--mono); text-transform: uppercase; letter-spacing: .05em }
+.signup:hover { background: var(--ink); color: var(--paper) }
 .sud { width: min(440px, calc(100vw - 32px)); border: 2px solid var(--ink); background: var(--paper); color: var(--ink); padding: 28px 24px 22px; box-shadow: 8px 8px 0 var(--ink) }
 .sud::backdrop { background: color-mix(in srgb, var(--ink) 55%, transparent) }
 .sud h2 { margin: 0 0 6px; font: 800 1.6rem/1.1 var(--display); font-variation-settings: "wdth" 85 }
@@ -233,13 +250,9 @@ footer.site a { color: var(--paper) }
 #dump textarea { width: 100%; min-height: 160px; font: 500 .8rem/1.5 var(--mono); padding: 12px; border: 2px solid var(--ink); background: var(--soft); color: var(--ink) }
 
 @media (max-width: 1080px) {
-  .h-left { grid-column: 1 / -1 } .h-right { grid-column: 1 / -1 }
-  .h-left, .hero > .comp, .getit { grid-column: 1 / -1; grid-row: auto }
-  .hero > .comp { order: 2 }
-  .hero > .comp svg { aspect-ratio: 600 / 198 }
-  .getit { order: 3; width: 100%; margin-top: 0 }
-  .agentnote { text-align: left }
+  .h-right { grid-column: 1 / -1 }
 }
+@media (max-width: 860px) { .hero { grid-template-columns: minmax(0, 1fr) } }
 @media (max-width: 760px) {
   .tr, .th { grid-template-columns: 28px minmax(0, 1fr) 54px 44px }
   .tr .meter-cell, .th span:nth-child(3) { display: none }
@@ -251,12 +264,14 @@ footer.site a { color: var(--paper) }
 table.rt td.nm .msub { display: none }
 @media (max-width: 600px) {
   /* one-line header on phones: logo and GitHub icon only, names kept for screen readers */
-  .nav { flex-wrap: nowrap } .signup { margin-right: 3px }
+  .nav { flex-wrap: nowrap }
   .nav .nt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
   .nav .ghl svg { width: 22px; height: 22px }
-  .agentbox .bar { flex-direction: column; padding: 12px }
-  .agentbox code { font-size: .7rem }
-  .agentbox button { align-self: flex-end; padding: 8px 16px; min-height: 0 }
+  .nav .sl { display: none }
+  .votecard { margin-right: 8px; padding: 16px }
+  .vc-bar { flex-direction: column; align-items: stretch }
+  .vc-bar code { font-size: .74rem }
+  .vc-bar button { align-self: flex-end; min-height: 36px }
   .tools { display: grid; grid-template-columns: 1fr; gap: 8px }
   .tools input { max-width: none; min-width: 0 }
   .dd, .dd button { width: 100%; min-width: 0 }
@@ -269,13 +284,7 @@ table.rt td.nm .msub { display: none }
   table.rt .n, table.rt td.rk { width: 30px }
   table.rt td.nm a { white-space: normal }
   table.rt td.nm .msub { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 3px; font: 500 .66rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--mute) }
-  .getit .code { flex-direction: column }
-  .getit .code code { font-size: .78rem; padding: 14px 14px 10px }
-  .getit .code button { align-self: flex-end; border: 0; margin: 0 12px 12px; padding: 8px 16px }
-  .seelinks { display: block; margin-top: 10px }
-  .seerank { margin: 0 18px 0 0 }
   footer.site { flex-direction: column; gap: 10px }
-  .hero { padding-bottom: 40px }
   .sec-h { margin-bottom: 18px }
   .nums strong { font-size: 3.6rem }
 }
@@ -301,7 +310,7 @@ const analytics = (key: string) =>
 // Brand + GitHub link, the same header on every page.
 export const NAV = String.raw`<div class="nav mono">
     <strong class="brand"><i class="icslot"><svg width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#BFDAF5"/><rect x="10" y="10" width="20" height="20" rx="5.5" fill="#FFC53D"/><circle cx="44" cy="20" r="10" fill="#F5B5E1"/><polygon points="31.0,44.0 25.5,53.5 14.5,53.5 9.0,44.0 14.5,34.5 25.5,34.5" fill="#1FA35B"/><rect x="36.8" y="36.8" width="14.4" height="14.4" rx="2.4" fill="#FF5A1F" transform="rotate(45 44 44)"/></svg></i><span class="nt">Marketing Engineering</span></strong>
-    <div class="links"><a class="ghl" href="https://github.com/proxy-intell/marketing-engineering" target="_blank" rel="noopener"><svg class="gh" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg><span class="nt">GitHub</span></a><button type="button" class="signup" id="suOpen">sign up</button></div>
+    <div class="links"><a class="sl" href="/#setups">setups</a><a class="sl" href="/#rank">rankings</a><a class="ghl" href="https://github.com/proxy-intell/marketing-engineering" target="_blank" rel="noopener"><svg class="gh" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg><span class="nt">GitHub</span></a><button type="button" class="signup" id="suOpen">sign up</button></div>
   </div>
   <dialog class="sud" id="sud" aria-labelledby="sudH">
     <form method="dialog" class="sud-x"><button aria-label="Close">&times;</button></form>
