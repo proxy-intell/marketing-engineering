@@ -1,7 +1,7 @@
 import { validateVote, score, ranksFor, matchSetups, EMAIL } from "./votes.js";
 import { validSetups, renderSetupMd } from "./setups.js";
 import { BADGE_SVG } from "./badge.js";
-import { renderLeaderboard } from "./leaderboard.js";
+import { renderLeaderboard, POSTHOG_KEY } from "./leaderboard.js";
 
 const RAW = "https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main";
 const SKILL_DESCRIPTION = "Vote on the Marketing Engineering tool list using what the user actually uses. Use when the user asks to vote, rank, submit or add marketing tools, skills or plugins to proxy-intell/marketing-engineering, or pastes the vote.md link.";
@@ -14,6 +14,19 @@ const json = (data, status = 200, headers = {}) =>
 
 const sha256 = async (s) =>
   [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)))].map((b) => b.toString(16).padStart(2, "0")).join("");
+
+// Best effort, never blocks or fails a response. Agents don't run JS, so their hits are tracked here.
+const capture = (ctx, event, distinct_id, properties = {}) =>
+  ctx.waitUntil(fetch("https://eu.i.posthog.com/i/v0/e/", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ api_key: POSTHOG_KEY, event, distinct_id, properties }),
+  }).catch((e) => console.error("posthog capture failed", e)));
+
+// Anonymous per-visitor id for agent fetches: salted IP hash, no person profile.
+const agentHit = async (request, env, ctx, kind) => capture(ctx, "agent_page_fetched", await sha256(`${env.IP_SALT ?? ""}${request.headers.get("cf-connecting-ip") ?? "unknown"}`), {
+  kind, $current_url: request.url, user_agent: request.headers.get("user-agent") ?? "", $process_person_profile: false,
+});
 
 export default {
   async fetch(request, env, ctx) {
@@ -68,6 +81,9 @@ export default {
         );
       }
       await env.DB.batch(statements);
+      capture(ctx, "vote_submitted", vote.install_id, {
+        agent: vote.agent, tools: vote.tools.length, proposals: vote.proposals.length, new: !existed, weekly_drop: vote.weekly_drop, $process_person_profile: false,
+      });
 
       if (vote.weekly_drop && env.RESEND_API_KEY) {
         ctx.waitUntil(addToResend(env, vote.email));
@@ -120,11 +136,15 @@ export default {
       await env.DB.prepare("INSERT INTO subscribers (email_hash, email, created_at) VALUES (?, ?, ?) ON CONFLICT(email_hash) DO NOTHING")
         .bind(await sha256(email), email, Date.now()).run();
       if (env.RESEND_API_KEY) ctx.waitUntil(addToResend(env, email));
+      capture(ctx, "drop_subscribed", email, { surface: "worker", $set: { email } });
       return json({ ok: true });
     }
 
     // Short, stable URL for agents: "vote on marketing engineering - https://marketingengineering.dev/vote.md"
-    if ((request.method === "GET" || request.method === "HEAD") && pathname === "/vote.md") return fetchVoteMd();
+    if ((request.method === "GET" || request.method === "HEAD") && pathname === "/vote.md") {
+      await agentHit(request, env, ctx, "vote.md");
+      return fetchVoteMd();
+    }
 
     if ((request.method === "GET" || request.method === "HEAD") && pathname === "/badge.svg") {
       return new Response(BADGE_SVG, { headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=86400" } });
@@ -135,6 +155,7 @@ export default {
       return json({ skills: [{ name: "vote-marketing-engineering", description: SKILL_DESCRIPTION, files: ["SKILL.md"] }] }, 200, { "cache-control": "public, max-age=3600" });
     }
     if (request.method === "GET" && pathname === "/.well-known/skills/vote-marketing-engineering/SKILL.md") {
+      await agentHit(request, env, ctx, "skill");
       return fetchVoteMd();
     }
 
@@ -150,7 +171,10 @@ export default {
         return json({ error: "catalog unavailable" }, 502);
       }
       const setup = (await loadSetups(new Set(products.map((p) => p.slug)))).find((s) => s.slug === setupMatch[1]);
-      if (setup) return new Response(renderSetupMd(setup, products), { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" } });
+      if (setup) {
+        await agentHit(request, env, ctx, `setup:${setup.slug}`);
+        return new Response(renderSetupMd(setup, products), { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" } });
+      }
     }
 
     // Public scoreboard

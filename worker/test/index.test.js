@@ -100,3 +100,16 @@ test("setup pages: known slug is markdown, unknown or odd slug is 404", async ()
     assert.equal((await get(path)).status, 404, path);
   }
 });
+
+test("a vote and an agent fetch each send a PostHog event", async () => {
+  const sent = [];
+  globalThis.fetch = async (u, init) => {
+    if (String(u).includes("posthog.com")) { sent.push(JSON.parse(init.body)); return new Response("{}"); }
+    return String(u).endsWith("setups.json") ? new Response(JSON.stringify(SETUPS)) : new Response("# vote");
+  };
+  await vote([{ slug: "a", usage: "daily" }]);
+  await get("/vote.md");
+  assert.deepEqual(sent.map((e) => e.event), ["vote_submitted", "agent_page_fetched"]);
+  assert.equal(sent[0].distinct_id, "3f1b8c0e-9d2a");
+  assert.equal(sent[1].properties.kind, "vote.md");
+});

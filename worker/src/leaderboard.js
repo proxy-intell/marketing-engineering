@@ -294,7 +294,7 @@ table.rt td.nm .msub { display: none }
 .smore { margin-top: 16px; border: 2px solid var(--ink); background: var(--paper); padding: 9px 16px; font: 700 .75rem var(--mono); text-transform: uppercase; letter-spacing: .05em }
 @media (max-width: 560px) { .sgrid { grid-template-columns: minmax(0, 1fr) } }
 .kd { margin-left: 8px; font: 700 .62rem var(--mono); text-transform: uppercase; letter-spacing: .05em; color: var(--cobalt); vertical-align: middle }
-</style></head><body><main>
+<script>!function(t,e){var o,n,p,r;e.__SV||(window.posthog&&window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister identify setPersonProperties reset get_distinct_id alias set_config opt_in_capturing opt_out_capturing".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);posthog.init("/*PHKEY*/",{api_host:"https://eu.i.posthog.com",person_profiles:"identified_only"});</script></head><body><main>
 <div class="wrap">
   <div class="nav mono">
     <strong class="brand"><i class="icslot"><svg width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#BFDAF5"/><rect x="10" y="10" width="20" height="20" rx="5.5" fill="#FFC53D"/><circle cx="44" cy="20" r="10" fill="#F5B5E1"/><polygon points="31.0,44.0 25.5,53.5 14.5,53.5 9.0,44.0 14.5,34.5 25.5,34.5" fill="#1FA35B"/><rect x="36.8" y="36.8" width="14.4" height="14.4" rx="2.4" fill="#FF5A1F" transform="rotate(45 44 44)"/></svg></i>Marketing Engineering</strong>
@@ -429,6 +429,7 @@ table.rt td.nm .msub { display: none }
     sgrid.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       var t = b.previousElementSibling.textContent;
+      posthog.capture("setup_command_copied", { setup: b.closest("article").querySelector("h3").textContent });
       try { navigator.clipboard.writeText(t).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); }, sel); } catch (x) { sel(); }
       function sel() { var r = document.createRange(); r.selectNodeContents(b.previousElementSibling); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
     });
@@ -436,6 +437,7 @@ table.rt td.nm .msub { display: none }
 
   document.getElementById("cp").addEventListener("click", function () {
     var t = document.getElementById("cmd").textContent, b = this;
+    posthog.capture("vote_command_copied");
     try { navigator.clipboard.writeText(t).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); }, function () { sel(); }); } catch (e) { sel(); }
     function sel() { var r = document.createRange(); r.selectNodeContents(document.getElementById("cmd")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
   });
@@ -446,13 +448,16 @@ table.rt td.nm .msub { display: none }
     join.disabled = true; note.textContent = "joining...";
     fetch("/v1/subscribe", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: em }) })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-      .then(function (x) { note.textContent = x.ok ? "you're in. first drop lands friday." : (x.j.error || "that didn't work, try again"); })
+      .then(function (x) { if (x.ok) { posthog.identify(em.toLowerCase(), { email: em.toLowerCase() }); } note.textContent = x.ok ? "you're in. first drop lands friday." : (x.j.error || "that didn't work, try again"); })
       .catch(function () { note.textContent = "that didn't work, try again"; })
       .then(function () { join.disabled = false; });
   });
 })();
 </script>
 </body></html>`;
+
+// Public project key (marketingengineering.dev org in PostHog EU). Safe in page code.
+export const POSTHOG_KEY = "phc_xD9DDHgWUHMbSwzegzGJtCVKFoxouvCkgLcJtvbgfQgg";
 
 export function renderLeaderboard(products, scores, setups = []) {
   const by = Object.fromEntries(products.map((p) => [p.slug, p]));
@@ -467,5 +472,5 @@ export function renderLeaderboard(products, scores, setups = []) {
     steps: st.steps.map((t) => ({ slug: t.tool, name: by[t.tool]?.name ?? t.tool, url: by[t.tool]?.url, why: t.why, ours: OURS.includes(t.tool) })),
   })).sort((a, b) => b.voters - a.voters || a.job.localeCompare(b.job));
   const data = JSON.stringify({ voters: scores.voters, rows, setups: sets }).replace(/</g, "\\u003c");
-  return PAGE.replace("/*DATA*/", () => data);
+  return PAGE.replace("/*PHKEY*/", POSTHOG_KEY).replace("/*DATA*/", () => data);
 }

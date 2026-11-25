@@ -1,0 +1,39 @@
+name: GitHub stats to PostHog
+
+# Daily: stars/forks/watchers, plus yesterday's views and clones and the top referrers.
+# Traffic needs a token with push access: add a fine-grained PAT (this repo, Administration: read)
+# as the TRAFFIC_TOKEN secret. Without it only the public counts are sent.
+on:
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send to PostHog
+        env:
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN || github.token }}
+          HAS_TRAFFIC: ${{ secrets.TRAFFIC_TOKEN != '' }}
+          POSTHOG_KEY: phc_xD9DDHgWUHMbSwzegzGJtCVKFoxouvCkgLcJtvbgfQgg
+          REPO: ${{ github.repository }}
+        run: |
+          day=$(date -u -d yesterday +%F)
+          ts="${day}T23:59:00Z"
+          gh api "repos/$REPO" | jq --arg ts "$ts" '[{event: "github_repo_stats", timestamp: $ts,
+            properties: {stars: .stargazers_count, forks: .forks_count, watchers: .subscribers_count, open_issues: .open_issues_count}}]' > events.json
+          if [ "$HAS_TRAFFIC" = true ]; then
+            # ponytail: the traffic API only keeps 14 days, so a missed run loses that day; add backfill if that matters.
+            gh api "repos/$REPO/traffic/views" | jq --arg d "$day" --arg ts "$ts" '[.views[] | select(.timestamp | startswith($d)) | {event: "github_views", timestamp: $ts, properties: {count, uniques}}]' > views.json
+            gh api "repos/$REPO/traffic/clones" | jq --arg d "$day" --arg ts "$ts" '[.clones[] | select(.timestamp | startswith($d)) | {event: "github_clones", timestamp: $ts, properties: {count, uniques}}]' > clones.json
+            gh api "repos/$REPO/traffic/popular/referrers" | jq --arg ts "$ts" '[.[] | {event: "github_referrer_14d", timestamp: $ts, properties: {referrer, count, uniques}}]' > refs.json
+            jq -s add events.json views.json clones.json refs.json > all.json && mv all.json events.json
+          fi
+          jq --arg key "$POSTHOG_KEY" --arg id "github:$REPO" \
+            '{api_key: $key, batch: [.[] | .distinct_id = $id | .properties["$process_person_profile"] = false]}' events.json \
+            | curl -fsS -X POST https://eu.i.posthog.com/batch/ -H 'content-type: application/json' -d @-
+          echo "sent $(jq length events.json) events"
