@@ -39,13 +39,41 @@ Otherwise use only these sources:
 - **MCP servers configured.** Names and hosts only. Raw MCP config often holds API keys in URLs (`?api_key=`), args (`--api-key`), `headers` and `env`, so never print it unfiltered: no plain `claude mcp list`, no `cat` of a config file. Run this, which prints `name host-or-command` per server:
 
   ```bash
-  claude mcp list 2>/dev/null | sed -nE 's#^([^ ]+): +([a-z]+://)?([^/@ ]*@)?([^/?: ]+).*#\1 \4#p'
+  claude mcp list 2>/dev/null | sed -nE -e 's#^([^ ]+): +[a-z]+://([^/@ ]*@)?([^/?: ]+).*#\1 \3#p;t' -e 's#^([^ ]+): +([^ ]*/)?([^ ]+).*#\1 \3#p'
   ```
 
-  If `claude` isn't installed, or to also cover other agents, run this instead. It reads `mcpServers` from `~/.claude.json` (including per-project entries), `.mcp.json`, `.cursor/mcp.json`, `~/.cursor/mcp.json`, `~/.codex/config.toml` and the Claude Desktop config, and prints the same thing:
+  If `claude` isn't installed, or to also cover other agents, run this instead. It reads `mcpServers` from `~/.claude.json` (including per-project entries), `.mcp.json`, `.cursor/mcp.json`, `~/.cursor/mcp.json`, `~/.codex/config.toml` and the Claude Desktop config, skips files it can't parse, and prints the same thing:
 
   ```bash
-  python3 -c 'import json,os,re;E=os.path.expanduser;L=lambda f:(lambda t:json.loads(t) if t else {})(open(E(f)).read() if os.path.isfile(E(f)) else "");H=lambda c:(re.findall(r"^[a-z]+://(?:[^/@]*@)?([^/?:]+)",str(c.get("url") or c.get("serverUrl") or ""))+[os.path.basename(str(c.get("command","")))])[0];S=lambda d:[(n,H(c)) for n,c in (d or {}).items() if isinstance(c,dict)];J=[L(f) for f in ["~/.claude.json",".mcp.json",".cursor/mcp.json","~/.cursor/mcp.json","~/Library/Application Support/Claude/claude_desktop_config.json",os.path.join(os.environ.get("APPDATA","~"),"Claude/claude_desktop_config.json")]];R=sum([S(d.get("mcpServers"))+sum([S(p.get("mcpServers")) for p in (d.get("projects") or {}).values() if isinstance(p,dict)],[]) for d in J],[]);T=E("~/.codex/config.toml");R+=S(__import__("tomllib").load(open(T,"rb")).get("mcp_servers")) if os.path.isfile(T) else [];[print(n,h) for n,h in dict(R).items()]'
+  python3 - <<'EOF'
+  import json, os, re
+  home = os.path.expanduser
+  files = ["~/.claude.json", ".mcp.json", ".cursor/mcp.json", "~/.cursor/mcp.json",
+           "~/Library/Application Support/Claude/claude_desktop_config.json",
+           os.path.join(os.environ.get("APPDATA", "~"), "Claude/claude_desktop_config.json")]
+  def load(path):
+      try:
+          if path.endswith(".toml"):
+              import tomllib
+              with open(home(path), "rb") as f:
+                  return {"mcpServers": tomllib.load(f).get("mcp_servers")}
+          with open(home(path)) as f:
+              return json.load(f)
+      except Exception:
+          return {}
+  def host(c):  # host of the URL, or the command's file name; never args, headers, env or query
+      m = re.match(r"[a-z]+://(?:[^/@]*@)?([^/?:]+)", str(c.get("url") or c.get("serverUrl") or ""))
+      return m.group(1) if m else os.path.basename(str(c.get("command", "")))
+  seen = {}
+  for d in map(load, files + ["~/.codex/config.toml"]):
+      blocks = [d.get("mcpServers")] + [p.get("mcpServers") for p in (d.get("projects") or {}).values() if isinstance(p, dict)]
+      for b in blocks:
+          for name, c in (b or {}).items() if isinstance(b, dict) else []:
+              if isinstance(c, dict):
+                  seen.setdefault(name, host(c))
+  for name, h in seen.items():
+      print(name, h)
+  EOF
   ```
 
   Never read `headers`, `env`, `args`, query strings or tokens. If a key or token shows up anyway, don't stop and don't repeat it: keep the server name, ignore the rest, and carry on with the vote.
