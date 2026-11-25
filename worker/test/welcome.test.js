@@ -2,15 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { renderWelcome } from "../src/welcome.js";
 
-test("welcome email has the vote line, the repo link and a way out", () => {
-  const { subject, html, text } = renderWelcome();
-  assert.ok(text.includes("already in the ranking"));
-  assert.ok(renderWelcome({ voted: false }).text.includes("haven't voted yet"));
-  assert.ok(subject.length > 0 && subject.length < 60);
-  for (const part of [html, text]) {
-    assert.ok(part.includes("vote on marketing engineering - https://marketingengineering.dev/vote.md"));
-    assert.ok(part.includes("github.com/proxy-intell/marketing-engineering"));
-    assert.ok(part.includes('reply "stop"'));
-    assert.ok(part.includes("Newark, DE"));
+test("welcome email: one focus per variant, and a way out", () => {
+  const voted = renderWelcome(), site = renderWelcome({ voted: false });
+  assert.ok(voted.subject.includes("marketing engineering"));
+  assert.ok(voted.text.includes("already in the ranking") && !voted.html.includes("send your vote"));
+  assert.ok(site.html.includes('href="https://marketingengineering.dev"'));
+  for (const part of [voted.html, voted.text, site.html, site.text]) {
+    assert.ok(!part.includes("github.com"));
+    assert.ok(part.includes('reply "stop"') && part.includes("Newark, DE"));
   }
 });
