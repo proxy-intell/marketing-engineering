@@ -52,3 +52,8 @@ PostHog, org `marketingengineering.dev` (EU).
 
 - Site (posthog-js): pageviews, autocapture, `vote_command_copied`, `setup_command_copied`, identify on email sign-up.
 - Server (agents don't run JS): `vote_submitted`, `drop_subscribed`, `agent_page_fetched` (`kind` = `vote.md` / `skill` / `setup:<slug>`, plus `user_agent`).
+
+## Deploy
+
+Merge to `main`. `.github/workflows/deploy.yml` builds the image, syncs the Resend key and reply-to from this repo's secrets, and rolls the `marketing-engineering` Cloud Run service (europe-west2), signing in keylessly as a deploy account that can only touch this service. The infrastructure (service, database, load balancer, secrets) is Terraform in Proxy's private repo. Tables are created on server start.
+
