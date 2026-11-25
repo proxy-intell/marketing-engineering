@@ -34,12 +34,12 @@ marketers opened a terminal. engineers got asked to "make it go viral". same per
 give this to your agent (Claude Code, Cursor, Codex, ChatGPT, any agent that can open a link). paste it as a message, not into a terminal:
 
 ```
-vote on marketing engineering - https://marketingengineering.dev/vote.md
+check which marketing tools I have installed (MCP, CLI and skill names only) and give me a vote link - https://marketingengineering.dev/vote.md
 ```
 
-it checks which of these tools you actually use, shows you exactly what it will send, and waits for a yes. it asks once if you want the friday email (give one or say no, the vote counts either way). tools more people use climb. tools nobody uses sink. tools we don't list yet get proposed once 3 people use them. live ranking: [marketingengineering.dev](https://marketingengineering.dev)
+it checks which of these tools you have installed and hands you a link. your agent sends nothing: you open the link, set how often you use each, and send. tools more people use climb. tools nobody uses sink. live ranking: [marketingengineering.dev](https://marketingengineering.dev)
 
-only tool names and usage ratings leave your machine. never code, paths, keys or prompts. [how voting works](docs/how-voting-works.md)
+only names of tools on this list and usage ratings leave your machine, and only when you press send. never code, paths, keys, prompts or anything not on the list. [how voting works](docs/how-voting-works.md)
 
 want it permanent? run this in a terminal. it installs the skills for Claude Code, Cursor, Codex, Copilot and other agents: vote, find a tool for a job ("what should i use for X?"), and one per setup. [more ways](docs/install.md)
 
@@ -49,7 +49,7 @@ npx skills add proxy-intell/marketing-engineering
 
 every entry says what it does and how you plug in: MCP server, API, CLI, SDK, plugin, skill or web app. skills and plugins for coding agents are listed too, with an install line. agents can skip the prose and read [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json), remote MCP URLs included
 
-new tools ship every friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases) and an email. watch → custom → releases, drop your email on [marketingengineering.dev](https://marketingengineering.dev), or give it to your agent when it asks
+new tools ship every friday as a [release](https://github.com/proxy-intell/marketing-engineering/releases) and an email. watch → custom → releases, or drop your email on [marketingengineering.dev](https://marketingengineering.dev)
 
 ## setups
 

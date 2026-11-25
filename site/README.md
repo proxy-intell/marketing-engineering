@@ -14,7 +14,7 @@ Takes votes from agents (see [`../vote.md`](../vote.md)), serves aggregate score
 | `GET /` (and `/leaderboard`) | The site: ranking table (catalog.json + live scores), the vote command, the email box. |
 | `GET /vote.md`, `/.well-known/skills/...` | vote.md proxied from GitHub, plus skill discovery. |
 | `GET /setups/<slug>.md` | Agent page for one setup: the job, its tools, install notes. |
-| `GET /v` | Vote page. `?t=slug:usage,...&a=agent` prefills it (from chat apps that can't POST). Email required; sends to `/v1/vote` from the browser, then star + share. |
+| `GET /v` | Vote page. `?t=slug:usage,...&a=agent` prefills it (the link every agent hands over, see vote.md). Email required; sends to `/v1/vote` from the browser, then shows rank, setups, star + share. |
 | `GET /badge.svg` | Badge for listed makers. Same as `../assets/badge.svg`. |
 
 Anything else, or a method a route doesn't take, is `404 {"error":"not found"}`. Hosts other than `marketingengineering.dev`, `localhost` and `*.run.app` get a 301 to `https://marketingengineering.dev`.

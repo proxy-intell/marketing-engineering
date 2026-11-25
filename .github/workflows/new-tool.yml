@@ -28,6 +28,6 @@ jobs:
           jq -c '.products[]' catalog.json | while read -r p; do
             slug=$(jq -r .slug <<<"$p")
             if grep -qxF "$slug" "$RUNNER_TEMP/old" || gh release view "new-$slug" >/dev/null 2>&1; then continue; fi
-            notes=$(jq -r '"**[\(.name)](\(.url))** · \(.category) · \(.description)\n\nUse it? Tell your agent: `vote on marketing engineering - https://marketingengineering.dev/vote.md`"' <<<"$p")
+            notes=$(jq -r '"**[\(.name)](\(.url))** · \(.category) · \(.description)\n\nUse it? Tell your agent: `check which marketing tools I have installed (MCP, CLI and skill names only) and give me a vote link - https://marketingengineering.dev/vote.md`"' <<<"$p")
             gh release create "new-$slug" --title "New: $(jq -r .name <<<"$p")" --notes "$notes"
           done

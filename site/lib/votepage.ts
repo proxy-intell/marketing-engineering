@@ -1,4 +1,4 @@
-// /v: the vote page for agents that can't send a POST (Claude Desktop chat, claude.ai, ChatGPT).
+// /v: the vote page. Agents never send a vote themselves (vote.md).
 // The agent links here with ?t=slug:usage,... and the person checks it, adds an email if they want, and sends.
 import { layout, NAV } from "./layout";
 import { WEIGHTS, MAX_TOOLS } from "./votes";
@@ -57,11 +57,14 @@ export function renderVotePage(products: Product[]): string {
 .vgo:disabled { opacity: .5; cursor: default }
 .vnote { display: block; font: 500 .72rem var(--mono); text-transform: uppercase; letter-spacing: .04em }
 @media (max-width: 600px) { .vrow { grid-template-columns: minmax(0, 1fr) 128px } }
+.vextra { margin: 18px 0 0; font-size: .86rem; color: var(--mute) }
+.vextra code { font: 500 .78rem var(--mono); color: var(--ink); overflow-wrap: anywhere }
+#setupsMsg { margin: 0 0 14px; white-space: pre-line }
 .vp [hidden] { display: none !important }
 </style>`, `<body><main><div class="wrap vp">
   ${NAV}
   <h1 id="h">your vote</h1>
-  <p class="sub" id="lede">your agent filled this in. change anything, then send.</p>
+  <p class="sub" id="lede">your agent found these. set how often you use each, then send.</p>
   <form class="vemail" id="send" onsubmit="return false">
     <label class="elab" for="em">your email <span class="req" aria-hidden="true">*</span></label>
     <div class="field"><input type="email" id="em" placeholder="you@company.com" autocomplete="email" required aria-required="true"></div>
@@ -76,7 +79,10 @@ export function renderVotePage(products: Product[]): string {
       <a class="vgo" href="https://github.com/proxy-intell/marketing-engineering" target="_blank" rel="noopener"><svg class="star" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>star the repo</a>
       <a class="vsec" id="shareX" target="_blank" rel="noopener">share on X</a>
     </div>
+    <p class="vnote" id="setupsMsg" hidden></p>
     <a class="vrank" href="/">see the ranking →</a>
+    <p class="vextra">want your stack on GitHub too? ask your agent: <code>put my stack on GitHub - https://github.com/proxy-intell/marketing-engineering/blob/main/voters/README.md</code></p>
+    <p class="vextra">more skills (find a tool for a job, one per setup), run in a terminal: <code>npx skills add proxy-intell/marketing-engineering</code></p>
   </div>
 </div></main>
 <script type="application/json" id="data">${data}</script>
@@ -139,7 +145,10 @@ export function renderVotePage(products: Product[]): string {
       .then(function (x) {
         if (x.ok) {
           document.getElementById("send").hidden = true; list.hidden = true; more.hidden = true; document.querySelector(".vfoot").hidden = true;
-          document.getElementById("doneMsg").textContent = x.j.counted.tools + " tools counted" + (x.j.subscribed ? ", and you're on the friday drop" : "") + ". a star or a share helps the ranking grow.";
+          var where = (x.j.ranks || []).map(function (r) { return byslug[r.slug] ? byslug[r.slug].name + " is #" + r.rank : ""; }).filter(Boolean).join(", ");
+          document.getElementById("doneMsg").textContent = (x.j.new ? "you're voter #" + x.j.voters + ". " : "vote updated, " + x.j.voters + " voters so far. ") + x.j.counted.tools + " tools counted" + (x.j.subscribed ? ", and you're on the friday drop" : "") + "." + (where ? " " + where + " overall." : "") + " a star or a share helps the ranking grow.";
+          var su = (x.j.setups || []).map(function (s) { return !s.missing.length ? 'you have the whole "' + s.job + '" setup.' : s.missing.length === 1 ? 'one tool short of "' + s.job + '": ' + s.missing[0] + "." : ""; }).filter(Boolean);
+          if (su.length) { var sm = document.getElementById("setupsMsg"); sm.textContent = su.join("\\n"); sm.hidden = false; }
           document.getElementById("h").textContent = "thanks, your vote is counted"; document.getElementById("lede").hidden = true;
           document.getElementById("shareX").href = "https://x.com/intent/post?text=" + encodeURIComponent(shareText(tools));
           document.getElementById("done").hidden = false; window.scrollTo(0, 0);

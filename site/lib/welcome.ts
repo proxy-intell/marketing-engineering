@@ -1,6 +1,6 @@
 // Welcome email, sent once when someone first joins the Friday drop (site box or a vote with weekly_drop).
 const REPO = "https://github.com/proxy-intell/marketing-engineering";
-const CMD = "vote on marketing engineering - https://marketingengineering.dev/vote.md";
+const CMD = "check which marketing tools I have installed (MCP, CLI and skill names only) and give me a vote link - https://marketingengineering.dev/vote.md";
 const SHARE = "https://x.com/intent/post?text=" + encodeURIComponent("the marketing tools people actually use, ranked by what their agents report. not what x says.\n\nmarketingengineering.dev");
 const POSTAL = "Proxy Intelligence Inc., 131 Continental Dr, Suite 305, Newark, DE 19713, US";
 

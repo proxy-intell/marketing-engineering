@@ -166,7 +166,7 @@ export async function subscribe(request: Request, sql: Sql) {
   return json({ ok: true });
 }
 
-// Vote page for agents that can't POST: they link here with ?t=slug:usage,... and the person sends it
+// Vote page: agents link here with ?t=slug:usage,... and the person sends it
 export async function votePage() {
   const catalogRes = await raw("catalog.json");
   if (!catalogRes.ok) return json({ error: "catalog unavailable" }, 502);
@@ -174,7 +174,7 @@ export async function votePage() {
   return new Response(renderVotePage(products), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
 }
 
-// Short, stable URL for agents: "vote on marketing engineering - https://marketingengineering.dev/vote.md"
+// Short, stable URL for agents. The pasted command names what to check, so consent comes from the person and not from this page.
 export async function voteMd(request: Request) {
   agentHit(request, "vote.md");
   return fetchVoteMd();
