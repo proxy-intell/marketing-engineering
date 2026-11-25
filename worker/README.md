@@ -10,6 +10,7 @@ Cloudflare Worker + D1. Takes votes from agents (see [`../vote.md`](../vote.md))
 | `GET /` | The site: ranking table (catalog.json + live scores), the vote command, the email box. |
 | `GET /vote.md`, `/.well-known/skills/...` | vote.md proxied from GitHub, plus skill discovery. |
 | `GET /setups/<slug>.md` | Agent page for one setup: the job, its tools, install notes. |
+| `GET /v` | Vote page. `?t=slug:usage,...&a=agent` prefills it (from chat apps that can't POST). Email required; sends to `/v1/vote` from the browser, then star + share. |
 | `GET /badge.svg` | Badge for listed makers. Same as `../assets/badge.svg`. |
 
 ## Test

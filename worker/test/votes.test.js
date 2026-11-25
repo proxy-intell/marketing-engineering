@@ -122,3 +122,8 @@ test("a proposal may be kind data", () => {
   const p = { name: "X", url: "https://x.com", description: "d.", category: "C", usage: "daily", kind: "data" };
   assert.equal(validateVote(ok({ proposals: [p] })).vote.proposals[0].kind, "data");
 });
+
+test("chat-app votes can say they came from claude", () => {
+  const base = { v: 1, install_id: "3f1b8c0e-9d2a", tools: [{ slug: "posthog", usage: "daily" }] };
+  assert.equal(validateVote({ ...base, agent: "claude" }).vote.agent, "claude");
+});

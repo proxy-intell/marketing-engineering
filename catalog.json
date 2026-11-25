@@ -20,7 +20,8 @@
         "usage-based",
         "paywalls"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "autumnpricing"
     },
     {
       "slug": "bing-webmaster-tools",
@@ -56,7 +57,8 @@
         "agents",
         "mcp-client"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "claudeai"
     },
     {
       "slug": "exa",
@@ -77,7 +79,8 @@
         "search",
         "competitor-research"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "exaailabs"
     },
     {
       "slug": "gemini-api",
@@ -145,7 +148,8 @@
         "aeo",
         "brand-monitoring"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "perplexitydevs"
     },
     {
       "slug": "playwright",
@@ -162,7 +166,8 @@
         "screenshots",
         "testing"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "playwrightweb"
     },
     {
       "slug": "posthog",
@@ -185,7 +190,8 @@
         "experiments",
         "funnels"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "PostHog"
     },
     {
       "slug": "product-hunt",
@@ -242,7 +248,8 @@
         "newsletters",
         "transactional"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "resend"
     },
     {
       "slug": "scrapecreators",
@@ -277,7 +284,8 @@
         "keywords",
         "competitor-research"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "semrush"
     },
     {
       "slug": "stripe",
@@ -298,7 +306,8 @@
         "checkout",
         "subscriptions"
       ],
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "maker_x": "stripe"
     }
   ]
 }
