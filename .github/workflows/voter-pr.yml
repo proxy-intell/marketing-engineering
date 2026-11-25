@@ -8,7 +8,7 @@ name: Voter PR
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
-    paths: ["voters/**"]
+    paths: ["voters/*.json"]
 
 permissions:
   contents: write
