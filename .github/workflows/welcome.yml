@@ -18,6 +18,6 @@ jobs:
     steps:
       - uses: actions/first-interaction@v3
         with:
-          repo-token: ${{ github.token }}
-          issue-message: "first suggestion. your screen time is officially research now. a maintainer will look soon"
-          pr-message: "first PR. touching catalog.json counts as touching grass here. CI is checking your entry now"
+          repo_token: ${{ github.token }}
+          issue_message: "first suggestion. your screen time is officially research now. a maintainer will look soon"
+          pr_message: "first PR. touching catalog.json counts as touching grass here. CI is checking your entry now"
