@@ -9,7 +9,7 @@ vote:
       - any-glob-to-any-file: ["voters/**"]
 site:
   - changed-files:
-      - any-glob-to-any-file: ["worker/**"]
+      - any-glob-to-any-file: ["site/**"]
 skills:
   - changed-files:
       - any-glob-to-any-file: [vote.md, "skills/**", "plugins/**"]
