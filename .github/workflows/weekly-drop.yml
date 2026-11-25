@@ -21,6 +21,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           RESEND_SEGMENT_ID: ${{ vars.RESEND_SEGMENT_ID }}
           RESEND_FROM: ${{ vars.RESEND_FROM }}
+          RESEND_REPLY_TO: ${{ secrets.RESEND_REPLY_TO }}
         run: |
           since=$(gh release list --limit 100 --json tagName --jq '[.[].tagName | select(startswith("drop-"))][0] // empty' | sed 's/^drop-//')
           since=${since:-1970-01-01}
