@@ -52,3 +52,11 @@ Emails live in D1 `subscribers` (source of truth) and are pushed to Resend best 
 | variable | `RESEND_FROM` | `Marketing Engineering <drop@marketingengineering.dev>` (verified in Resend) |
 
 Review the draft in Resend on Friday and press send.
+
+## Analytics
+
+PostHog, org `marketingengineering.dev` (EU). Public key is `POSTHOG_KEY` in `src/leaderboard.js`.
+
+- Site (posthog-js): pageviews, autocapture, `vote_command_copied`, `setup_command_copied`, identify on email sign-up.
+- Worker (server-side, agents don't run JS): `vote_submitted`, `drop_subscribed`, `agent_page_fetched` (`kind` = `vote.md` / `skill` / `setup:<slug>`, plus `user_agent`).
+- GitHub: `.github/workflows/github-stats.yml` sends `github_repo_stats` daily, plus `github_views`, `github_clones` and `github_referrer_14d` once the `TRAFFIC_TOKEN` secret is set.

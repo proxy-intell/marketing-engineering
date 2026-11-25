@@ -10,7 +10,7 @@ test("embeds catalog + scores as JSON a tool name cannot break out of", () => {
   const data = JSON.parse(html.match(/<script type="application\/json" id="data">(.*?)<\/script>/s)[1]);
   assert.deepEqual(data.rows[0], { slug: "x", name: "X</script><b>", url: "https://x.co", cat: "Email sending", desc: "d.", kind: "skill", score: 3, voters: 2, setups: 0 });
   assert.equal(data.voters, 2);
-  assert.equal(html.match(/<\/script>/g).length, 2);
+  assert.equal(html.match(/<\/script>/g).length, 3);
 });
 
 test("unvoted tools score zero", () => {
@@ -60,7 +60,7 @@ test("rows count the setups a tool is in", () => {
 
 test("a setup job cannot break out of the page", () => {
   const html = renderLeaderboard(P, { voters: 0, tools: {} }, ST);
-  assert.equal(html.match(/<\/script>/g).length, 2);
+  assert.equal(html.match(/<\/script>/g).length, 3);
 });
 
 test("no setups means no setups section and old callers still work", () => {
