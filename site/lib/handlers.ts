@@ -25,6 +25,10 @@ const json = (data: unknown, status = 200, headers: Record<string, string> = {})
 
 export const notFound = () => json({ error: "not found" }, 404);
 
+// Read the body only if it's small. Checking after reading would let one 32 MB request (Cloud Run's cap) eat the memory first.
+// A chunked request has no content-length, so the text.length check after reading still applies.
+const tooBig = (request: Request, max: number) => Number(request.headers.get("content-length")) > max;
+
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
 
 // Google's load balancer appends "<client>, <lb>" to x-forwarded-for, so the client is second from the right.
@@ -74,6 +78,7 @@ export async function scores(sql: Sql) {
 }
 
 export async function vote(request: Request, sql: Sql) {
+  if (tooBig(request, MAX_BODY)) return json({ error: "body too large" }, 413);
   const text = await request.text();
   if (text.length > MAX_BODY) return json({ error: "body too large" }, 413);
   let body;
@@ -140,6 +145,7 @@ export async function vote(request: Request, sql: Sql) {
 
 // Friday drop sign-up from the site's email box. Shares the per-IP daily limit with votes.
 export async function subscribe(request: Request, sql: Sql) {
+  if (tooBig(request, 1000)) return json({ error: "body too large" }, 413);
   const text = await request.text();
   if (text.length > 1000) return json({ error: "body too large" }, 413);
   let email;

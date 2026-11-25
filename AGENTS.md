@@ -2,6 +2,10 @@
 
 Instructions for AI agents maintaining or reading this repo.
 
+## Public repository
+
+Everything here is public: code, comments, commit messages, PR text. The site's infrastructure (Cloud Run, database, load balancer, secrets) lives in a private repo. Never commit cloud project ids, hostnames or IPs beyond `marketingengineering.dev`, email addresses, API keys, or anything copied from that side. Secrets and infra ids go in GitHub Actions secrets or variables, read in workflows as `${{ secrets.NAME }}` / `${{ vars.NAME }}`.
+
 ## Voting (the primary path)
 
 If a user asks you to vote, rank or submit the tools they use, follow [`vote.md`](vote.md). Do not edit `catalog.json` for that. `votes.json` is generated daily by `.github/workflows/sync-votes.yml`: never hand-edit it. Scoring: [`docs/how-voting-works.md`](docs/how-voting-works.md). `voters/<login>.json` files come only from a voter's own PR (`vote.md` step 10) and merge automatically: never add one for someone else.

@@ -124,3 +124,13 @@ test("no PostHog key sends no events", async () => {
   await h.voteMd(req("/vote.md"));
   assert.equal(calls, 1); // just vote.md from GitHub
 });
+
+test("an oversized body is refused before it is read", async () => {
+  const big = { "content-length": "50000000", "content-type": "application/json" };
+  let read = false;
+  const body = new ReadableStream({ pull() { read = true; } }, { highWaterMark: 0 }); // no pull until someone reads
+  const r = await h.vote(new Request("https://marketingengineering.dev/v1/vote", { method: "POST", headers: big, body, duplex: "half" } as RequestInit), sql);
+  assert.equal(r.status, 413);
+  assert.equal(read, false);
+  assert.equal((await h.subscribe(req("/v1/subscribe", { method: "POST", headers: { "content-length": "5000" }, body: "x".repeat(5000) }), sql)).status, 413);
+});
