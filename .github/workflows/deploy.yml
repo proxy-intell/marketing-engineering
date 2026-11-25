@@ -5,7 +5,7 @@ name: Deploy
 on:
   push:
     branches: [main]
-    paths: ["site/**", ".github/workflows/deploy.yml"]
+    paths: ["site/**", ".github/workflows/deploy.yml", ".github/workflows/site-test.yml"]
   workflow_dispatch:
 
 concurrency:
@@ -21,7 +21,12 @@ env:
   IMAGE: europe-west2-docker.pkg.dev/${{ vars.GCP_PROJECT }}/marketing-engineering/site
 
 jobs:
+  # Same checks as CI, so a merge with failing tests never ships.
+  test:
+    uses: ./.github/workflows/site-test.yml
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
