@@ -8,7 +8,7 @@ Everything here is public: code, comments, commit messages, PR text. The site's 
 
 ## Voting (the primary path)
 
-If a user asks you to vote, rank or submit the tools they use, follow [`vote.md`](vote.md). Do not edit `catalog.json` for that. `votes.json` is generated daily by `.github/workflows/sync-votes.yml`: never hand-edit it. Scoring: [`docs/how-voting-works.md`](docs/how-voting-works.md). `voters/<login>.json` files come only from a voter's own PR (`vote.md` step 10) and merge automatically: never add one for someone else.
+If a user asks you to vote, rank or submit the tools they use, follow [`vote.md`](vote.md). Do not edit `catalog.json` for that. `votes.json` is generated daily by `.github/workflows/sync-votes.yml`: never hand-edit it. Scoring: [`docs/how-voting-works.md`](docs/how-voting-works.md). `voters/<login>.json` files come only from a voter's own PR ([`voters/README.md`](voters/README.md)) and merge automatically: never add one for someone else.
 
 ## Adding a product by hand (a user asked you to)
 

@@ -33,5 +33,5 @@ test("renderSetupMd names each tool with its links and the rules", () => {
   assert.match(md, /Docs: https:\/\/a\.dev\/docs/);
   assert.match(md, /2\. \*\*Beta\*\*/);
   assert.match(md, /Never ask the user to paste an API key into the chat/);
-  assert.match(md, /vote on marketing engineering - https:\/\/marketingengineering\.dev\/vote\.md/);
+  assert.match(md, /give me a vote link - https:\/\/marketingengineering\.dev\/vote\.md/);
 });

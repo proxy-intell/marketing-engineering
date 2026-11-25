@@ -1,6 +1,6 @@
 name: Voter PR
 
-# A voter's agent opens a PR from their own fork adding voters/<login>.json (vote.md step 10).
+# A voter's agent opens a PR from their own fork adding voters/<login>.json (voters/README.md).
 # It merges here once it only touches the author's own file and lists catalog tools.
 # pull_request_target runs this base-branch code with a write token: the PR's code is never checked out or run,
 # its one file is fetched through the API and parsed as JSON.

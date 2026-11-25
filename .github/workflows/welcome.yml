@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   greet:
-    # Voter PRs (vote.md step 10) merge on their own, no greeting.
+    # Voter PRs (voters/README.md) merge on their own, no greeting.
     if: github.event_name == 'issues' || !startsWith(github.head_ref, 'vote-')
     runs-on: ubuntu-latest
     steps:

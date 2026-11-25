@@ -62,7 +62,7 @@ if climbers:
     lines.append("")
 
 if github_voters:
-    lines += ["### Voted on GitHub", "", ", ".join(f"@{v}" for v in github_voters) + ". Your agent can add you too: https://marketingengineering.dev/vote.md", ""]
+    lines += ["### Voted on GitHub", "", ", ".join(f"@{v}" for v in github_voters) + ". Your agent can add you too: https://github.com/proxy-intell/marketing-engineering/blob/main/voters/README.md", ""]
 
 if new:
     lines += ["<details><summary>Draft X posts</summary>", ""]
@@ -72,7 +72,7 @@ if new:
     lines.append("</details>")
 
 POSTAL = "Proxy Intelligence Inc., 131 Continental Dr, Suite 305, Newark, DE 19713, US"
-CMD = "vote on marketing engineering - https://marketingengineering.dev/vote.md"
+CMD = "check which marketing tools I have installed (MCP, CLI and skill names only) and give me a vote link - https://marketingengineering.dev/vote.md"
 UNSUB = "{{{RESEND_UNSUBSCRIBE_URL}}}"
 e = html.escape
 by_slug = {p["slug"]: p for p in products}

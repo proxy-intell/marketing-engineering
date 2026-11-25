@@ -45,4 +45,4 @@ Say plainly that scores are self-reported by people's agents and that a low coun
 ### 4. After
 
 Ask once: "Want to vote with what you actually use?" On a yes, follow:
-vote on marketing engineering - https://marketingengineering.dev/vote.md
+check which marketing tools I have installed (MCP, CLI and skill names only) and give me a vote link - https://marketingengineering.dev/vote.md

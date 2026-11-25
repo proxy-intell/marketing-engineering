@@ -17,3 +17,10 @@ test("vote page embeds the catalog without letting a name break out", () => {
   assert.match(html, /X\\u003c\/script>/);
   assert.match(html, /var parseVoteLink = function parseVoteLink/);
 });
+
+test("the page's inline script is valid JavaScript", () => {
+  const html = renderVotePage([{ slug: "x", name: "X", category: "C", url: "https://x.co", description: "d." }]);
+  const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  assert.ok(scripts.length > 0);
+  for (const s of scripts) assert.doesNotThrow(() => new Function(s));
+});
