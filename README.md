@@ -70,20 +70,6 @@ paste into your agent:
 set up "charge for your product" - https://marketingengineering.dev/setups/paid-product.md
 ```
 
-### get cited in AI search
-
-1. [Perplexity Sonar API](https://docs.perplexity.ai): see where you are cited today
-2. [Semrush](https://www.semrush.com): see who gets cited instead of you
-3. [Bing Webmaster Tools](https://www.bing.com/webmasters): check Bing has your pages
-4. [IndexNow](https://www.indexnow.org): push new pages the day they ship
-5. [Claude Code](https://claude.com/claude-code): run the check every week
-
-paste into your agent:
-
-```
-set up "get cited in AI search" - https://marketingengineering.dev/setups/aeo.md
-```
-
 ### know what's working
 
 1. [PostHog](https://posthog.com): who signed up and from where
@@ -122,6 +108,20 @@ paste into your agent:
 set up "research competitors' ads" - https://marketingengineering.dev/setups/competitor-ads.md
 ```
 
+### get cited in AI search
+
+1. [Perplexity Sonar API](https://docs.perplexity.ai): see where you are cited today
+2. [Semrush](https://www.semrush.com): see who gets cited instead of you
+3. [Bing Webmaster Tools](https://www.bing.com/webmasters): check Bing has your pages
+4. [IndexNow](https://www.indexnow.org): push new pages the day they ship
+5. [Claude Code](https://claude.com/claude-code): run the check every week
+
+paste into your agent:
+
+```
+set up "get cited in AI search" - https://marketingengineering.dev/setups/aeo.md
+```
+
 <!-- END SETUPS -->
 
 <!-- BEGIN CATALOG -->
@@ -148,7 +148,7 @@ set up "research competitors' ads" - https://marketingengineering.dev/setups/com
 
 ## Attribution & product analytics
 
-- [PostHog](https://posthog.com) - Open-source product analytics: events, funnels, session replay, feature flags and experiments. Self-hostable or cloud. · data
+- [PostHog](https://posthog.com) - Open-source product analytics: events, funnels, session replay, feature flags and experiments. Self-hostable or cloud. · data · used by 3
 
 ## Billing, credits & paywalls
 
@@ -162,7 +162,7 @@ set up "research competitors' ads" - https://marketingengineering.dev/setups/com
 
 ## Coding agents
 
-- [Claude Code](https://claude.com/claude-code) - Anthropic's coding agent for the terminal, IDEs and web. Reads and edits a codebase, runs commands and connects to MCP servers.
+- [Claude Code](https://claude.com/claude-code) - Anthropic's coding agent for the terminal, IDEs and web. Reads and edits a codebase, runs commands and connects to MCP servers. · used by 4
 
 ## Competitor & market research
 
@@ -170,8 +170,8 @@ set up "research competitors' ads" - https://marketingengineering.dev/setups/com
 
 ## Creative strategy
 
+- [Proxy](https://useproxy.dev) - MCP server for the Meta, Google, LinkedIn and TikTok (EU) ad libraries, with video and image analysis of ads. · data · used by 3
 - [Gemini API](https://ai.google.dev) - Google's model API. Accepts text, image, audio and video input, so it can transcribe and describe video ads.
-- [Proxy](https://useproxy.dev) - MCP server for the Meta, Google, LinkedIn and TikTok (EU) ad libraries, with video and image analysis of ads. · data
 
 ## Google SEO
 

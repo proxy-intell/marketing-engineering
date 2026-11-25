@@ -1,14 +1,14 @@
 {
-  "updated": "2026-11-24",
-  "voters": 1,
+  "updated": "2026-11-25",
+  "voters": 5,
   "tools": {
     "autumn": {
       "score": 2,
       "voters": 1
     },
     "claude-code": {
-      "score": 3,
-      "voters": 1
+      "score": 9.5,
+      "voters": 4
     },
     "exa": {
       "score": 2,
@@ -31,16 +31,20 @@
       "voters": 1
     },
     "playwright": {
-      "score": 0.5,
-      "voters": 1
+      "score": 1.5,
+      "voters": 2
     },
     "posthog": {
-      "score": 3,
-      "voters": 1
+      "score": 6.5,
+      "voters": 3
     },
     "product-hunt": {
       "score": 0.5,
       "voters": 1
+    },
+    "proxy": {
+      "score": 3,
+      "voters": 3
     },
     "resend": {
       "score": 2,
@@ -56,6 +60,23 @@
     },
     "stripe": {
       "score": 2,
+      "voters": 1
+    }
+  },
+  "setups": {
+    "aeo": {
+      "voters": 0
+    },
+    "competitor-ads": {
+      "voters": 1
+    },
+    "launch": {
+      "voters": 1
+    },
+    "paid-product": {
+      "voters": 1
+    },
+    "whats-working": {
       "voters": 1
     }
   }
