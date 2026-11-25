@@ -1,0 +1,55 @@
+name: Deploy
+
+# Every push to main that touches the site ships it to Cloud Run. Keyless: GitHub's OIDC token is
+# exchanged for a deploy account that can only roll this one service (and only from main).
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/deploy.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  REGION: europe-west2
+  IMAGE: europe-west2-docker.pkg.dev/${{ vars.GCP_PROJECT }}/marketing-engineering/site
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - run: gcloud auth configure-docker europe-west2-docker.pkg.dev --quiet
+
+      # The two values that live in this repo's secrets. Only adds a version when they change.
+      - name: Sync secrets
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_REPLY_TO: ${{ secrets.RESEND_REPLY_TO }}
+        run: |
+          sync() {
+            [ -n "$2" ] || return 0
+            current=$(gcloud secrets versions access latest --secret="$1" --project="${{ vars.GCP_PROJECT }}" 2>/dev/null || true)
+            [ "$current" = "$2" ] || printf '%s' "$2" | gcloud secrets versions add "$1" --data-file=- --project="${{ vars.GCP_PROJECT }}" --quiet
+          }
+          sync me-resend-api-key "$RESEND_API_KEY"
+          sync me-resend-reply-to "$RESEND_REPLY_TO"
+
+      - name: Build and push
+        run: |
+          docker build --platform linux/amd64 -t "$IMAGE:${{ github.sha }}" -t "$IMAGE:latest" site
+          docker push --all-tags "$IMAGE"
+
+      - name: Roll Cloud Run
+        run: gcloud run deploy marketing-engineering --image "$IMAGE:${{ github.sha }}" --region "$REGION" --project "${{ vars.GCP_PROJECT }}" --quiet
