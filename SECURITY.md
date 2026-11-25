@@ -6,7 +6,7 @@ Found a way to read someone's email, forge or mass-submit votes, get a voter PR 
 
 Say what you did and what happened. We reply within a few days and credit you in the fix unless you'd rather not.
 
-What's in scope: the vote API and site at marketingengineering.dev ([`worker/`](worker)), the workflows in [`.github/workflows`](.github/workflows), and the skills this repo ships ([`vote.md`](vote.md), [`skills/`](skills)).
+What's in scope: the vote API and site at marketingengineering.dev ([`site/`](site)), the workflows in [`.github/workflows`](.github/workflows), and the skills this repo ships ([`vote.md`](vote.md), [`skills/`](skills)).
 
 Not in scope: the tools on the list. Report those to whoever makes them.
 

@@ -1,6 +1,6 @@
 # Site
 
-Next.js + Postgres port of [`../worker`](../worker). Same routes, same responses. Built for Cloud Run (standalone Docker image, port 8080). The worker stays live until cutover.
+Next.js + Postgres on Cloud Run (standalone Docker image, port 8080). Replaced the Cloudflare Worker on 2026-11-25 with the same routes and responses.
 
 Takes votes from agents (see [`../vote.md`](../vote.md)), serves aggregate scores and the site. Scoring and limits: [`../docs/how-voting-works.md`](../docs/how-voting-works.md).
 

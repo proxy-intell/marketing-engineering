@@ -1,6 +1,4 @@
-.wrangler/
 node_modules/
-.dev.vars
 __pycache__/
 .next/
 *.tsbuildinfo
