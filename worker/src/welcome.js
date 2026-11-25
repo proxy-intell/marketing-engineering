@@ -8,7 +8,7 @@ const PREVIEW = "one email a week. only what got added";
 // voted: they joined while voting (most people). Otherwise they used the site box and may not have voted yet.
 const intro = (voted) => [
   "hey, you're in.",
-  "marketing engineering ranks marketing tools by what ai agents say people actually use, whether that's daily, weekly, monthly or just installed. not what twitter says.",
+  "marketing engineering ranks marketing tools by what ai agents say people actually use, whether that's daily, weekly, monthly or just installed. not what x/twitter says.",
   voted ? "your vote's already in the ranking. stack changed? vote again and the new one replaces the old." : "haven't voted yet? the line below works for you too. a new vote always replaces the old one.",
   "one email every friday. only the tools added that week.",
   "know someone with opinions about their stack? send them this line for their agent:",
