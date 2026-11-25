@@ -125,7 +125,7 @@ def climb_cells():
     for s, was, r in climbers:
         move = f"#{was}" if was else "new"
         yield tool_cell(by_slug[s]), lambda line, move=move, r=r: (
-            f'<td align="right" style="padding:16px 0 16px 12px;{line}white-space:nowrap"><span style="{MONO};font-size:13px;color:{MUTE}">{move} &rarr;</span> '
+            f'<td align="right" style="padding:16px 0 16px 12px;{line}white-space:nowrap"><span style="{HEAVY};font-size:30px;line-height:1;color:{MUTE}">{move} &rarr;</span> '
             f'<span style="{HEAVY};font-size:30px;line-height:1;color:{ORANGE}">#{r}</span></td>'
         )
 
