@@ -4,6 +4,8 @@ import { renderWelcome } from "../src/welcome.js";
 
 test("welcome email has the vote line, the repo link and a way out", () => {
   const { subject, html, text } = renderWelcome();
+  assert.ok(text.includes("already in the ranking"));
+  assert.ok(renderWelcome({ voted: false }).text.includes("haven't voted yet"));
   assert.ok(subject.length > 0 && subject.length < 60);
   for (const part of [html, text]) {
     assert.ok(part.includes("vote on marketing engineering - https://marketingengineering.dev/vote.md"));

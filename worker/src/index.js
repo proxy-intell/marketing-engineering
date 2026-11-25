@@ -91,7 +91,7 @@ export default {
 
       if (vote.weekly_drop && env.RESEND_API_KEY) {
         ctx.waitUntil(addToResend(env, vote.email));
-        if (firstSignup) ctx.waitUntil(sendWelcome(env, vote.email, emailHash));
+        if (firstSignup) ctx.waitUntil(sendWelcome(env, vote.email, emailHash, true));
       }
 
       // The vote is stored by now. A setups lookup failure only empties the list.
@@ -143,7 +143,7 @@ export default {
         .bind(emailHash, email, Date.now()).run();
       if (env.RESEND_API_KEY) {
         ctx.waitUntil(addToResend(env, email));
-        if (ins.meta.changes > 0) ctx.waitUntil(sendWelcome(env, email, emailHash));
+        if (ins.meta.changes > 0) ctx.waitUntil(sendWelcome(env, email, emailHash, false));
       }
       capture(ctx, "drop_subscribed", email, { surface: "worker", $set: { email } });
       return json({ ok: true });
@@ -222,8 +222,8 @@ async function loadSetups(slugs = null) {
 }
 
 // Best effort, once per email (the idempotency key stops double sends on retries).
-async function sendWelcome(env, email, emailHash) {
-  const { subject, html, text } = renderWelcome();
+async function sendWelcome(env, email, emailHash, voted) {
+  const { subject, html, text } = renderWelcome({ voted });
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json", "idempotency-key": `welcome/${emailHash}` },
