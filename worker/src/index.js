@@ -3,6 +3,7 @@ import { validSetups, renderSetupMd } from "./setups.js";
 import { BADGE_SVG } from "./badge.js";
 import { renderLeaderboard, POSTHOG_KEY } from "./leaderboard.js";
 import { renderVotePage } from "./votepage.js";
+import { renderWelcome } from "./welcome.js";
 
 const RAW = "https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main";
 const SKILL_DESCRIPTION = "Vote on the Marketing Engineering tool list using what the user actually uses. Use when the user asks to vote, rank, submit or add marketing tools, skills or plugins to proxy-intell/marketing-engineering, or pastes the vote.md link.";
@@ -81,13 +82,16 @@ export default {
           env.DB.prepare("INSERT INTO subscribers (email_hash, email, created_at) VALUES (?, ?, ?) ON CONFLICT(email_hash) DO NOTHING").bind(emailHash, vote.email, now),
         );
       }
-      await env.DB.batch(statements);
+      const done = await env.DB.batch(statements);
+      // The subscribers insert is last; it only changes a row the first time this email signs up.
+      const firstSignup = vote.weekly_drop && done[done.length - 1].meta.changes > 0;
       capture(ctx, "vote_submitted", vote.install_id, {
         agent: vote.agent, tools: vote.tools.length, proposals: vote.proposals.length, new: !existed, weekly_drop: vote.weekly_drop, $process_person_profile: false,
       });
 
       if (vote.weekly_drop && env.RESEND_API_KEY) {
         ctx.waitUntil(addToResend(env, vote.email));
+        if (firstSignup) ctx.waitUntil(sendWelcome(env, vote.email, emailHash));
       }
 
       // The vote is stored by now. A setups lookup failure only empties the list.
@@ -134,9 +138,13 @@ export default {
         "INSERT INTO rate (ip_hash, day, n) VALUES (?, ?, 1) ON CONFLICT(ip_hash, day) DO UPDATE SET n = n + 1 RETURNING n",
       ).bind(ipHash, day).first();
       if (hit.n > MAX_VOTES_PER_IP_PER_DAY) return json({ error: "too many tries from this address today" }, 429);
-      await env.DB.prepare("INSERT INTO subscribers (email_hash, email, created_at) VALUES (?, ?, ?) ON CONFLICT(email_hash) DO NOTHING")
-        .bind(await sha256(email), email, Date.now()).run();
-      if (env.RESEND_API_KEY) ctx.waitUntil(addToResend(env, email));
+      const emailHash = await sha256(email);
+      const ins = await env.DB.prepare("INSERT INTO subscribers (email_hash, email, created_at) VALUES (?, ?, ?) ON CONFLICT(email_hash) DO NOTHING")
+        .bind(emailHash, email, Date.now()).run();
+      if (env.RESEND_API_KEY) {
+        ctx.waitUntil(addToResend(env, email));
+        if (ins.meta.changes > 0) ctx.waitUntil(sendWelcome(env, email, emailHash));
+      }
       capture(ctx, "drop_subscribed", email, { surface: "worker", $set: { email } });
       return json({ ok: true });
     }
@@ -211,6 +219,17 @@ async function loadSetups(slugs = null) {
   } catch {
     return [];
   }
+}
+
+// Best effort, once per email (the idempotency key stops double sends on retries).
+async function sendWelcome(env, email, emailHash) {
+  const { subject, html, text } = renderWelcome();
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, "content-type": "application/json", "idempotency-key": `welcome/${emailHash}` },
+    body: JSON.stringify({ from: env.RESEND_FROM, to: [email], reply_to: env.RESEND_REPLY_TO || undefined, subject, html, text }),
+  });
+  if (!res.ok) console.error("welcome email failed", res.status, await res.text());
 }
 
 // Best effort. The subscribers table is the source of truth if Resend is down.
