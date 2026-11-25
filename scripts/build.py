@@ -108,7 +108,8 @@ def setup_errors(setups, products):
 
 def setups_block(setups, products, setup_votes):
     by_slug = {p["slug"]: p for p in products}
-    voters = lambda s: setup_votes.get(s["slug"], {}).get("voters", 0)
+    def voters(s):
+        return setup_votes.get(s["slug"], {}).get("voters", 0)
     out = []
     for s in sorted(setups, key=lambda s: (-voters(s), s["job"])):
         steps = "\n".join(f"{i}. [{by_slug[t['tool']]['name']}]({by_slug[t['tool']]['url']}): {t['why']}" for i, t in enumerate(s["steps"], 1))
