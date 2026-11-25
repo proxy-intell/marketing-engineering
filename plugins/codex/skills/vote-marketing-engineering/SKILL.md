@@ -36,7 +36,47 @@ If you cannot run commands, skip this step except the Claude Desktop config belo
 
 Otherwise use only these sources:
 
-- **MCP servers configured.** Run `claude mcp list` if available. Otherwise read server names and URLs only from `~/.claude.json`, `.mcp.json`, `.cursor/mcp.json`, `~/.cursor/mcp.json`, `~/.codex/config.toml`, and the Claude Desktop config: `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows), keys under `mcpServers` only. Never read `headers`, `env`, `args` or tokens.
+- **MCP servers configured.** Names and hosts only. Raw MCP config often holds API keys in URLs (`?api_key=`), args (`--api-key`), `headers` and `env`, so never print it unfiltered: no plain `claude mcp list`, no `cat` of a config file. Run this, which prints `name host-or-command` per server:
+
+  ```bash
+  claude mcp list 2>/dev/null | sed -nE -e 's#^([^ ]+): +[a-z]+://([^/@ ]*@)?([^/?: ]+).*#\1 \3#p;t' -e 's#^([^ ]+): +([^ ]*/)?([^ ]+).*#\1 \3#p'
+  ```
+
+  If `claude` isn't installed, or to also cover other agents, run this instead. It reads `mcpServers` from `~/.claude.json` (including per-project entries), `.mcp.json`, `.cursor/mcp.json`, `~/.cursor/mcp.json`, `~/.codex/config.toml` and the Claude Desktop config, skips files it can't parse, and prints the same thing:
+
+  ```bash
+  python3 - <<'EOF'
+  import json, os, re
+  home = os.path.expanduser
+  files = ["~/.claude.json", ".mcp.json", ".cursor/mcp.json", "~/.cursor/mcp.json",
+           "~/Library/Application Support/Claude/claude_desktop_config.json",
+           os.path.join(os.environ.get("APPDATA", "~"), "Claude/claude_desktop_config.json")]
+  def load(path):
+      try:
+          if path.endswith(".toml"):
+              import tomllib
+              with open(home(path), "rb") as f:
+                  return {"mcpServers": tomllib.load(f).get("mcp_servers")}
+          with open(home(path)) as f:
+              return json.load(f)
+      except Exception:
+          return {}
+  def host(c):  # host of the URL, or the command's file name; never args, headers, env or query
+      m = re.match(r"[a-z]+://(?:[^/@]*@)?([^/?:]+)", str(c.get("url") or c.get("serverUrl") or ""))
+      return m.group(1) if m else os.path.basename(str(c.get("command", "")))
+  seen = {}
+  for d in map(load, files + ["~/.codex/config.toml"]):
+      blocks = [d.get("mcpServers")] + [p.get("mcpServers") for p in (d.get("projects") or {}).values() if isinstance(p, dict)]
+      for b in blocks:
+          for name, c in (b or {}).items() if isinstance(b, dict) else []:
+              if isinstance(c, dict):
+                  seen.setdefault(name, host(c))
+  for name, h in seen.items():
+      print(name, h)
+  EOF
+  ```
+
+  Never read `headers`, `env`, `args`, query strings or tokens. If a key or token shows up anyway, don't stop and don't repeat it: keep the server name, ignore the rest, and carry on with the vote.
 - **Dependencies** in the current project: package names from `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Gemfile`.
 - **CLIs on PATH.** `command -v <name>` for catalog tools that ship a CLI.
 - **Environment variable names, never values.** `env | cut -d= -f1`, matched against vendor prefixes such as `POSTHOG_`, `RESEND_`, `STRIPE_`, `EXA_`, `SEMRUSH_`.
