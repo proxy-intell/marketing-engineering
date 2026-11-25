@@ -112,8 +112,8 @@ def setups_block(setups, products, setup_votes):
     out = []
     for s in sorted(setups, key=lambda s: (-voters(s), s["job"])):
         steps = "\n".join(f"{i}. [{by_slug[t['tool']]['name']}]({by_slug[t['tool']]['url']}): {t['why']}" for i, t in enumerate(s["steps"], 1))
-        run = f" · run by {voters(s)}" if voters(s) >= MIN_VOTERS else ""
-        out.append(f"### {s['job']}\n\n{steps}\n\npaste into your agent: `set up \"{s['job']}\" - https://marketingengineering.dev/setups/{s['slug']}.md`{run}")
+        run = f" (run by {voters(s)})" if voters(s) >= MIN_VOTERS else ""
+        out.append(f"### {s['job']}\n\n{steps}\n\npaste into your agent{run}:\n\n```\nset up \"{s['job']}\" - https://marketingengineering.dev/setups/{s['slug']}.md\n```")
     return "\n\n".join(out)
 
 

@@ -41,7 +41,11 @@ it checks which of these tools you actually use, shows you exactly what it will 
 
 only tool names and usage ratings leave your machine. never code, paths, keys or prompts. [how voting works](docs/how-voting-works.md)
 
-want it permanent? `npx skills add proxy-intell/marketing-engineering` installs the skills for Claude Code, Cursor, Codex, Copilot and other agents: vote, find a tool for a job ("what should i use for X?"), and one per setup. [more ways](docs/install.md)
+want it permanent? run this in a terminal. it installs the skills for Claude Code, Cursor, Codex, Copilot and other agents: vote, find a tool for a job ("what should i use for X?"), and one per setup. [more ways](docs/install.md)
+
+```
+npx skills add proxy-intell/marketing-engineering
+```
 
 every entry says what it does and how you plug in: MCP server, API, CLI, SDK, plugin, skill or web app. skills and plugins for coding agents are listed too, with an install line. agents can skip the prose and read [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json), remote MCP URLs included
 
@@ -60,7 +64,11 @@ one job, done end to end. ranked by how many voters have the whole thing
 3. [Resend](https://resend.com): send receipts and nudges
 4. [PostHog](https://posthog.com): see who converts
 
-paste into your agent: `set up "charge for your product" - https://marketingengineering.dev/setups/paid-product.md`
+paste into your agent:
+
+```
+set up "charge for your product" - https://marketingengineering.dev/setups/paid-product.md
+```
 
 ### get cited in AI search
 
@@ -70,7 +78,11 @@ paste into your agent: `set up "charge for your product" - https://marketingengi
 4. [IndexNow](https://www.indexnow.org): push new pages the day they ship
 5. [Claude Code](https://claude.com/claude-code): run the check every week
 
-paste into your agent: `set up "get cited in AI search" - https://marketingengineering.dev/setups/aeo.md`
+paste into your agent:
+
+```
+set up "get cited in AI search" - https://marketingengineering.dev/setups/aeo.md
+```
 
 ### know what's working
 
@@ -79,7 +91,11 @@ paste into your agent: `set up "get cited in AI search" - https://marketingengin
 3. [Semrush](https://www.semrush.com): where competitors outrank you
 4. [Claude Code](https://claude.com/claude-code): read all three every Friday
 
-paste into your agent: `set up "know what's working" - https://marketingengineering.dev/setups/whats-working.md`
+paste into your agent:
+
+```
+set up "know what's working" - https://marketingengineering.dev/setups/whats-working.md
+```
 
 ### launch day
 
@@ -87,7 +103,11 @@ paste into your agent: `set up "know what's working" - https://marketingengineer
 2. [Playwright](https://playwright.dev): take the screenshots
 3. [Resend](https://resend.com): tell your list
 
-paste into your agent: `set up "launch day" - https://marketingengineering.dev/setups/launch.md`
+paste into your agent:
+
+```
+set up "launch day" - https://marketingengineering.dev/setups/launch.md
+```
 
 ### research competitors' ads
 
@@ -96,7 +116,11 @@ paste into your agent: `set up "launch day" - https://marketingengineering.dev/s
 3. [Exa](https://exa.ai): find who else is in the market
 4. [Gemini API](https://ai.google.dev): break down the video creative
 
-paste into your agent: `set up "research competitors' ads" - https://marketingengineering.dev/setups/competitor-ads.md`
+paste into your agent:
+
+```
+set up "research competitors' ads" - https://marketingengineering.dev/setups/competitor-ads.md
+```
 
 <!-- END SETUPS -->
 
