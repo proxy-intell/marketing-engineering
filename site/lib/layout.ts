@@ -72,7 +72,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .vc-bar { display: flex; gap: 12px; align-items: center; background: #2a2a2a; padding: 10px 10px 10px 14px; margin-top: 8px }
 .vc-bar code { flex: 1; min-width: 0; font: 500 .82rem/1.5 var(--mono); color: var(--paper); overflow-wrap: anywhere }
 .vc-bar button { border: 0; background: var(--orange); color: var(--ink); font: 700 .78rem var(--mono); text-transform: uppercase; letter-spacing: .05em; padding: 0 16px; min-height: 40px; white-space: nowrap }
-.howlink { display: block; margin-top: 16px; padding-top: 12px; border-top: 1px solid #3a3a3a; text-align: right; font: 500 .72rem var(--mono); color: #bdb8a8; text-transform: uppercase; letter-spacing: .04em }
+.howlink { display: block; margin-top: 16px; padding-top: 12px; border-top: 1px solid #3a3a3a; text-align: left; font: 500 .72rem var(--mono); color: #bdb8a8; text-transform: uppercase; letter-spacing: .04em }
 .howlink:hover { color: var(--paper) }
 /* shape band (Config-style supergraphic): colour cells with a nested primitive, cropped at the screen edges */
 .band { margin-inline: calc(50% - 50vw); overflow: hidden; border-block: 2px solid var(--ink); background: var(--ink) }
