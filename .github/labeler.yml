@@ -15,4 +15,4 @@ skills:
       - any-glob-to-any-file: [vote.md, "skills/**", "plugins/**"]
 documentation:
   - changed-files:
-      - any-glob-to-any-file: ["docs/**", CONTRIBUTING.md, AGENTS.md]
+      - any-glob-to-any-file: ["docs/**", CONTRIBUTING.md, AGENTS.md, CLAUDE.md]

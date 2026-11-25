@@ -1,0 +1,15 @@
+# Weekly, grouped into one PR per ecosystem. Security fixes come separately and right away.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /site
+    schedule: { interval: weekly }
+    groups: { site: { patterns: ["*"] } }
+  - package-ecosystem: uv
+    directory: /
+    schedule: { interval: weekly }
+    groups: { scripts: { patterns: ["*"] } }
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    groups: { actions: { patterns: ["*"] } }
