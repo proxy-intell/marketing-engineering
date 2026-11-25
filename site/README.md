@@ -23,12 +23,11 @@ Anything else, or a method a route doesn't take, is `404 {"error":"not found"}`.
 
 ```sh
 docker run -d --name me-pg -e POSTGRES_PASSWORD=x -p 5433:5432 postgres:16
-docker exec -i me-pg psql -U postgres < db/schema.sql
 cd site && npm install
-DATABASE_URL=postgres://postgres:x@localhost:5433/postgres npm run dev   # http://localhost:3000
+DATABASE_URL=postgres://postgres:x@localhost:5433/postgres npm run dev   # http://localhost:3000, creates the tables on start
 ```
 
-Checks: `npm run lint`, `npm run typecheck`, `npm test` (no database needed), `npm run build`.
+Checks: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`. With `DATABASE_URL` set, `npm test` also runs the SQL tests in `test/db.test.ts` against that database (CI does, with a throwaway Postgres).
 
 ## Env
 

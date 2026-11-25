@@ -1,5 +1,6 @@
--- Postgres port of worker/schema.sql. Same tables and columns.
--- Times are epoch milliseconds (BIGINT: they overflow INTEGER). payload is the vote as JSON text.
+// Applied at server start (instrumentation.ts) and by the DB tests. Every statement is idempotent.
+// Times are epoch milliseconds (BIGINT: they overflow INTEGER). payload is the vote as JSON text.
+export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS votes (
   install_id TEXT PRIMARY KEY,
   email_hash TEXT,
@@ -21,3 +22,4 @@ CREATE TABLE IF NOT EXISTS rate (
   n INTEGER NOT NULL,
   PRIMARY KEY (ip_hash, day)
 );
+`;

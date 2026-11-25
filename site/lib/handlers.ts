@@ -27,11 +27,19 @@ export const notFound = () => json({ error: "not found" }, 404);
 
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
 
-// cf-connecting-ip while Cloudflare proxies the domain, else the first x-forwarded-for hop (Cloud Run).
-const ipHash = (request: Request) =>
-  sha256(`${env.IP_SALT}${request.headers.get("cf-connecting-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown"}`);
+// Google's load balancer appends "<client>, <lb>" to x-forwarded-for, so the client is second from the right.
+// Anything further left is whatever the caller sent, so never trust it. Cloud Run ingress is LB-only.
+const clientIp = (request: Request) => {
+  const hops = (request.headers.get("x-forwarded-for") ?? "").split(",").map((h) => h.trim()).filter(Boolean);
+  return hops.at(-2) ?? hops.at(-1) ?? "unknown";
+};
+const ipHash = (request: Request) => {
+  // An unsalted hash of an IPv4 address is trivially reversible.
+  if (!env.IP_SALT && process.env.NODE_ENV === "production") throw new Error("IP_SALT is not set");
+  return sha256(`${env.IP_SALT}${clientIp(request)}`);
+};
 
-// The worker's ctx.waitUntil: run after the response, log failures, never throw.
+// Fire and forget, for analytics only (Cloud Run keeps CPU on after the response). Logs failures, never throws.
 const bg = (p: Promise<unknown>) => void p.catch((e) => console.error("background task failed", e));
 
 // Best effort, never blocks or fails a response. Agents don't run JS, so their hits are tracked here.
@@ -84,6 +92,8 @@ export async function vote(request: Request, sql: Sql) {
   const now = Date.now();
   const firstSignup = await sql.begin(async (tx) => {
     // One vote per person: a vote with a known email replaces that person's votes from other installs.
+    // The lock serialises same-email votes so two installs can't both survive.
+    if (emailHash) await tx`SELECT pg_advisory_xact_lock(hashtext(${emailHash}))`;
     if (emailHash) await tx`DELETE FROM votes WHERE email_hash = ${emailHash} AND install_id != ${vote.install_id}`;
     await tx`INSERT INTO votes (install_id, email_hash, agent, updated_at, payload)
       VALUES (${vote.install_id}, ${emailHash}, ${vote.agent}, ${now}, ${JSON.stringify({ tools: vote.tools, proposals: vote.proposals })})
@@ -98,8 +108,8 @@ export async function vote(request: Request, sql: Sql) {
   });
 
   if (vote.weekly_drop && vote.email && emailHash && env.RESEND_API_KEY) {
-    bg(addToResend(vote.email));
-    if (firstSignup) bg(sendWelcome(vote.email, emailHash, true));
+    // Awaited: a dropped welcome can't be retried (the subscriber row already exists). Both swallow their own errors.
+    await Promise.allSettled([addToResend(vote.email), firstSignup && sendWelcome(vote.email, emailHash, true)]);
   }
 
   // The vote is stored by now. A setups lookup failure only empties the list.
@@ -144,8 +154,7 @@ export async function subscribe(request: Request, sql: Sql) {
   const emailHash = sha256(email);
   const ins = await sql`INSERT INTO subscribers (email_hash, email, created_at) VALUES (${emailHash}, ${email}, ${Date.now()}) ON CONFLICT (email_hash) DO NOTHING`;
   if (env.RESEND_API_KEY) {
-    bg(addToResend(email));
-    if (ins.count > 0) bg(sendWelcome(email, emailHash, false));
+    await Promise.allSettled([addToResend(email), ins.count > 0 && sendWelcome(email, emailHash, false)]);
   }
   capture("drop_subscribed", email, { surface: "worker", $set: { email } });
   return json({ ok: true });

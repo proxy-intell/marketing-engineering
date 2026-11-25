@@ -34,6 +34,13 @@ jobs:
 
   site:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: x
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 2s --health-timeout 5s --health-retries 10
     defaults:
       run:
         working-directory: site
@@ -48,6 +55,8 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+        env:
+          DATABASE_URL: postgres://postgres:x@localhost:5432/postgres
       - run: npm run build
 
   links:
