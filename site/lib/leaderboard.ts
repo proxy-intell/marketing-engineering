@@ -15,10 +15,6 @@ const body = (data: string) => String.raw`<body><main>
     <div class="h-left">
       <h1>marketing engineering</h1>
       <p class="lede">what other marketers are actually using. turns out it's not what x/twitter says… <span class="seelinks"><a class="fine seerank" href="#rank">see the rankings ↓</a></span></p>
-      <div class="join">
-        <form class="field" id="drop" onsubmit="return false"><input type="email" id="em" placeholder="you@company.com" aria-label="Email"><button type="submit" id="join">join</button></form>
-        <span class="fine" id="dropNote">new tools every friday</span>
-      </div>
     </div>
     <div class="getit">
       <div class="agentbox">
@@ -149,17 +145,6 @@ const body = (data: string) => String.raw`<body><main>
     posthog.capture("vote_command_copied");
     try { navigator.clipboard.writeText(t).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1400); }, function () { sel(); }); } catch (e) { sel(); }
     function sel() { var r = document.createRange(); r.selectNodeContents(document.getElementById("cmd")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
-  });
-  var note = document.getElementById("dropNote"), join = document.getElementById("join");
-  document.getElementById("drop").addEventListener("submit", function () {
-    var em = document.getElementById("em").value.trim();
-    if (!em) { note.textContent = "add an email first"; return; }
-    join.disabled = true; note.textContent = "joining...";
-    fetch("/v1/subscribe", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: em }) })
-      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-      .then(function (x) { if (x.ok) { posthog.identify(em.toLowerCase(), { email: em.toLowerCase() }); } note.textContent = x.ok ? "you're in. first drop lands friday." : (x.j.error || "that didn't work, try again"); })
-      .catch(function () { note.textContent = "that didn't work, try again"; })
-      .then(function () { join.disabled = false; });
   });
 })();
 </script>
