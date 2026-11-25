@@ -15,10 +15,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
       - run: pip install check-jsonschema==0.29.4
       - run: check-jsonschema --schemafile catalog.schema.json catalog.json
       - run: python scripts/build.py --check
-      - run: python -m unittest discover -s scripts -t .
+      - run: uv run ruff check scripts
+      - run: uv run pytest
 
   worker:
     runs-on: ubuntu-latest
@@ -29,6 +31,24 @@ jobs:
           node-version: 22
       - run: node --test
         working-directory: worker
+
+  site:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
 
   links:
     runs-on: ubuntu-latest

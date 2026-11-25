@@ -31,7 +31,8 @@ print(f"{votes['voters']} voters, {len(votes['tools'])} tools")
 if len(sys.argv) > 1:
     catalog = json.loads((ROOT / "catalog.json").read_text())["products"]
     categories = json.loads((ROOT / "categories.json").read_text())
-    host = lambda u: urlparse(u).hostname.removeprefix("www.")
+    def host(u):
+        return urlparse(u).hostname.removeprefix("www.")
     listed = {host(p["url"]) for p in catalog}
     issues = []
     for p in data["proposals"]:

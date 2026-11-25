@@ -117,7 +117,8 @@ def new_cells():
         color, radius = SHAPES[i % len(SHAPES)]
         handle = f' &nbsp;·&nbsp; <a href="https://x.com/{e(p["maker_x"])}" style="color:#2448FF;text-decoration:none">@{e(p["maker_x"])}</a>' if p.get("maker_x") else ""
         meta = f'<p style="margin:6px 0 0;{MONO};font-size:12px;color:{INK}">{votes_for(p["slug"])}{handle}</p>'
-        shape = lambda line, c=color, r=radius: f'<td width="34" valign="top" style="padding:18px 0;{line}"><div style="width:22px;height:22px;background:{c};border-radius:{r}"></div></td>'
+        def shape(line, c=color, r=radius):
+            return f'<td width="34" valign="top" style="padding:18px 0;{line}"><div style="width:22px;height:22px;background:{c};border-radius:{r}"></div></td>'
         yield shape, tool_cell(p, meta)
 
 
