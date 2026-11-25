@@ -30,6 +30,7 @@ After a vote, an agent with `gh` signed in offers two things, each a separate ye
 - **https://marketingengineering.dev**: the live ranking: one table of every tool, sorted by score, with search, a category filter and voter counts. Also takes Friday-drop sign-ups.
 - **README order**: updated daily from the same scores. "used by N" shows at 3 or more voters.
 - **`/v1/scores`**: the same data as JSON.
+- **https://marketingengineering.dev/v**: vote in the browser. Chat apps that can't send the vote (Claude Desktop, ChatGPT) link here with your tools filled in. You fix anything, add your email so it replaces any earlier vote, and send.
 
 ## Skills and plugins
 

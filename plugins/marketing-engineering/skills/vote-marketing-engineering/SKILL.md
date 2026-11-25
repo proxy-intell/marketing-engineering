@@ -23,7 +23,7 @@ Source of truth: https://github.com/proxy-intell/marketing-engineering. How scor
 ### 0. Know where you run
 
 - **Local coding agent** (Claude Code, Cursor, Codex, opencode, on the user's machine): do every step below, including the scan.
-- **Hosted assistant with no shell** (ChatGPT, claude.ai): skip the scan. Ask the user which listed tools they use and how often, and rate from their answer.
+- **Chat app or anything that can't run commands** (Claude Desktop, Cowork, claude.ai, ChatGPT): don't scan and don't interview the user. Do steps 1 and 3 with what you already know they use (this conversation, your memory, and the MCP server names in the Claude Desktop config if you can read that file, see step 2), then go straight to the link in step 8. If you know nothing, send the link with no `t`. One message, then stop.
 - **Sandbox with restricted network** (a cloud container): if `marketingengineering.dev` is unreachable (proxy 403, DNS failure, timeout), do not retry or try other hosts. Tell the user that host is blocked by the environment's network policy and that they can run the same command on their own machine. Then stop.
 
 ### 1. Get the catalog
@@ -32,11 +32,11 @@ Fetch `https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main
 
 ### 2. Look for evidence of use
 
-If you cannot run commands (a chat app without a shell), skip the scan. Ask the user which listed tools they use and how often, rate from their answer, and do not guess from one session.
+If you cannot run commands, skip this step except the Claude Desktop config below, and only if you can read that file.
 
 Otherwise use only these sources:
 
-- **MCP servers configured.** Run `claude mcp list` if available. Otherwise read server names and URLs only from `~/.claude.json`, `.mcp.json`, `.cursor/mcp.json`, `~/.cursor/mcp.json`, `~/.codex/config.toml`. Never read `headers`, `env` or tokens.
+- **MCP servers configured.** Run `claude mcp list` if available. Otherwise read server names and URLs only from `~/.claude.json`, `.mcp.json`, `.cursor/mcp.json`, `~/.cursor/mcp.json`, `~/.codex/config.toml`, and the Claude Desktop config: `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows), keys under `mcpServers` only. Never read `headers`, `env`, `args` or tokens.
 - **Dependencies** in the current project: package names from `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Gemfile`.
 - **CLIs on PATH.** `command -v <name>` for catalog tools that ship a CLI.
 - **Environment variable names, never values.** `env | cut -d= -f1`, matched against vendor prefixes such as `POSTHOG_`, `RESEND_`, `STRIPE_`, `EXA_`, `SEMRUSH_`.
@@ -112,9 +112,17 @@ Read `~/.config/marketing-engineering/install_id`. If missing, create the direct
 }
 ```
 
-- `agent`: one of `claude-code`, `cursor`, `codex`, `chatgpt`, `gemini`, `other`.
+- `agent`: one of `claude-code`, `claude`, `cursor`, `codex`, `chatgpt`, `gemini`, `other`.
 - `email`, `weekly_drop`, `proposals` are optional. At least one of `tools` or `proposals` is required.
 - Limits: 40 tools, 5 proposals per vote.
+
+**Can't send a POST?** (Claude Desktop, Cowork, claude.ai, ChatGPT, or a sandbox that blocks the host.) Skip steps 5 to 7 and don't retry. Give the user this link in one short message, built from the tools you rated (only ones you have real evidence for):
+
+```
+https://marketingengineering.dev/v?a=<agent>&t=<slug>:<usage>,<slug>:<usage>
+```
+
+`agent` is `claude`, `chatgpt` or `other`. Only catalog slugs and usage values go in it, never an email, name or anything else. The page shows the vote, lets them fix it, add their email (needed to send, so a re-vote replaces the old one), opt into the Friday drop, and send. Proposals can't go through the link: list them in chat and point to `CONTRIBUTING.md`.
 
 Responses: `200 {"ok":true,"counted":{"tools":N,"proposals":M},"subscribed":true|false,"new":true|false,"voters":V,"ranks":[{"slug":"posthog","rank":2}],"setups":[{"slug":"aeo","job":"get cited in AI search","have":3,"of":4,"missing":["IndexNow"]}]}`. `ranks` is the overall rank of up to 3 of the user's tools, best first. `setups` lists up to 3 setups built from tools you voted for. It may be empty. `400` has an `error` string: fix it and retry once. `429`: tell the user to try again tomorrow.
 

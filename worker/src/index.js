@@ -2,6 +2,7 @@ import { validateVote, score, ranksFor, matchSetups, EMAIL } from "./votes.js";
 import { validSetups, renderSetupMd } from "./setups.js";
 import { BADGE_SVG } from "./badge.js";
 import { renderLeaderboard, POSTHOG_KEY } from "./leaderboard.js";
+import { renderVotePage } from "./votepage.js";
 
 const RAW = "https://raw.githubusercontent.com/proxy-intell/marketing-engineering/main";
 const SKILL_DESCRIPTION = "Vote on the Marketing Engineering tool list using what the user actually uses. Use when the user asks to vote, rank, submit or add marketing tools, skills or plugins to proxy-intell/marketing-engineering, or pastes the vote.md link.";
@@ -138,6 +139,14 @@ export default {
       if (env.RESEND_API_KEY) ctx.waitUntil(addToResend(env, email));
       capture(ctx, "drop_subscribed", email, { surface: "worker", $set: { email } });
       return json({ ok: true });
+    }
+
+    // Vote page for agents that can't POST: they link here with ?t=slug:usage,... and the person sends it
+    if (request.method === "GET" && pathname === "/v") {
+      const catalogRes = await fetch(`${RAW}/catalog.json`, { cf: { cacheTtl: 300, cacheEverything: true } });
+      if (!catalogRes.ok) return json({ error: "catalog unavailable" }, 502);
+      const { products } = await catalogRes.json();
+      return new Response(renderVotePage(products), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" } });
     }
 
     // Short, stable URL for agents: "vote on marketing engineering - https://marketingengineering.dev/vote.md"

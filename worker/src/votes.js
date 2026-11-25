@@ -6,7 +6,7 @@ export const MAX_TOOLS = 40;
 export const MAX_PROPOSALS = 5;
 
 const KINDS = ["tool", "skill", "plugin", "data"];
-const AGENTS = ["claude-code", "cursor", "codex", "chatgpt", "gemini", "other"];
+const AGENTS = ["claude-code", "claude", "cursor", "codex", "chatgpt", "gemini", "other"];
 export const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 
 export function validateVote(body) {
