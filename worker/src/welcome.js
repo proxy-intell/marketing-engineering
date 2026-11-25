@@ -1,5 +1,7 @@
 // Welcome email, sent once when someone first joins the Friday drop (site box or a vote with weekly_drop).
-const SITE = "https://marketingengineering.dev";
+const REPO = "https://github.com/proxy-intell/marketing-engineering";
+const CMD = "vote on marketing engineering - https://marketingengineering.dev/vote.md";
+const SHARE = "https://x.com/intent/post?text=" + encodeURIComponent("the marketing tools people actually use, ranked by what their agents report. not what x says.\n\nmarketingengineering.dev");
 const POSTAL = "Proxy Intelligence Inc., 131 Continental Dr, Suite 305, Newark, DE 19713, US";
 
 export const SUBJECT = "you're in on marketing engineering";
@@ -19,6 +21,7 @@ const COPY = {
       "stack changed? vote again and the new one replaces the old.",
       FRIDAY,
     ],
+    buttons: [["&#9734; star the repo", REPO, true], ["share the page", SHARE, false]],
   },
   site: {
     preview: "new tools every friday. your vote is the bit that makes it work",
@@ -27,7 +30,7 @@ const COPY = {
       RANKS,
       "your vote is what makes it work. the more of us vote, the clearer it gets what's actually good for people who work like you.",
     ],
-    button: ["send your vote", SITE],
+    agentbox: true,
     after: [FRIDAY],
   },
 };
@@ -38,10 +41,14 @@ export function renderWelcome({ voted = true } = {}) {
   const font = "font-family:Inter,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;color:" + ink;
   const mono = "font-family:'JetBrains Mono',Menlo,Consolas,monospace";
   const p = (t) => `<p style="margin:0 0 16px;${font}">${t}</p>`;
-  const button = c.button
-    ? `<p style="margin:4px 0 24px"><a href="${c.button[1]}" style="display:inline-block;background:${orange};color:${ink};text-decoration:none;font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:800;font-size:15px;padding:12px 18px">${c.button[0]} &rarr;</a></p>`
+  const btn = ([label, href, primary]) =>
+    `<a href="${href}" style="display:inline-block;margin:0 8px 8px 0;background:${primary ? orange : paper};color:${ink};border:2px solid ${primary ? orange : ink};text-decoration:none;font-family:'Archivo Narrow','Arial Narrow',Arial,sans-serif;font-weight:800;font-size:15px;padding:10px 16px">${label}</a>`;
+  const buttons = c.buttons ? `<p style="margin:4px 0 16px">${c.buttons.map(btn).join("")}</p>` : "";
+  // The homepage agent box, as static text: copy buttons don't work in inboxes.
+  const agentbox = c.agentbox
+    ? `<div style="background:${ink};padding:12px 14px;margin:4px 0 24px"><div style="${mono};font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:${paper};margin:0 0 10px">give this to your agent</div><div style="background:#2a2a2a;color:${paper};padding:12px 14px;${mono};font-size:13px;line-height:1.5;word-break:break-word"><span style="color:#8a8a8a">$</span> ${CMD}</div><div style="${mono};font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:#8a8a8a;margin:10px 0 0">it reads your setup, shows you the vote, and waits for a yes</div></div>`
     : "";
-  const body = [...c.lines.map(p), button, ...(c.after || []).map(p), ...SIGNOFF.map(p)].join("\n");
+  const body = [...c.lines.map(p), agentbox, ...(c.after || []).map(p), buttons, ...SIGNOFF.map(p)].filter(Boolean).join("\n");
   const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${SUBJECT}</title></head>
 <body style="margin:0;padding:0;background:${paper}">
 <div style="display:none;max-height:0;overflow:hidden">${c.preview}</div>
@@ -53,6 +60,6 @@ ${body}
 </td></tr>
 <tr><td style="padding:20px 0 0;border-top:2px solid ${ink};${mono};font-size:11px;line-height:1.5;color:${mute}">${FOOT}</td></tr>
 </table></td></tr></table></body></html>`;
-  const text = [...c.lines, ...(c.button ? [`${c.button[0]}: ${c.button[1]}`] : []), ...(c.after || []), ...SIGNOFF, "--", FOOT].join("\n\n");
+  const text = [...c.lines, ...(c.agentbox ? ["give this to your agent:", CMD] : []), ...(c.after || []), ...(c.buttons ? [`star the repo: ${REPO}`, `share it: https://marketingengineering.dev`] : []), ...SIGNOFF, "--", FOOT].join("\n\n");
   return { subject: SUBJECT, preview: c.preview, html, text };
 }
