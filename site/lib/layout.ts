@@ -250,6 +250,8 @@ footer.site a { color: var(--paper) }
 }
 table.rt td.nm .msub { display: none }
 @media (max-width: 600px) {
+  /* one-line header on phones: GitHub is in the footer too */
+  .nav { flex-wrap: nowrap } .nav .ghl { display: none } .signup { margin-right: 3px }
   .agentbox .bar { flex-direction: column; padding: 12px }
   .agentbox code { font-size: .7rem }
   .agentbox button { align-self: flex-end; padding: 8px 16px; min-height: 0 }
