@@ -1,5 +1,5 @@
 // Public site: catalog + scores -> one HTML page. Pure, so it runs under `node --test`.
-import { layout, NAV } from "./layout";
+import { layout, nav } from "./layout";
 import type { Product, Scores, Setup } from "./types";
 
 const OURS = ["proxy"];
@@ -8,7 +8,7 @@ const META = String.raw`<title>Marketing Engineering: marketing tools ranked by 
 
 const body = (data: string, voters: number) => String.raw`<body><main>
 <div class="wrap">
-  ${NAV}
+  ${nav()}
 
   <div class="hero">
     <div class="h-left">

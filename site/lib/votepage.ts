@@ -1,6 +1,6 @@
 // /v: the vote page. Agents never send a vote themselves (vote.md).
 // The agent links here with ?t=slug:usage,... and the person checks it, adds an email if they want, and sends.
-import { layout, NAV } from "./layout";
+import { layout, nav } from "./layout";
 import { WEIGHTS, MAX_TOOLS } from "./votes";
 import type { Product } from "./types";
 
@@ -62,7 +62,7 @@ export function renderVotePage(products: Product[]): string {
 #setupsMsg { margin: 0 0 14px; white-space: pre-line }
 .vp [hidden] { display: none !important }
 </style>`, `<body><main><div class="wrap vp">
-  ${NAV}
+  ${nav()}
   <h1 id="h">your vote</h1>
   <p class="sub" id="lede">your agent found these. set how often you use each, then send.</p>
   <form class="vemail" id="send" onsubmit="return false">

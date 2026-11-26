@@ -1,5 +1,5 @@
 // Shared page shell for / and /v: head, fonts, the site CSS, the PostHog snippet and the nav.
-import { env } from "./env";
+import { env, authEnabled } from "./env";
 
 // Favicon, fonts and the whole site stylesheet. Verbatim from the worker's homepage.
 const STYLE = String.raw`<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%23BFDAF5%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%2210%22%20width%3D%2220%22%20height%3D%2220%22%20rx%3D%225.5%22%20fill%3D%22%23FFC53D%22%2F%3E%3Ccircle%20cx%3D%2244%22%20cy%3D%2220%22%20r%3D%2210%22%20fill%3D%22%23F5B5E1%22%2F%3E%3Cpolygon%20points%3D%2231.0%2C44.0%2025.5%2C53.5%2014.5%2C53.5%209.0%2C44.0%2014.5%2C34.5%2025.5%2C34.5%22%20fill%3D%22%231FA35B%22%2F%3E%3Crect%20x%3D%2236.8%22%20y%3D%2236.8%22%20width%3D%2214.4%22%20height%3D%2214.4%22%20rx%3D%222.4%22%20fill%3D%22%23FF5A1F%22%20transform%3D%22rotate%2845%2044%2044%29%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"><style>
@@ -97,6 +97,16 @@ h1 { font: 850 clamp(3.6rem, 9.2vw, 8.6rem)/.9 var(--display); font-variation-se
 /* outline: orange is kept for the vote */
 .signup { border: 2px solid var(--ink); background: transparent; color: var(--ink); padding: 4px 12px; font: 700 .75rem var(--mono); text-transform: uppercase; letter-spacing: .05em }
 .signup:hover { background: var(--ink); color: var(--paper) }
+/* sign-in: a link until /v1/me says who you are, then the email (cut short) and a sign-out button.
+   Keeps the header on one line: the brand name wraps first, and between phone and desktop widths the email hides (sign out stays). */
+.nav:has(.sil, .who), .nav:has(.sil, .who) .links { flex-wrap: nowrap }
+.nav .sil, .nav .sio, .nav:has(.sil, .who) .signup { white-space: nowrap }
+.nav .who { display: inline-flex; gap: 12px; align-items: center; min-width: 0 }
+.nav .who form { margin: 0; display: inline }
+@media (min-width: 601px) and (max-width: 900px) { .nav .sie { display: none !important } }
+.nav .sie { display: inline-block; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; text-transform: none; color: var(--mute) }
+.nav .sio { background: none; border: 0; padding: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--ink); cursor: pointer }
+.nav .sio:hover { color: var(--cobalt) }
 .sud { width: min(440px, calc(100vw - 32px)); border: 2px solid var(--ink); background: var(--paper); color: var(--ink); padding: 28px 24px 22px; box-shadow: 8px 8px 0 var(--ink) }
 .sud::backdrop { background: color-mix(in srgb, var(--ink) 55%, transparent) }
 .sud h2 { margin: 0 0 6px; font: 800 1.6rem/1.1 var(--display); font-variation-settings: "wdth" 85 }
@@ -268,6 +278,8 @@ table.rt td.nm .msub { display: none }
   .nav .nt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
   .nav .ghl svg { width: 22px; height: 22px }
   .nav .sl { display: none }
+  .nav:has(.sil, .who) .links { gap: 14px }
+  .nav .sie { display: inline-block; max-width: 72px }
   .votecard { margin-right: 8px; padding: 16px }
   .vc-bar { flex-direction: column; align-items: stretch }
   .vc-bar code { font-size: .74rem }
@@ -307,10 +319,11 @@ table.rt td.nm .msub { display: none }
 const analytics = (key: string) =>
   key ? String.raw`<script>!function(t,e){var o,n,p,r;e.__SV||(window.posthog&&window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister identify setPersonProperties reset get_distinct_id alias set_config opt_in_capturing opt_out_capturing".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);posthog.init("${key}",{api_host:"https://eu.i.posthog.com",person_profiles:"identified_only"});</script>` : "<script>window.posthog={capture:function(){},identify:function(){}};</script>";
 
-// Brand + GitHub link, the same header on every page.
-export const NAV = String.raw`<div class="nav mono">
+// Brand + GitHub link, the same header on every page. With sign-in on, a "sign in" link that the script below
+// swaps for the email + "sign out" after asking /v1/me. Fetched client-side so / and /v stay publicly cacheable.
+export const nav = () => String.raw`<div class="nav mono">
     <strong class="brand"><i class="icslot"><svg width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#BFDAF5"/><rect x="10" y="10" width="20" height="20" rx="5.5" fill="#FFC53D"/><circle cx="44" cy="20" r="10" fill="#F5B5E1"/><polygon points="31.0,44.0 25.5,53.5 14.5,53.5 9.0,44.0 14.5,34.5 25.5,34.5" fill="#1FA35B"/><rect x="36.8" y="36.8" width="14.4" height="14.4" rx="2.4" fill="#FF5A1F" transform="rotate(45 44 44)"/></svg></i><span class="nt">Marketing Engineering</span></strong>
-    <div class="links"><a class="sl" href="/#setups">setups</a><a class="sl" href="/#rank">rankings</a><a class="ghl" href="https://github.com/proxy-intell/marketing-engineering" target="_blank" rel="noopener"><svg class="gh" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg><span class="nt">GitHub</span></a><button type="button" class="signup" id="suOpen">sign up</button></div>
+    <div class="links"><a class="sl" href="/#setups">setups</a><a class="sl" href="/#rank">rankings</a><a class="ghl" href="https://github.com/proxy-intell/marketing-engineering" target="_blank" rel="noopener"><svg class="gh" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg><span class="nt">GitHub</span></a>${authEnabled() ? `<a class="sil" id="siIn" href="/auth/login">sign in</a>` : ""}<button type="button" class="signup" id="suOpen">sign up</button></div>
   </div>
   <dialog class="sud" id="sud" aria-labelledby="sudH">
     <form method="dialog" class="sud-x"><button aria-label="Close">&times;</button></form>
@@ -334,8 +347,25 @@ export const NAV = String.raw`<div class="nav mono">
         .catch(function () { n.textContent = "that didn't work, try again"; })
         .then(function () { j.disabled = false; });
     });
+    ${authEnabled() ? SIGN_IN_JS : ""}
   })();
   </script>`;
+
+// Lives inside the nav's one script (the page tests count </script> tags). Email goes in via textContent, never HTML.
+const SIGN_IN_JS = String.raw`var si = document.getElementById("siIn");
+    if (si) {
+      si.addEventListener("click", function () { si.href = "/auth/login?returnTo=" + encodeURIComponent(location.pathname + location.search + location.hash); });
+      fetch("/v1/me", { credentials: "same-origin" })
+        .then(function (r) { return r.json(); })
+        .then(function (m) {
+          if (!m || !m.signed_in) return;
+          var w = document.createElement("span"), e = document.createElement("span"), o = document.createElement("form"), b = document.createElement("button");
+          w.className = "who"; e.className = "sie"; e.textContent = m.email || "signed in"; e.title = m.email || "";
+          o.method = "post"; o.action = "/auth/logout"; b.type = "submit"; b.className = "sio"; b.textContent = "sign out";
+          o.appendChild(b); w.appendChild(e); w.appendChild(o); si.replaceWith(w);
+        })
+        .catch(function () {});
+    }`;
 
 // meta: <title> and friends. extraHead: page-only <style>. body: everything from <body> on.
 export function layout(meta: string, extraHead: string, body: string): string {

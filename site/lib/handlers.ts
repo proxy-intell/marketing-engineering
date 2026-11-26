@@ -2,7 +2,11 @@
 // Taking `sql` as an argument is what lets the tests run these with a stub.
 import { createHash } from "node:crypto";
 import type { Sql } from "postgres";
-import { env } from "./env";
+import { env, authEnabled } from "./env";
+import {
+  SESSION_COOKIE, TX_COOKIE, SESSION_DAYS, tenant, siteOrigin, safeReturnTo, random, pkceChallenge, setCookie,
+  sealTx, readTx, sealSession, readSession, verifyIdToken, verifyAccessToken, bearer, type Tx,
+} from "./auth";
 import { validateVote, score, ranksFor, matchSetups, EMAIL } from "./votes";
 import { validSetups, renderSetupMd } from "./setups";
 import { BADGE_SVG } from "./badge";
@@ -62,8 +66,9 @@ const agentHit = (request: Request, kind: string) => capture("agent_page_fetched
 });
 
 // 10 per IP per day, shared by votes and sign-ups. Only a salted hash of the IP is stored.
-async function rateHit(sql: Sql, request: Request): Promise<number> {
-  const day = new Date().toISOString().slice(0, 10);
+// `bucket` lets other counters share the table without sharing a count (sign-in uses "auth:<hour>").
+async function rateHit(sql: Sql, request: Request, bucket = new Date().toISOString().slice(0, 10)): Promise<number> {
+  const day = bucket;
   const [{ n }] = await sql`INSERT INTO rate (ip_hash, day, n) VALUES (${ipHash(request)}, ${day}, 1)
     ON CONFLICT (ip_hash, day) DO UPDATE SET n = rate.n + 1 RETURNING n`;
   return n;
@@ -257,4 +262,182 @@ async function fetchVoteMd() {
   const res = await raw("vote.md");
   if (!res.ok) return new Response(JSON.stringify({ error: "vote.md unavailable, read it on GitHub" }), { status: 502, headers: { "content-type": "application/json" } });
   return new Response(await res.text(), { headers: { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" } });
+}
+
+// ---- Sign-in (Auth0). Every handler is a 404 until all the AUTH0_* vars are set (env.authEnabled). ----
+
+const NO_STORE = { "cache-control": "no-store" };
+// Shared by /v1/auth/device and /v1/auth/token, counted apart from votes (bucket "auth:<hour>").
+// A 15-minute sign-in polled every 5 s is ~180 calls, so this leaves room for a few attempts per hour.
+const MAX_AUTH_PER_IP_PER_HOUR = 300;
+const authBucket = () => `auth:${new Date().toISOString().slice(0, 13)}`;
+const UNAVAILABLE = { error: "unavailable", message: "sign-in is unavailable right now, try again later" };
+
+// Form-encoded POST to the tenant. Tokens and codes are in the body, never in a URL or a log line.
+const tenantPost = (path: string, params: Record<string, string>) =>
+  fetch(tenant(path), {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(params).toString(),
+    signal: AbortSignal.timeout(10_000),
+  });
+
+// GET /auth/login?returnTo=/v?t=... : PKCE verifier, state and nonce go in a short encrypted cookie, then off to the tenant.
+export async function authLogin(request: Request) {
+  if (!authEnabled()) return notFound();
+  const tx: Tx = { state: random(), verifier: random(), nonce: random(), ret: safeReturnTo(new URL(request.url).searchParams.get("returnTo")) };
+  const to = new URL(tenant("/authorize"));
+  for (const [k, v] of Object.entries({
+    response_type: "code", client_id: env.AUTH0_CLIENT_ID, redirect_uri: `${siteOrigin(request)}/auth/callback`, scope: "openid email",
+    state: tx.state, nonce: tx.nonce, code_challenge: pkceChallenge(tx.verifier), code_challenge_method: "S256",
+  })) to.searchParams.set(k, v);
+  return new Response(null, { status: 302, headers: { location: to.toString(), "set-cookie": setCookie(request, TX_COOKIE, await sealTx(tx), 600, "/auth"), ...NO_STORE } });
+}
+
+// GET /auth/callback?code&state : check state, swap the code (with the PKCE verifier), verify the id token, set the session.
+export async function authCallback(request: Request) {
+  if (!authEnabled()) return notFound();
+  const url = new URL(request.url);
+  const tx = await readTx(request);
+  const clearTx = setCookie(request, TX_COOKIE, "", 0, "/auth");
+  const fail = (error: string, status = 400) => json({ error }, status, { ...NO_STORE, "set-cookie": clearTx });
+  if (!tx) return fail("that sign-in expired, start again at /auth/login");
+  // Cancelled or refused at the tenant: back where they were, still signed out.
+  if (url.searchParams.get("error")) return new Response(null, { status: 302, headers: { location: tx.ret, "set-cookie": clearTx, ...NO_STORE } });
+  const code = url.searchParams.get("code");
+  if (!code || url.searchParams.get("state") !== tx.state) return fail("that sign-in didn't match, start again at /auth/login");
+
+  let idToken: unknown;
+  try {
+    const res = await tenantPost("/oauth/token", {
+      grant_type: "authorization_code", client_id: env.AUTH0_CLIENT_ID, client_secret: env.AUTH0_CLIENT_SECRET,
+      code, code_verifier: tx.verifier, redirect_uri: `${siteOrigin(request)}/auth/callback`,
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) { console.error("auth code exchange failed", res.status, body.error); return fail("sign-in failed, try again", 502); }
+    idToken = body.id_token;
+  } catch (e) {
+    console.error("auth code exchange failed", (e as Error).name);
+    return fail("sign-in failed, try again", 502);
+  }
+  let claims;
+  try {
+    if (typeof idToken !== "string") throw new Error("no id token");
+    claims = await verifyIdToken(idToken, tx.nonce);
+  } catch {
+    return fail("sign-in failed, try again", 502);
+  }
+  const sub = typeof claims.sub === "string" ? claims.sub : "";
+  if (!sub) return fail("sign-in failed, try again", 502);
+  const email = typeof claims.email === "string" && claims.email_verified !== false ? claims.email.toLowerCase() : null;
+  const headers = new Headers({ location: tx.ret, ...NO_STORE });
+  headers.append("set-cookie", clearTx);
+  headers.append("set-cookie", setCookie(request, SESSION_COOKIE, await sealSession({ sub, email }), SESSION_DAYS * 86400));
+  capture("signed_in", sub, { surface: "web" });
+  return new Response(null, { status: 302, headers });
+}
+
+// POST /auth/logout from the header's sign-out button. Same-origin only, so another site can't sign people out.
+// Clears the cookie, then ends the tenant session too so the next sign-in asks again.
+export async function authLogout(request: Request) {
+  if (!authEnabled()) return notFound();
+  const origin = siteOrigin(request);
+  if (request.headers.get("origin") !== origin) return json({ error: "sign-out must come from this site" }, 403, NO_STORE);
+  const to = new URL(tenant("/v2/logout"));
+  to.searchParams.set("client_id", env.AUTH0_CLIENT_ID);
+  to.searchParams.set("returnTo", `${origin}/`);
+  return new Response(null, { status: 303, headers: { location: to.toString(), "set-cookie": setCookie(request, SESSION_COOKIE, "", 0), ...NO_STORE } });
+}
+
+// GET /v1/me: who is this? Cookie session (browser) or Authorization: Bearer <access token> (CLI, agents).
+// A bearer token that doesn't verify is a 401, so an agent can check a token before saving it.
+export async function me(request: Request) {
+  if (!authEnabled()) return json({ signed_in: false }, 200, NO_STORE);
+  const token = bearer(request);
+  const s = token ? await verifyAccessToken(token) : await readSession(request);
+  if (token && !s) return json({ signed_in: false, error: "invalid or expired token" }, 401, NO_STORE);
+  return json(s ? { signed_in: true, email: s.email, sub: s.sub } : { signed_in: false }, 200, NO_STORE);
+}
+
+// Size limit, JSON object, then the per-IP sign-in counter. Returns the body or the error response.
+async function authBody(request: Request, sql: Sql, max: number): Promise<{ body: Record<string, unknown> } | { error: Response }> {
+  if (tooBig(request, max)) return { error: json({ error: "body too large" }, 413, NO_STORE) };
+  const text = await request.text();
+  if (text.length > max) return { error: json({ error: "body too large" }, 413, NO_STORE) };
+  let body: unknown = {};
+  if (text.trim()) {
+    try { body = JSON.parse(text); } catch { return { error: json({ error: "body must be JSON" }, 400, NO_STORE) }; }
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)) return { error: json({ error: "body must be a JSON object" }, 400, NO_STORE) };
+  if ((await rateHit(sql, request, authBucket())) > MAX_AUTH_PER_IP_PER_HOUR) {
+    return { error: json({ error: "rate_limited", message: "too many sign-in requests from this address, try again in an hour" }, 429, NO_STORE) };
+  }
+  return { body: body as Record<string, unknown> };
+}
+
+// POST /v1/auth/device: start a CLI sign-in. The site asks the tenant, so the tenant's hostname never has to be published.
+export async function authDevice(request: Request, sql: Sql) {
+  if (!authEnabled()) return notFound();
+  const got = await authBody(request, sql, 1000);
+  if ("error" in got) return got.error;
+  try {
+    const res = await tenantPost("/oauth/device/code", { client_id: env.AUTH0_CLI_CLIENT_ID, scope: "openid email offline_access", audience: env.AUTH0_AUDIENCE });
+    const b = await res.json().catch(() => ({}));
+    if (!res.ok || typeof b.device_code !== "string") {
+      console.error("device code request failed", res.status, b.error);
+      return json(UNAVAILABLE, 502, NO_STORE);
+    }
+    const { device_code, user_code, verification_uri, verification_uri_complete, interval, expires_in } = b;
+    return json({ device_code, user_code, verification_uri, verification_uri_complete, interval: interval ?? 5, expires_in }, 200, NO_STORE);
+  } catch (e) {
+    console.error("device code request failed", (e as Error).name);
+    return json(UNAVAILABLE, 502, NO_STORE);
+  }
+}
+
+// The tenant's polling errors, passed through with a status and a line an agent can show as is.
+const TOKEN_ERRORS: Record<string, [number, string]> = {
+  authorization_pending: [428, "waiting for you to approve in the browser"],
+  slow_down: [429, "polling too fast: wait 5 more seconds between tries"],
+  expired_token: [410, "that sign-in expired, start again"],
+  access_denied: [403, "sign-in was cancelled or refused"],
+};
+
+// POST /v1/auth/token {device_code} (poll at `interval`) or {refresh_token}. Returns {access_token, refresh_token?, expires_in}.
+export async function authToken(request: Request, sql: Sql) {
+  if (!authEnabled()) return notFound();
+  const got = await authBody(request, sql, 4000);
+  if ("error" in got) return got.error;
+  const { device_code, refresh_token } = got.body;
+  const ok = (v: unknown): v is string => typeof v === "string" && v.length > 0 && v.length <= 2000;
+  let params: Record<string, string>;
+  if (ok(device_code) && refresh_token === undefined) params = { grant_type: "urn:ietf:params:oauth:grant-type:device_code", device_code, client_id: env.AUTH0_CLI_CLIENT_ID };
+  else if (ok(refresh_token) && device_code === undefined) params = { grant_type: "refresh_token", refresh_token, client_id: env.AUTH0_CLI_CLIENT_ID };
+  else return json({ error: "invalid_request", message: "send {device_code} or {refresh_token}" }, 400, NO_STORE);
+
+  let res: Response, b: Record<string, unknown>;
+  try {
+    res = await tenantPost("/oauth/token", params);
+    b = await res.json().catch(() => ({}));
+  } catch (e) {
+    console.error("token request failed", (e as Error).name);
+    return json(UNAVAILABLE, 502, NO_STORE);
+  }
+  if (res.ok && typeof b.access_token === "string") {
+    if (params.device_code && env.POSTHOG_KEY) {
+      const token = b.access_token;
+      bg((async () => { const s = await verifyAccessToken(token); if (s) capture("signed_in", s.sub, { surface: "cli" }); })());
+    }
+    return json({ access_token: b.access_token, refresh_token: b.refresh_token, expires_in: b.expires_in, token_type: "Bearer" }, 200, NO_STORE);
+  }
+  const code = typeof b.error === "string" ? b.error : "";
+  const known = TOKEN_ERRORS[code];
+  if (known) return json({ error: code, message: known[1] }, known[0], NO_STORE);
+  if (code === "invalid_grant") {
+    return params.refresh_token
+      ? json({ error: "invalid_grant", message: "that sign-in is no longer valid, sign in again" }, 401, NO_STORE)
+      : json({ error: "invalid_grant", message: "that sign-in code isn't valid, start again" }, 400, NO_STORE);
+  }
+  console.error("token request failed", res.status, code);
+  return res.status >= 500 ? json(UNAVAILABLE, 502, NO_STORE) : json({ error: code || "invalid_request", message: "sign-in failed, start again" }, 400, NO_STORE);
 }
